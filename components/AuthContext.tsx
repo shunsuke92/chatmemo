@@ -1,6 +1,7 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import { app } from '../src/firebase';
-import { getAuth, onAuthStateChanged,User } from "firebase/auth";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import LinearProgress from '@mui/material/LinearProgress';
 
 const AuthContext = createContext<User | null>(null);
 
@@ -10,7 +11,7 @@ export function useAuthContext() {
 
 export function AuthProvider({ children }: { children: any }) {
   const [user, setUser] = useState<User | null>(null);
-  const [isAuthChecking, setIsAuthChecking] = useState(true)
+  const [isAuthChecking, setIsAuthChecking] = useState(true);
 
   useEffect(() => {
     const auth = getAuth(app);
@@ -31,5 +32,5 @@ export function AuthProvider({ children }: { children: any }) {
     };
   }, []);
 
-  return <AuthContext.Provider value={user}>{!isAuthChecking && children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={user}>{isAuthChecking ? <LinearProgress /> : children}</AuthContext.Provider>;
 }
