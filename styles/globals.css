@@ -1,9 +1,18 @@
-html,
-body {
-  padding: 0;
+html,body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+  Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+/* スクロールバー非表示 */
+html {
+  scrollbar-width: none; /*Firefox*/
+  -ms-overflow-style: none; /*IE*/
+}
+
+html::-webkit-scrollbar {
+  display: none; /*Chrome、Safari、Edge*/
 }
 
 a {
@@ -20,7 +29,7 @@ a {
     color-scheme: dark;
   }
   body {
-    color: white;
     background: black;
+    color: white;
   }
 }

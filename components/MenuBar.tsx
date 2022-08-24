@@ -4,25 +4,18 @@ import Toolbar from '@mui/material/Toolbar';
 import AppBar from '@mui/material/AppBar';
 import { Box } from '@mui/system';
 import MenuIcon from '@mui/icons-material/Menu';
-import  Login  from './Login';
-import  User  from './User';
+import Login from './Login';
+import User from './User';
 
 export default function MenuBar() {
-
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color='transparent'>
+      <AppBar position='fixed' sx={{ backgroundColor: '#000000dd' }}>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
+          <IconButton size='large' edge='start' color='inherit' aria-label='menu' sx={{ mr: 2 }}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             Top
           </Typography>
           <Login />
@@ -30,5 +23,5 @@ export default function MenuBar() {
         </Toolbar>
       </AppBar>
     </Box>
-  )
+  );
 }
