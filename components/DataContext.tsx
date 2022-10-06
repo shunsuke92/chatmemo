@@ -225,13 +225,20 @@ export function DataProvider({ children }: { children: any }) {
           convertSendComment(comment),
         )
         .then((res) => {
-          const serverRegisteredID = res.data.data.id;
-          comment.id = serverRegisteredID;
-          comment._synchronized = true;
+          if (res.data.status === 200) {
+            const serverRegisteredID = res.data.data.id;
+            comment.id = serverRegisteredID;
+            comment._synchronized = true;
+          } else {
+            const targetComment = data.filter((d) => d.id === id)[0].comments;
+            comment.id = targetComment[targetComment.length - 1].id + 1;
+            comment._synchronized = false;
+          }
         })
         .catch((err) => {
           const targetComment = data.filter((d) => d.id === id)[0].comments;
           comment.id = targetComment[targetComment.length - 1].id + 1;
+          comment._synchronized = false;
         });
     }
 
