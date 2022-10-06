@@ -187,12 +187,18 @@ export function DataProvider({ children }: { children: any }) {
           convertSendMemo(memo),
         )
         .then((res) => {
-          const serverRegisteredID = res.data.data.id;
-          memo.id = serverRegisteredID;
-          memo._synchronized = true;
+          if (res.data.status === 200) {
+            const serverRegisteredID = res.data.data.id;
+            memo.id = serverRegisteredID;
+            memo._synchronized = true;
+          } else {
+            memo.id = data[data.length - 1].id + 1;
+            memo._synchronized = false;
+          }
         })
         .catch((err) => {
           memo.id = data[data.length - 1].id + 1;
+          memo._synchronized = false;
         });
     }
 
