@@ -1,19 +1,30 @@
 import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
-import { app } from '../src/firebase';
-import { getAuth,signOut } from "firebase/auth";
 import { useAuthContext } from './AuthContext';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import SettingsIcon from '@mui/icons-material/Settings';
+import LogoutIcon from '@mui/icons-material/Logout';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Switch from '@mui/material/Switch';
+import { useSettingInfoContext } from '../components/SettingInfoContext';
+import DangerousIcon from '@mui/icons-material/Dangerous';
+import { useOperationContext } from './OperationContext';
 
 export default function User() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  
-  const user = useAuthContext();
+  const [setting, setSetting] = useState(false);
+
+  const userInfo = useAuthContext();
+  const user = userInfo?.user;
   const userPhotoURL = user?.photoURL !== null ? user?.photoURL : undefined;
+
+  const info = useOperationContext();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -21,54 +32,163 @@ export default function User() {
 
   const handleClose = () => {
     setAnchorEl(null);
+    setTimeout(() => setSetting(false), 500);
   };
 
-  const handleClickUser = () => {
-    console.log('ユーザー名をクリック')
-    setAnchorEl(null);
-  }
-
-  const handleClickMemo = () => {
-    console.log('メモ管理をクリック')
-    setAnchorEl(null);
-  }
+  const handleClickSetting = () => {
+    setSetting(true);
+  };
 
   const handleClickLogout = () => {
-    const auth = getAuth(app);
-    signOut(auth)
-      .then(() => {
-        // Signed out
-        console.log('サインアウトした')
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode,errorMessage)
-        // ..
-      });
-    setAnchorEl(null);
-    /* router.push('/login'); */
+    userInfo?.signout();
+    handleClose();
   };
-  
+
+  const handleClickDeleteAccount = () => {
+    info?.changeDisplayAlertDialog('delete-account');
+    handleClose();
+  };
+
+  const handleClickBack = () => {
+    setSetting(false);
+  };
+
+  const MyMenuItem = (props: any) => {
+    const { children } = props;
+    return (
+      <Stack
+        direction='row'
+        spacing={1.5}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          pt: '6px',
+          pb: '6px',
+          pl: '16px',
+          pr: '16px',
+          userSelect: 'none',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {children}
+      </Stack>
+    );
+  };
+
+  const MySwitch = (props: {
+    checked: boolean | undefined;
+    onChange: ((value: boolean) => void) | undefined;
+  }) => {
+    const { checked, onChange } = props;
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (onChange === undefined) return;
+      onChange(event.target.checked);
+    };
+
+    return (
+      <Switch
+        checked={checked}
+        onChange={handleChange}
+        inputProps={{ 'aria-label': 'hideCompleted' }}
+      />
+    );
+  };
+
+  const HideCompletedSwitch = () => {
+    const settingInfo = useSettingInfoContext();
+    const setting = settingInfo?.setting;
+
+    return (
+      <MySwitch
+        checked={setting?.hide_completed_memo}
+        onChange={settingInfo?.changeHideCompleted}
+      />
+    );
+  };
+
+  const DisplayCommentDateSwitch = () => {
+    const settingInfo = useSettingInfoContext();
+    const setting = settingInfo?.setting;
+
+    return (
+      <MySwitch
+        checked={setting?.display_comment_date}
+        onChange={settingInfo?.changeDisplayCommentDate}
+      />
+    );
+  };
+
   return (
     <div>
-      {user &&
-        <IconButton aria-label="user" onClick={handleClick}>
-          <Avatar alt="user" src={userPhotoURL} />
-        </IconButton>}
-        <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-          <MenuItem onClick={handleClickUser}>
-            {user?.displayName}
-          </MenuItem>
-          <Divider />
-          <MenuItem onClick={handleClickMemo}>
-            メモ管理
-          </MenuItem>
-          <MenuItem onClick={handleClickLogout}>
-            ログアウト
-          </MenuItem>
-        </Menu>
+      {user && (
+        <IconButton aria-label='user' onClick={handleClick} sx={{ p: 0 }}>
+          <Avatar
+            alt='user'
+            src={userPhotoURL}
+            sx={{ width: { xs: 24, sm: 32 }, height: { xs: 24, sm: 32 } }}
+          />
+        </IconButton>
+      )}
+
+      <Menu anchorEl={anchorEl} open={open} onClose={handleClose} sx={{ mt: 1 }}>
+        {setting ? (
+          <div>
+            <MyMenuItem>
+              <Stack direction='row' spacing={2} sx={{ alignItems: 'center' }}>
+                <IconButton aria-label='back' onClick={handleClickBack}>
+                  <ArrowBackIcon />
+                </IconButton>
+                <Typography fontWeight={600} fontSize={'1.1rem'}>
+                  設定
+                </Typography>
+              </Stack>
+            </MyMenuItem>
+            <Divider sx={{ mt: 1, mb: 1 }} />
+            <MyMenuItem>
+              <Typography>実行済みを非表示</Typography>
+              <HideCompletedSwitch />
+            </MyMenuItem>
+            <MyMenuItem>
+              <Typography>コメントに日付を表示する</Typography>
+              <DisplayCommentDateSwitch />
+            </MyMenuItem>
+          </div>
+        ) : (
+          <div>
+            <MenuItem sx={{ pointerEvents: 'none' }}>
+              <Stack direction='row' spacing={2} sx={{ alignItems: 'center' }}>
+                <Avatar alt='user' src={userPhotoURL} sx={{ width: 40, height: 40 }} />
+                <Typography fontWeight={600} fontSize={'1.1rem'}>
+                  {user?.displayName}
+                </Typography>
+              </Stack>
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleClickSetting}>
+              <Stack direction='row' spacing={1.5}>
+                <SettingsIcon />
+                <Typography>設定</Typography>
+              </Stack>
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleClickLogout}>
+              <Stack direction='row' spacing={1.5}>
+                <LogoutIcon />
+                <Typography>ログアウト</Typography>
+              </Stack>
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleClickDeleteAccount}>
+              <Stack direction='row' spacing={1.5}>
+                <DangerousIcon color='error' />
+                <Typography color='error'>アカウント削除</Typography>
+              </Stack>
+            </MenuItem>
+          </div>
+        )}
+      </Menu>
     </div>
-  )
+  );
 }

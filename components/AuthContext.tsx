@@ -1,9 +1,15 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import { app } from '../src/firebase';
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { getAuth, onAuthStateChanged, User, signOut } from 'firebase/auth';
 import LinearProgress from '@mui/material/LinearProgress';
+import axios from 'axios';
 
-const AuthContext = createContext<User | null>(null);
+interface UserInfo {
+  user: User | null;
+  signout: () => void;
+}
+
+const AuthContext = createContext<UserInfo | null>(null);
 
 export function useAuthContext() {
   return useContext(AuthContext);
@@ -17,12 +23,27 @@ export function AuthProvider({ children }: { children: any }) {
     const auth = getAuth(app);
     const unsubscribed = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in
+        // サインインしている
         setUser(user);
-        setIsAuthChecking(false);
+
+        (async () => {
+          // ユーザー登録済みチェック
+          const res = await axios.get(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/`,
+          );
+
+          // ユーザー登録（新規ユーザーの場合）
+          if (!res.data) {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/`, {
+              uid: user.uid,
+            });
+          }
+
+          setIsAuthChecking(false);
+        })();
       } else {
-        // User is signed out
-        setUser(null)
+        // サインアウトしている
+        setUser(null);
         setIsAuthChecking(false);
       }
     });
@@ -32,5 +53,19 @@ export function AuthProvider({ children }: { children: any }) {
     };
   }, []);
 
-  return <AuthContext.Provider value={user}>{isAuthChecking ? <LinearProgress /> : children}</AuthContext.Provider>;
+  const signout = async () => {
+    const auth = getAuth(app);
+    await signOut(auth);
+  };
+
+  const userInfo: UserInfo = {
+    user: user,
+    signout: signout,
+  };
+
+  return (
+    <AuthContext.Provider value={userInfo}>
+      {isAuthChecking ? <LinearProgress /> : children}
+    </AuthContext.Provider>
+  );
 }

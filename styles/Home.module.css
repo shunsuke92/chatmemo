@@ -7,10 +7,12 @@
   align-items: center;
   flex: 1;
   flex-direction: column;
-  justify-content: center;
-  padding: 4rem 0;
+  justify-content: flex-start;
+  padding-top: 64px;
+  padding-bottom: 80px;
   min-height: 100vh;
-  height: calc(100vh - 8rem);
+  /* height: calc(100vh - 8rem); */
+  opacity: .999999; /* スタッキングコンテキストを生成するため */
 }
 
 .footer {
@@ -105,6 +107,11 @@
 }
 
 @media (max-width: 600px) {
+  .main {
+    padding-top: 56px;
+    padding-bottom: 72px;
+  }
+
   .grid {
     flex-direction: column;
     width: 100%;

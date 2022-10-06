@@ -1,0 +1,30 @@
+.wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.wrapperInner {
+  width: 100%;
+}
+
+.enterDone {
+  overflow: visible;
+  min-height: 0;
+  height: auto;
+  opacity: 1;
+  transition: height 1000ms cubic-bezier(.4, 0, .2, 1) 0ms;
+}
+.exit {
+  overflow: visible;
+  min-height: 0;
+  height: auto;
+  opacity: 1;
+  transition: height 1000ms cubic-bezier(.4, 0, .2, 1) 0ms;
+}
+.exitActive {
+  overflow: hidden;
+  min-height: 0;
+  height: 0;
+  opacity: 0;
+  transition: height 1000ms cubic-bezier(.4, 0, .2, 1) 0ms;
+}
