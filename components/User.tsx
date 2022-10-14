@@ -11,9 +11,11 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Switch from '@mui/material/Switch';
-import { useSettingInfoContext } from '../components/SettingInfoContext';
+import { DarkMode, useSettingInfoContext } from '../components/SettingInfoContext';
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import { useOperationContext } from './OperationContext';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 export default function User() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -120,6 +122,33 @@ export default function User() {
     );
   };
 
+  const DarkModeToggleButton = () => {
+    const settingInfo = useSettingInfoContext();
+    const setting = settingInfo?.setting;
+    const darkMode = setting?.dark_mode ?? 'os';
+
+    const handleChange = (event: React.MouseEvent<HTMLElement>, newValue: DarkMode) => {
+      if (newValue !== null) {
+        settingInfo?.changeDarkMode(newValue);
+      }
+    };
+
+    return (
+      <ToggleButtonGroup
+        color='primary'
+        value={darkMode}
+        exclusive
+        onChange={handleChange}
+        size='small'
+        aria-label='Dark-Mode'
+      >
+        <ToggleButton value='os'>OSの設定</ToggleButton>
+        <ToggleButton value='dark'>DARK</ToggleButton>
+        <ToggleButton value='light'>LIGHT</ToggleButton>
+      </ToggleButtonGroup>
+    );
+  };
+
   return (
     <div>
       {user && (
@@ -153,6 +182,10 @@ export default function User() {
             <MyMenuItem>
               <Typography>コメントに日付を表示する</Typography>
               <DisplayCommentDateSwitch />
+            </MyMenuItem>
+            <MyMenuItem>
+              <Typography>ダークモード</Typography>
+              <DarkModeToggleButton />
             </MyMenuItem>
           </div>
         ) : (

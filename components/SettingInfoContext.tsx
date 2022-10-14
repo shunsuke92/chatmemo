@@ -6,6 +6,7 @@ export interface SettingInfo {
   setting: Setting;
   changeHideCompleted: (value: boolean) => void;
   changeDisplayCommentDate: (value: boolean) => void;
+  changeDarkMode: (value: DarkMode) => void;
 }
 
 interface Setting {
@@ -14,6 +15,7 @@ interface Setting {
   updated_at?: string;
   hide_completed_memo: boolean;
   display_comment_date: boolean;
+  dark_mode: DarkMode;
   _synchronized: boolean;
 }
 
@@ -23,12 +25,16 @@ interface ServerData {
   updated_at: string;
   hide_completed_memo: boolean;
   display_comment_date: boolean;
+  dark_mode: DarkMode;
 }
 
 interface SendSetting {
   hide_completed_memo: boolean;
   display_comment_date: boolean;
+  dark_mode: DarkMode;
 }
+
+export type DarkMode = 'os' | 'dark' | 'light';
 
 const SettingInfoContext = createContext<SettingInfo | null>(null);
 
@@ -44,6 +50,7 @@ export function SettingInfoProvider({ children }: { children: any }) {
     id: 0,
     hide_completed_memo: true,
     display_comment_date: true,
+    dark_mode: 'os',
     _synchronized: true,
   };
   const [setting, setSetting] = useState<Setting>(initialSetting);
@@ -70,6 +77,7 @@ export function SettingInfoProvider({ children }: { children: any }) {
     return {
       hide_completed_memo: setting.hide_completed_memo,
       display_comment_date: setting.display_comment_date,
+      dark_mode: setting.dark_mode,
     };
   };
 
@@ -93,6 +101,16 @@ export function SettingInfoProvider({ children }: { children: any }) {
     setSetting((prevState) => ({ ...prevState, display_comment_date: value }));
   }
 
+  async function changeDarkMode(value: DarkMode) {
+    const sendData = getSendSetting();
+    sendData.dark_mode = value;
+    // サーバーに保存
+    updateServer(sendData);
+
+    // ローカルに保存
+    setSetting((prevState) => ({ ...prevState, dark_mode: value }));
+  }
+
   async function updateServer(data: SendSetting) {
     if (user) {
       await axios
@@ -111,6 +129,7 @@ export function SettingInfoProvider({ children }: { children: any }) {
     setting: setting,
     changeHideCompleted: changeHideCompleted,
     changeDisplayCommentDate: changeDisplayCommentDate,
+    changeDarkMode: changeDarkMode,
   };
 
   return <SettingInfoContext.Provider value={info}>{children}</SettingInfoContext.Provider>;

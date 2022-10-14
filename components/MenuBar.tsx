@@ -8,9 +8,12 @@ import Login from './Login';
 import User from './User';
 import { useOperationContext } from './OperationContext';
 import SideDrawer from './SideDrawer';
+import { useBarBackground, useLightModeColor } from '../hooks/useColor';
 
 export default function MenuBar() {
   const info = useOperationContext();
+  const barBackground = useBarBackground();
+  const lightModeColor = useLightModeColor();
 
   const [open, setOpen] = useState(false);
 
@@ -27,19 +30,28 @@ export default function MenuBar() {
 
   return (
     <>
-      <AppBar position='fixed' sx={{ backgroundColor: '#000000dd' }} onClick={handleClick}>
+      <AppBar
+        position='fixed'
+        sx={{
+          ...barBackground,
+        }}
+        onClick={handleClick}
+      >
         <Toolbar>
           <IconButton
             size='large'
             edge='start'
-            color='inherit'
             aria-label='menu'
-            sx={{ mr: 2 }}
+            sx={{ mr: 2, color: lightModeColor }}
             onClick={handleClickOpenMenu}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant='subtitle1' component='h2' sx={{ flexGrow: 1 }}>
+          <Typography
+            variant='subtitle1'
+            component='h2'
+            sx={{ flexGrow: 1, color: lightModeColor }}
+          >
             {title}
           </Typography>
           <Login />

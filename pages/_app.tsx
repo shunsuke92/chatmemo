@@ -2,26 +2,16 @@ import Head from 'next/head';
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { ThemeProvider } from '@mui/material/styles';
 import { AuthProvider } from '../components/AuthContext';
 import { DataProvider } from '../components/DataContext';
 import { OperationProvider } from '../components/OperationContext';
 import { SettingInfoProvider } from '../components/SettingInfoContext';
 import { EditingInfoProvider } from '../components/EditingInfoContext';
+import { useCreateTheme } from '../hooks/useCreateTheme';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const isDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const theme = responsiveFontSizes(
-    createTheme({
-      palette: {
-        mode: isDarkMode ? 'dark' : 'light',
-      },
-      typography: {
-        fontFamily: ['Roboto', 'Noto Sans JP', 'Helvetica', 'Arial', 'sans-serif'].join(','),
-      },
-    }),
-  );
+  const theme = useCreateTheme();
 
   return (
     <ThemeProvider theme={theme}>

@@ -1,8 +1,10 @@
 import { Box } from '@mui/system';
 import { useOperationContext } from './OperationContext';
+import { useMaskBackground } from '../hooks/useColor';
 
 export default function Mask() {
   const info = useOperationContext();
+  const maskBackground = useMaskBackground();
 
   const isAdding: boolean = info?.addingContentID !== undefined ? info?.addingContentID > 0 : false;
 
@@ -25,7 +27,7 @@ export default function Mask() {
             position: 'fixed',
             top: { xs: 56, sm: 64 },
             zIndex: 2000,
-            bgcolor: '#00000055',
+            ...maskBackground,
           }}
           onClick={handleClick}
         ></Box>

@@ -10,6 +10,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DisplayType, DISPLAY_TYPE, useOperationContext } from './OperationContext';
+import { useLightModeColor } from '../hooks/useColor';
 
 interface SideDrawerProps {
   open: boolean;
@@ -20,6 +21,7 @@ export default function SideDrawer(props: SideDrawerProps) {
   const { open, setOpen } = props;
 
   const info = useOperationContext();
+  const lightModeColor = useLightModeColor();
   const list1 = DISPLAY_TYPE.slice(0, 2);
   const list2 = DISPLAY_TYPE.slice(2, 3);
 
@@ -52,7 +54,13 @@ export default function SideDrawer(props: SideDrawerProps) {
             {list1.map((list, index) => (
               <ListItem key={list.id} disablePadding>
                 <ListItemButton onClick={handleClick(list)}>
-                  <ListItemIcon>{index === 0 ? <FolderIcon /> : <CheckBoxIcon />}</ListItemIcon>
+                  <ListItemIcon>
+                    {index === 0 ? (
+                      <FolderIcon sx={{ color: lightModeColor }} />
+                    ) : (
+                      <CheckBoxIcon sx={{ color: lightModeColor }} />
+                    )}
+                  </ListItemIcon>
                   <ListItemText primary={list.name} />
                 </ListItemButton>
               </ListItem>
@@ -64,7 +72,7 @@ export default function SideDrawer(props: SideDrawerProps) {
               <ListItem key={list.id} disablePadding>
                 <ListItemButton onClick={handleClick(list)}>
                   <ListItemIcon>
-                    <DeleteIcon />
+                    <DeleteIcon sx={{ color: lightModeColor }} />
                   </ListItemIcon>
                   <ListItemText primary={list.name} />
                 </ListItemButton>

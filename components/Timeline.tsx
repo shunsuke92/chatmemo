@@ -22,6 +22,7 @@ import Button from '@mui/material/Button';
 import { TransitionGroup } from 'react-transition-group';
 import Collapse from '@mui/material/Collapse';
 import EditIcon from '@mui/icons-material/Edit';
+import { useMemoBackground, useCommentBackground } from '../hooks/useColor';
 
 interface ChatProps {
   data: Memo;
@@ -29,7 +30,6 @@ interface ChatProps {
 
 interface ChatPackProps {
   data: InternalData;
-  bgcolor: string;
   children?: any;
 }
 
@@ -43,12 +43,6 @@ interface InternalData {
   date: string;
   time: string;
   isDateDisplay: boolean;
-}
-
-interface ChatCardProps {
-  data: InternalData;
-  bgcolor: string;
-  children?: any;
 }
 
 interface ChatTextProps {
@@ -182,7 +176,7 @@ export default function Timeline() {
     };
 
     return (
-      <ChatPack data={memo} bgcolor='grey.900'>
+      <ChatPack data={memo}>
         <DisplayComment data={data} />
       </ChatPack>
     );
@@ -216,7 +210,7 @@ export default function Timeline() {
             sx={{ pt: 1, display: 'flex', alignItems: 'flex-end', maxWidth: '100%' }}
           >
             {comments.map((comment, index) => {
-              return <ChatPack key={index} data={comment} bgcolor='grey.800' />;
+              return <ChatPack key={index} data={comment} />;
             })}
           </Stack>
         )}
@@ -239,7 +233,7 @@ export default function Timeline() {
   };
 
   const ChatPack = (props: ChatPackProps) => {
-    const { data, bgcolor, children } = props;
+    const { data, children } = props;
 
     const isEditing: boolean = info !== null ? getIsEditing(data, info) : false;
     const isOutermost: boolean = getIsOutermost(data);
@@ -262,9 +256,7 @@ export default function Timeline() {
           </Stack>
           <Stack spacing={1} sx={{ width: isEditing ? '100%' : null }}>
             <Stack sx={{ display: 'flex', alignItems: 'flex-end' }}>
-              <ChatCard data={data} bgcolor={bgcolor}>
-                {children}
-              </ChatCard>
+              <ChatCard data={data}>{children}</ChatCard>
             </Stack>
             {isOutermost && <Buttons data={data} />}
           </Stack>
@@ -273,8 +265,11 @@ export default function Timeline() {
     );
   };
 
-  const ChatCard = (props: ChatCardProps) => {
-    const { data, bgcolor, children } = props;
+  const ChatCard = (props: ChatPackProps) => {
+    const { data, children } = props;
+
+    const memoBackground = useMemoBackground();
+    const commentBackground = useCommentBackground();
 
     const isOutermost: boolean = getIsOutermost(data);
     const isAdding: boolean = info !== null ? getIsAdding(data, info) : false;
@@ -301,7 +296,7 @@ export default function Timeline() {
         ) : (
           <Card
             sx={{
-              bgcolor: bgcolor,
+              bgcolor: isOutermost ? memoBackground : commentBackground,
               p: 1,
               borderRadius: 2,
               wordBreak: 'break-word',
@@ -359,6 +354,8 @@ export default function Timeline() {
   };
 
   const MemoText = (props: ChatTextProps) => {
+    const memoBackground = useMemoBackground();
+
     const { data } = props;
     return (
       <>
@@ -371,7 +368,7 @@ export default function Timeline() {
               >
                 <Card
                   sx={{
-                    bgcolor: 'grey.900',
+                    bgcolor: memoBackground,
                     p: 1,
                     borderRadius: 2,
                     display: 'inline-block',

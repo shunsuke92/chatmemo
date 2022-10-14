@@ -6,10 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import { useDataContext } from '../components/DataContext';
 import { useOperationContext } from './OperationContext';
+import { useBarBackground } from '../hooks/useColor';
 
 export default function BottomBar() {
   const data = useDataContext();
   const info = useOperationContext();
+  const barBackground = useBarBackground();
 
   const [value, setValue] = useState('');
 
@@ -97,8 +99,8 @@ export default function BottomBar() {
         alignItems: 'flex-end',
         justifyContent: 'center',
         height: { xs: 72, sm: 80 },
-        backgroundColor: '#000000dd',
         pb: { xs: 2, sm: 2.5 },
+        ...barBackground,
       }}
     >
       <Stack
