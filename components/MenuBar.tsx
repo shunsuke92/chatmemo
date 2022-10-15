@@ -33,6 +33,7 @@ export default function MenuBar() {
       <AppBar
         position='fixed'
         sx={{
+          backgroundImage: 'none',
           ...barBackground,
         }}
         onClick={handleClick}
