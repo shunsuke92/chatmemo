@@ -17,6 +17,7 @@ export default function Mask() {
     info?.changeAddingContentID(0);
     info?.changeEditingContentID(0);
   };
+
   return (
     <>
       {isDisplay && (

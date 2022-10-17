@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Button from '@mui/material/Button';
-import { app, provider } from '../src/firebase';
+import { app, provider } from '../utils/firebase';
 import { getAuth, signInWithRedirect } from 'firebase/auth';
 import { useAuthContext } from './AuthContext';
 import Dialog from '@mui/material/Dialog';

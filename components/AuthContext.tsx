@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import { app } from '../src/firebase';
+import { app } from '../utils/firebase';
 import { getAuth, onAuthStateChanged, User, signOut } from 'firebase/auth';
 import LinearProgress from '@mui/material/LinearProgress';
 import axios from 'axios';

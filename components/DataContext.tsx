@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { demoData } from '../src/demoData';
+import { demoData } from '../utils/demoData';
 import { useAuthContext } from '../components/AuthContext';
 import { useOperationContext } from './OperationContext';
 import { EditingContent } from './EditingInfoContext';
@@ -86,7 +86,7 @@ export function DataProvider({ children }: { children: any }) {
     const usedDate = new Date(date).toLocaleDateString();
     const month = usedDate.substring(5);
     const week = weekChar[new Date(date).getDay()];
-    return `${month}(${week})`;
+    return `${month} (${week})`;
   }
 
   function getTime(date: string): string {

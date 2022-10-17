@@ -5,7 +5,7 @@ import MenuBar from '../components/MenuBar';
 import Mask from '../components/Mask';
 import DeleteMemoAlertDialog from '../components/DeleteMemoAlertDialog';
 import DeleteAccountAlertDialog from '../components/DeleteAccountAlertDialog';
-import Timeline from '../components/Timeline';
+import Main from '../components/Main';
 import BottomBar from '../components/BottomBar';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -29,7 +29,7 @@ const Home: NextPage = () => {
         <Mask />
         <DeleteMemoAlertDialog />
         <DeleteAccountAlertDialog />
-        <Timeline />
+        <Main />
       </main>
       <BottomBar />
     </ThemeProvider>
