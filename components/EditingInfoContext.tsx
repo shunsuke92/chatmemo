@@ -33,7 +33,7 @@ export function EditingInfoProvider({ children }: { children: any }) {
   );
 
   function createEditingContentInfo(id: number) {
-    const targetContent = data?.data.find((d) => d.id === id);
+    const targetContent = data?.getTargetMemo(id);
     if (targetContent === undefined) return;
     const commentBefore = targetContent.comments.map((comment) => {
       return {

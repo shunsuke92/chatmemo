@@ -13,7 +13,7 @@ import { Memo, useDataContext } from './DataContext';
 import { useOperationContext } from './OperationContext';
 import { useSettingInfoContext } from './SettingInfoContext';
 import { useEditingInfoContext } from './EditingInfoContext';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
@@ -427,18 +427,48 @@ const LowerButtons = (props: InternalDataProps) => {
 const CompletedButton = (props: InternalDataProps) => {
   const { data } = props;
   const displayData = useDataContext();
+  const targetData = displayData?.getTargetMemo(data.id);
 
-  const targetData = displayData?.data.find((d) => d.id === data.id);
-  const isCompleted = targetData !== undefined ? targetData.completed : false;
+  const timeoutID = useRef<NodeJS.Timeout | undefined>(undefined);
+  const targetDataRef = useRef<Memo | undefined>(targetData);
+
+  useEffect(() => {
+    targetDataRef.current = targetData;
+  }, [targetData]);
+
+  const isCompleted = targetData?._tmpCompleted ?? false;
 
   function handleClick(id: number) {
     return function () {
-      displayData?.updateCompleted(id);
+      // サーバー側では即時更新
+      displayData?.updateServerCompleted(id);
+
+      // 設定済みのタイマーがあればクリア
+      if (timeoutID.current !== undefined) {
+        clearTimeout(timeoutID.current);
+      }
+
+      // クライアント側は遅延更新
+      const delay = 2000;
+      const ID = setTimeout(() => {
+        if (targetDataRef.current === undefined) return;
+        if (targetDataRef.current?.completed !== targetDataRef.current?._tmpCompleted) {
+          displayData?.updateLocalCompleted(
+            id,
+            targetDataRef.current._tmpCompleted,
+            targetDataRef.current._tmpCompletedAt,
+          );
+        }
+        timeoutID.current = undefined;
+      }, delay);
+
+      // タイマーID保存
+      timeoutID.current = ID;
     };
   }
 
   return (
-    <Tooltip title={isCompleted ? '未完了' : '完了'}>
+    <Tooltip title={isCompleted ? '実行済み' : '未実行'}>
       <IconButton
         aria-label='completed'
         sx={{ color: 'text.secondary' }}

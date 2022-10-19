@@ -65,6 +65,8 @@ export default function BottomBar() {
         _time: '',
         _isDateDisplay: false,
         _synchronized: false,
+        _tmpCompleted: false,
+        _tmpCompletedAt: '',
       });
     }
 

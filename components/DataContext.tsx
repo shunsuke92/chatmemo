@@ -23,6 +23,8 @@ export interface Memo {
   _time: string;
   _isDateDisplay: boolean;
   _synchronized: boolean;
+  _tmpCompleted: boolean;
+  _tmpCompletedAt: string;
 }
 
 interface Comment {
@@ -62,10 +64,12 @@ interface Data {
   data: Memo[];
   createMemo: (memo: Memo) => void;
   createComment: (comment: Comment, id: number) => void;
-  updateCompleted: (index: number) => void;
+  updateLocalCompleted: (index: number, completed: boolean, completedAt: string) => void;
+  updateServerCompleted: (index: number) => void;
   updateAllData: (data: EditingContent) => void;
   deleteMemo: (id: number | undefined) => void;
   deleteAccount: () => void;
+  getTargetMemo: (id: number) => Memo | undefined;
 }
 
 const DataContext = createContext<Data | null>(null);
@@ -80,20 +84,6 @@ export function DataProvider({ children }: { children: any }) {
   const info = useOperationContext();
 
   const [data, setData] = useState<Memo[]>([]);
-
-  function getDate(date: string): string {
-    const weekChar = ['日', '月', '火', '水', '木', '金', '土'];
-    const usedDate = new Date(date).toLocaleDateString();
-    const month = usedDate.substring(5);
-    const week = weekChar[new Date(date).getDay()];
-    return `${month} (${week})`;
-  }
-
-  function getTime(date: string): string {
-    const usedDate = new Date(date).toLocaleTimeString();
-    const time = usedDate.substring(0, usedDate.lastIndexOf(':'));
-    return time;
-  }
 
   useEffect(() => {
     // サーバーのデータを取得する
@@ -115,6 +105,8 @@ export function DataProvider({ children }: { children: any }) {
               data._time = getTime(data.createdAt);
               data._isDateDisplay = false;
               data._synchronized = true;
+              data._tmpCompleted = data.completed;
+              data._tmpCompletedAt = data.completedAt;
 
               data.comments.map((data) => {
                 data._text = data.body.split(/\r\n|\n|\r/gm);
@@ -141,6 +133,46 @@ export function DataProvider({ children }: { children: any }) {
       }
     })();
   }, [user]);
+
+  const addDataToMemo = (memo: Memo) => {
+    setData((prevState) => [...prevState, memo]);
+  };
+
+  const addDataToComment = (memoId: number, comment: Comment) => {
+    setData((prevState) =>
+      prevState.map((value) => {
+        if (value.id === memoId) {
+          value.comments.push(comment);
+        }
+        return value;
+      }),
+    );
+  };
+
+  const localUpdateData = (memoId: number, specifiedData: Memo) => {
+    setData((prevState) =>
+      prevState.map((value) => {
+        if (value.id === memoId) {
+          return specifiedData;
+        }
+        return value;
+      }),
+    );
+  };
+
+  function getDate(date: string): string {
+    const weekChar = ['日', '月', '火', '水', '木', '金', '土'];
+    const usedDate = new Date(date).toLocaleDateString();
+    const month = usedDate.substring(5);
+    const week = weekChar[new Date(date).getDay()];
+    return `${month} (${week})`;
+  }
+
+  function getTime(date: string): string {
+    const usedDate = new Date(date).toLocaleTimeString();
+    const time = usedDate.substring(0, usedDate.lastIndexOf(':'));
+    return time;
+  }
 
   const convertSendMemo = (data: Memo): SendMemo => {
     const sendData = {
@@ -179,7 +211,25 @@ export function DataProvider({ children }: { children: any }) {
     memo._date = getDate(date);
     memo._time = getTime(date);
 
-    // サーバーに保存
+    const serverRegisteredID = await serverCreateMemoTable(memo);
+
+    // サーバーで決定したIDをローカルに設定する
+    if (serverRegisteredID !== undefined) {
+      memo.id = serverRegisteredID;
+      memo._synchronized = true;
+    } else {
+      memo.id = data[data.length - 1].id + 1;
+      memo._synchronized = false;
+    }
+
+    addDataToMemo(memo);
+
+    // スクロール予約
+    info?.changeScheduledScrolling(true);
+  };
+
+  const serverCreateMemoTable = async (memo: Memo) => {
+    let response;
     if (user) {
       await axios
         .post(
@@ -189,24 +239,13 @@ export function DataProvider({ children }: { children: any }) {
         .then((res) => {
           if (res.data.status === 200) {
             const serverRegisteredID = res.data.data.id;
-            memo.id = serverRegisteredID;
-            memo._synchronized = true;
-          } else {
-            memo.id = data[data.length - 1].id + 1;
-            memo._synchronized = false;
+            response = serverRegisteredID;
           }
         })
-        .catch((err) => {
-          memo.id = data[data.length - 1].id + 1;
-          memo._synchronized = false;
-        });
+        .catch((err) => {});
     }
 
-    // ローカルに保存
-    setData((prevState) => [...prevState, memo]);
-
-    // スクロール予約
-    info?.changeScheduledScrolling(true);
+    return response;
   };
 
   const createComment = async (comment: Comment, id: number) => {
@@ -217,7 +256,23 @@ export function DataProvider({ children }: { children: any }) {
     comment._date = getDate(date);
     comment._time = getTime(date);
 
-    // サーバーに保存
+    const serverRegisteredID = await serverCreateCommentTable(id, comment);
+
+    // サーバーで決定したIDをローカルに設定する
+    if (serverRegisteredID !== undefined) {
+      comment.id = serverRegisteredID;
+      comment._synchronized = true;
+    } else {
+      const targetComment = data.filter((d) => d.id === id)[0].comments;
+      comment.id = targetComment[targetComment.length - 1].id + 1;
+      comment._synchronized = false;
+    }
+
+    addDataToComment(id, comment);
+  };
+
+  const serverCreateCommentTable = async (id: number, comment: Comment) => {
+    let response;
     if (user) {
       await axios
         .post(
@@ -227,62 +282,76 @@ export function DataProvider({ children }: { children: any }) {
         .then((res) => {
           if (res.data.status === 200) {
             const serverRegisteredID = res.data.data.id;
-            comment.id = serverRegisteredID;
-            comment._synchronized = true;
-          } else {
-            const targetComment = data.filter((d) => d.id === id)[0].comments;
-            comment.id = targetComment[targetComment.length - 1].id + 1;
-            comment._synchronized = false;
+            response = serverRegisteredID;
           }
         })
-        .catch((err) => {
-          const targetComment = data.filter((d) => d.id === id)[0].comments;
-          comment.id = targetComment[targetComment.length - 1].id + 1;
-          comment._synchronized = false;
-        });
+        .catch((err) => {});
     }
 
-    // ローカルに保存
-    setData((prevState) =>
-      prevState.map((value) => {
-        if (value.id === id) {
-          value.comments.push(comment);
-        }
-        return value;
-      }),
-    );
+    return response;
   };
 
-  const updateCompleted = async (id: number) => {
-    const targetMemo = data.find((m) => m.id === id);
-    if (targetMemo === undefined) return;
-
-    targetMemo.completed = !targetMemo.completed;
-    if (targetMemo.completed) {
-      const date = getNowDate();
-      targetMemo.completedAt = date;
+  const serverUpdateMemoTable = async (id: number, specifiedData?: Memo) => {
+    let sendData: Memo;
+    if (specifiedData !== undefined) {
+      sendData = specifiedData;
+    } else {
+      const targetMemo = getTargetMemo(id);
+      if (targetMemo === undefined) return;
+      sendData = targetMemo;
     }
 
-    // サーバーに保存
     if (user) {
       await axios
         .patch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${id}`,
-          convertSendMemo(targetMemo),
+          convertSendMemo(sendData),
         )
         .then((res) => {})
         .catch((err) => {});
     }
+  };
 
-    // ローカルに保存
-    setData((prevState) =>
-      prevState.map((value) => {
-        if (value.id === id) {
-          return targetMemo;
-        }
-        return value;
-      }),
-    );
+  const updateLocalCompleted = (id: number, completed: boolean, completedAt: string) => {
+    const targetMemo = getTargetMemo(id);
+    if (targetMemo === undefined) return;
+
+    targetMemo.completed = completed;
+    targetMemo._tmpCompleted = completed;
+    if (targetMemo.completed) {
+      targetMemo.completedAt = completedAt;
+      targetMemo._tmpCompletedAt = completedAt;
+    }
+
+    localUpdateData(id, targetMemo);
+  };
+
+  const updateServerCompleted = (id: number) => {
+    // 制御用のローカル変数を更新
+    const targetMemo = getTargetMemo(id);
+    if (targetMemo === undefined) return;
+
+    const updateValue = !targetMemo._tmpCompleted;
+
+    targetMemo._tmpCompleted = updateValue;
+    if (updateValue) {
+      const date = getNowDate();
+      targetMemo._tmpCompletedAt = date;
+    }
+
+    localUpdateData(id, targetMemo);
+
+    // 完了済みフラグを更新
+    const targetMemo2 = getTargetMemo(id);
+    if (targetMemo2 === undefined) return;
+
+    targetMemo2.completed = updateValue;
+
+    if (updateValue) {
+      targetMemo2.completedAt = targetMemo._tmpCompletedAt;
+    }
+
+    serverUpdateMemoTable(id, targetMemo2);
   };
 
   const updateAllData = async (editingData: EditingContent) => {
@@ -295,7 +364,7 @@ export function DataProvider({ children }: { children: any }) {
       return;
     }
 
-    const targetMemo = data.find((m) => m.id === id);
+    const targetMemo = getTargetMemo(id);
     if (targetMemo === undefined) return;
 
     const date = getNowDate();
@@ -306,16 +375,7 @@ export function DataProvider({ children }: { children: any }) {
       targetMemo._text = editingData.body.split(/\r\n|\n|\r/gm);
       targetMemo.updatedAt = date;
 
-      // サーバーに保存
-      if (user) {
-        await axios
-          .patch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${id}`,
-            convertSendMemo(targetMemo),
-          )
-          .then((res) => {})
-          .catch((err) => {});
-      }
+      serverUpdateMemoTable(id, targetMemo);
     }
 
     // コメントの更新
@@ -331,28 +391,39 @@ export function DataProvider({ children }: { children: any }) {
           targetMemo.comments[i].deleted = true;
           targetMemo.comments[i].deletedAt = date;
         }
-        // サーバーに保存
-        if (user) {
-          await axios
-            .patch(
-              `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${id}/comments/${targetMemo.comments[i].id}`,
-              convertSendComment(targetMemo.comments[i]),
-            )
-            .then((res) => {})
-            .catch((err) => {});
-        }
+
+        serverUpdateCommentTable(id, targetMemo.comments[i].id, targetMemo.comments[i]);
       }
     }
 
-    // ローカルに保存
-    setData((prevState) =>
-      prevState.map((value) => {
-        if (value.id === id) {
-          return targetMemo;
-        }
-        return value;
-      }),
-    );
+    localUpdateData(id, targetMemo);
+  };
+
+  const serverUpdateCommentTable = async (
+    memoID: number,
+    commentID: number,
+    specifiedData?: Comment,
+  ) => {
+    let sendData: Comment;
+    if (specifiedData !== undefined) {
+      sendData = specifiedData;
+    } else {
+      const targetMemo = data.find((m) => m.id === memoID);
+      if (targetMemo === undefined) return;
+      const targetComment = targetMemo.comments.find((c) => c.id === commentID);
+      if (targetComment === undefined) return;
+      sendData = targetComment;
+    }
+
+    if (user) {
+      await axios
+        .patch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${memoID}/comments/${commentID}`,
+          convertSendComment(sendData),
+        )
+        .then((res) => {})
+        .catch((err) => {});
+    }
   };
 
   const deleteMemo = async (id: number | undefined) => {
@@ -365,30 +436,9 @@ export function DataProvider({ children }: { children: any }) {
     targetMemo.deleted = true;
     targetMemo.deletedAt = date;
 
-    // サーバーに保存
-    if (user) {
-      await axios
-        .patch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${id}`,
-          convertSendMemo(targetMemo),
-        )
-        .then((res) => {
-          console.log('送信成功', res);
-        })
-        .catch((err) => {
-          console.log('送信失敗', err);
-        });
-    }
+    serverUpdateMemoTable(id, targetMemo);
 
-    // ローカルに保存
-    setData((prevState) =>
-      prevState.map((value) => {
-        if (value.id === id) {
-          return targetMemo;
-        }
-        return value;
-      }),
-    );
+    localUpdateData(id, targetMemo);
   };
 
   const deleteAccount = async () => {
@@ -400,14 +450,27 @@ export function DataProvider({ children }: { children: any }) {
     }
   };
 
+  const getTargetMemo = (id: number): Memo | undefined => {
+    const targetMemo = data.find((m) => m.id === id);
+    if (targetMemo === undefined) return;
+
+    const deepCopyMemo = { ...targetMemo };
+    const deepCopyComments = targetMemo.comments.map((comment) => ({ ...comment }));
+    deepCopyMemo.comments = deepCopyComments;
+
+    return deepCopyMemo;
+  };
+
   const dataHandler: Data = {
     data: data,
     createMemo: createMemo,
     createComment: createComment,
-    updateCompleted: updateCompleted,
+    updateLocalCompleted: updateLocalCompleted,
     updateAllData: updateAllData,
     deleteMemo: deleteMemo,
     deleteAccount: deleteAccount,
+    updateServerCompleted: updateServerCompleted,
+    getTargetMemo: getTargetMemo,
   };
 
   return <DataContext.Provider value={dataHandler}>{children}</DataContext.Provider>;
