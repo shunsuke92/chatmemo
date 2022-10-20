@@ -44,8 +44,8 @@ export default function BottomBar() {
           _text: value.split(/\r\n|\n|\r/gm),
           _date: '',
           _time: '',
-          _isDateDisplay: false,
           _synchronized: false,
+          _type: 'comment',
         },
         id,
       );
@@ -63,10 +63,10 @@ export default function BottomBar() {
         _text: value.split(/\r\n|\n|\r/gm),
         _date: '',
         _time: '',
-        _isDateDisplay: false,
         _synchronized: false,
         _tmpCompleted: false,
         _tmpCompletedAt: '',
+        _type: 'memo',
       });
     }
 

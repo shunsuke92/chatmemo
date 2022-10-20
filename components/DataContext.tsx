@@ -21,13 +21,13 @@ export interface Memo {
   _text: string[];
   _date: string;
   _time: string;
-  _isDateDisplay: boolean;
   _synchronized: boolean;
   _tmpCompleted: boolean;
   _tmpCompletedAt: string;
+  _type: 'memo' | 'date';
 }
 
-interface Comment {
+export interface Comment {
   id: number;
   created_at?: string;
   updated_at?: string;
@@ -40,8 +40,8 @@ interface Comment {
   _text: string[];
   _date: string;
   _time: string;
-  _isDateDisplay: boolean;
   _synchronized: boolean;
+  _type: 'comment' | 'date';
 }
 
 interface SendMemo {
@@ -103,17 +103,17 @@ export function DataProvider({ children }: { children: any }) {
               data._text = data.body.split(/\r\n|\n|\r/gm);
               data._date = getDate(data.createdAt);
               data._time = getTime(data.createdAt);
-              data._isDateDisplay = false;
               data._synchronized = true;
               data._tmpCompleted = data.completed;
               data._tmpCompletedAt = data.completedAt;
+              data._type = 'memo';
 
               data.comments.map((data) => {
                 data._text = data.body.split(/\r\n|\n|\r/gm);
                 data._date = getDate(data.createdAt);
                 data._time = getTime(data.createdAt);
-                data._isDateDisplay = false;
                 data._synchronized = true;
+                data._type = 'comment';
               });
 
               return data;

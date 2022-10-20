@@ -9,7 +9,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CommentIcon from '@mui/icons-material/Comment';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Memo, useDataContext } from './DataContext';
+import { Memo, Comment, useDataContext } from './DataContext';
 import { useOperationContext } from './OperationContext';
 import { useSettingInfoContext } from './SettingInfoContext';
 import { useEditingInfoContext } from './EditingInfoContext';
@@ -25,8 +25,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useMemoBackground, useCommentBackground } from '../hooks/useColor';
 import { useCreateDisplayData } from '../hooks/useCreateDisplayData';
 
-interface ChatProps {
+interface ChatMemoProps {
   data: Memo;
+}
+
+interface ChatCommentProps {
+  data: Comment;
+  memoID: number;
 }
 
 interface ChatPackProps {
@@ -43,7 +48,6 @@ interface InternalData {
   updatedAt: string;
   date: string;
   time: string;
-  isDateDisplay: boolean;
 }
 
 interface ChatTextProps {
@@ -142,8 +146,9 @@ const Timeline = () => {
         }}
       >
         {displayData.map((d) => (
-          <Collapse key={d.id} timeout={400} enter={false}>
-            <Chat data={d} />
+          <Collapse key={d._type === 'memo' ? d.id : d._date} timeout={400} enter={false}>
+            {d._type === 'memo' && <ChatMemo data={d} />}
+            {d._type === 'date' && <DateChip date={d._date} />}
           </Collapse>
         ))}
       </TransitionGroup>
@@ -151,7 +156,34 @@ const Timeline = () => {
   );
 };
 
-const Chat = (props: ChatProps) => {
+const DateChip = (props: { date: string }) => {
+  const { date } = props;
+
+  return (
+    <>
+      {
+        <Stack
+          spacing={2}
+          pt={1}
+          sx={{ width: '100%', maxWidth: '100%', display: 'flex', alignItems: 'center' }}
+        >
+          <Chip
+            label={date}
+            size='small'
+            sx={{
+              maxWidth: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              color: 'text.disabled',
+            }}
+          />
+        </Stack>
+      }
+    </>
+  );
+};
+
+const ChatMemo = (props: ChatMemoProps) => {
   const { data } = props;
 
   const displayMemo: InternalData = {
@@ -162,48 +194,38 @@ const Chat = (props: ChatProps) => {
     updatedAt: data.updatedAt,
     date: data._date,
     time: data._time,
-    isDateDisplay: data._isDateDisplay,
   };
 
   return (
     <ChatPack data={displayMemo}>
-      <Comment data={data} />
+      {data.comments.map((c, index) => (
+        <div key={index}>
+          {c._type === 'comment' && <ChatComment data={c} memoID={data.id} />}
+          {c._type === 'date' && <DateChip date={c._date} />}
+        </div>
+      ))}
     </ChatPack>
   );
 };
 
-const Comment = (props: ChatProps) => {
-  const { data } = props;
+const ChatComment = (props: ChatCommentProps) => {
+  const { data, memoID } = props;
 
-  let displayComments: InternalData[] = [];
-  for (let i = 0; i < data.comments.length; i++) {
-    const displayComment: InternalData = {
-      type: 'comment',
-      id: data.comments[i].id,
-      memoID: data.id,
-      text: data.comments[i]._text,
-      createdAt: data.comments[i].createdAt,
-      updatedAt: data.comments[i].updatedAt,
-      date: data.comments[i]._date,
-      time: data.comments[i]._time,
-      isDateDisplay: data.comments[i]._isDateDisplay,
-    };
-    displayComments.push(displayComment);
-  }
+  const displayComment: InternalData = {
+    type: 'comment',
+    id: data.id,
+    memoID: memoID,
+    text: data._text,
+    createdAt: data.createdAt,
+    updatedAt: data.updatedAt,
+    date: data._date,
+    time: data._time,
+  };
 
   return (
-    <>
-      {displayComments.length > 0 && (
-        <Stack
-          spacing={1}
-          sx={{ pt: 1, display: 'flex', alignItems: 'flex-end', maxWidth: '100%' }}
-        >
-          {displayComments.map((comment, index) => {
-            return <ChatPack key={index} data={comment} />;
-          })}
-        </Stack>
-      )}
-    </>
+    <Stack spacing={1} sx={{ pt: 1, display: 'flex', alignItems: 'flex-end', maxWidth: '100%' }}>
+      <ChatPack data={displayComment} />
+    </Stack>
   );
 };
 
@@ -219,7 +241,6 @@ const ChatPack = (props: ChatPackProps) => {
       spacing={1}
       sx={{ width: '100%', display: 'flex', alignItems: 'flex-end' }}
     >
-      <DateChip data={data} />
       <Stack
         direction='row'
         spacing={1}
@@ -578,39 +599,6 @@ const MoreButton = (props: InternalDataProps) => {
           削除
         </MenuItem>
       </Menu>
-    </>
-  );
-};
-
-const DateChip = (props: InternalDataProps) => {
-  const { data } = props;
-
-  const settingInfo = useSettingInfoContext();
-  const setting = settingInfo?.setting;
-
-  const date = data.date;
-  const isDisplay =
-    data.isDateDisplay && (data.type === 'comment' ? setting?.display_comment_date : true);
-
-  return (
-    <>
-      {isDisplay && (
-        <Stack
-          spacing={2}
-          sx={{ width: '100%', maxWidth: '100%', display: 'flex', alignItems: 'center' }}
-        >
-          <Chip
-            label={date}
-            size='small'
-            sx={{
-              maxWidth: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              color: 'text.disabled',
-            }}
-          />
-        </Stack>
-      )}
     </>
   );
 };

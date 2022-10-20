@@ -1,4 +1,4 @@
-import { Memo, useDataContext } from '../components/DataContext';
+import { Memo, Comment, useDataContext } from '../components/DataContext';
 import { useOperationContext } from '../components/OperationContext';
 import { useSettingInfoContext } from '../components/SettingInfoContext';
 
@@ -43,27 +43,36 @@ export const useCreateDisplayData = () => {
           }) ?? []
       : [];
 
-  const finalData = filterData.map((d, index) => {
-    if (index === 0) {
-      d._isDateDisplay = true;
-    } else if (d._date !== filterData[index - 1]._date) {
-      d._isDateDisplay = true;
-    } else {
-      d._isDateDisplay = false;
+  let addDate: Memo[] = [];
+  for (let i = 0; i < filterData.length; i++) {
+    const nowMemo = filterData[i];
+    const beforeMemo = i === 0 ? undefined : filterData[i - 1];
+
+    // メモ日付表示用のデータを追加
+    if (nowMemo._date !== beforeMemo?._date) {
+      addDate.push({ ...nowMemo, _type: 'date', id: nowMemo.id + 0.5 });
     }
-    d.comments = d.comments.map((c, index) => {
-      if (index === 0 && c._date !== d._date) {
-        c._isDateDisplay = true;
-      } else if (index !== 0 && c._date !== d.comments[index - 1]._date) {
-        c._isDateDisplay = true;
-      } else {
-        c._isDateDisplay = false;
+
+    let comments: Comment[] = [];
+    for (let j = 0; j < filterData[i].comments.length; j++) {
+      const nowComment = filterData[i].comments[j];
+      const beforeComment = j === 0 ? undefined : filterData[i].comments[j - 1];
+
+      // コメント日付表示用のデータを追加
+      if (
+        (j === 0 && nowComment._date !== nowMemo._date) ||
+        (j !== 0 && nowComment._date !== beforeComment?._date)
+      ) {
+        comments.push({ ...nowComment, _type: 'date', id: nowComment.id + 0.5 });
       }
-      return c;
-    });
 
-    return d;
-  });
+      // コメント本文を格納
+      comments.push({ ...nowComment, _type: 'comment' });
+    }
 
-  return finalData;
+    // メモ本文を格納
+    addDate.push({ ...nowMemo, comments: [...comments], _type: 'memo' });
+  }
+
+  return addDate;
 };
