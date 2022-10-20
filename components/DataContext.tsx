@@ -1,8 +1,9 @@
-import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { demoData } from '../utils/demoData';
 import { useAuthContext } from '../components/AuthContext';
 import { useOperationContext } from './OperationContext';
+import { useSetTimeout } from '../hooks/useSetTimeout';
 import { EditingContent } from './EditingInfoContext';
 
 export interface Memo {
@@ -60,11 +61,11 @@ interface SendComment {
   updatedAt: string;
 }
 
-interface Data {
+export interface Data {
   data: Memo[];
   createMemo: (memo: Memo) => void;
   createComment: (comment: Comment, id: number) => void;
-  updateLocalCompleted: (index: number, completed: boolean, completedAt: string) => void;
+  updateLocalCompleted: (index: number) => void;
   updateServerCompleted: (index: number) => void;
   updateAllData: (data: EditingContent) => void;
   deleteMemo: (id: number | undefined) => void;
@@ -82,8 +83,11 @@ export function DataProvider({ children }: { children: any }) {
   const userInfo = useAuthContext();
   const user = userInfo?.user;
   const info = useOperationContext();
+  const setTimer = useSetTimeout();
 
   const [data, setData] = useState<Memo[]>([]);
+  const bookDelayCompleted = useRef<number[]>([]);
+  const dataRef = useRef<Memo[]>([]);
 
   useEffect(() => {
     // サーバーのデータを取得する
@@ -133,6 +137,10 @@ export function DataProvider({ children }: { children: any }) {
       }
     })();
   }, [user]);
+
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
 
   const addDataToMemo = (memo: Memo) => {
     setData((prevState) => [...prevState, memo]);
@@ -312,18 +320,34 @@ export function DataProvider({ children }: { children: any }) {
     }
   };
 
-  const updateLocalCompleted = (id: number, completed: boolean, completedAt: string) => {
-    const targetMemo = getTargetMemo(id);
-    if (targetMemo === undefined) return;
-
-    targetMemo.completed = completed;
-    targetMemo._tmpCompleted = completed;
-    if (targetMemo.completed) {
-      targetMemo.completedAt = completedAt;
-      targetMemo._tmpCompletedAt = completedAt;
+  const updateLocalCompleted = (id: number) => {
+    if (!bookDelayCompleted.current.includes(id)) {
+      bookDelayCompleted.current.push(id);
     }
 
-    localUpdateData(id, targetMemo);
+    setTimer(updateLocalCompletedCallback, 2000);
+  };
+
+  const updateLocalCompletedCallback = () => {
+    for (let i = 0; i < bookDelayCompleted.current.length; i++) {
+      const id = bookDelayCompleted.current[i];
+      const targetData = getTargetMemoRefVer(id);
+      if (targetData === undefined) return;
+
+      const beforeValue = targetData.completed;
+      const afterValue = targetData._tmpCompleted;
+      const isChanged = beforeValue !== afterValue;
+
+      if (isChanged) {
+        targetData.completed = targetData._tmpCompleted;
+        if (targetData.completed) {
+          targetData.completedAt = targetData._tmpCompletedAt;
+        }
+        localUpdateData(id, targetData);
+      }
+    }
+
+    bookDelayCompleted.current = [];
   };
 
   const updateServerCompleted = (id: number) => {
@@ -452,6 +476,17 @@ export function DataProvider({ children }: { children: any }) {
 
   const getTargetMemo = (id: number): Memo | undefined => {
     const targetMemo = data.find((m) => m.id === id);
+    if (targetMemo === undefined) return;
+
+    const deepCopyMemo = { ...targetMemo };
+    const deepCopyComments = targetMemo.comments.map((comment) => ({ ...comment }));
+    deepCopyMemo.comments = deepCopyComments;
+
+    return deepCopyMemo;
+  };
+
+  const getTargetMemoRefVer = (id: number): Memo | undefined => {
+    const targetMemo = dataRef.current.find((m) => m.id === id);
     if (targetMemo === undefined) return;
 
     const deepCopyMemo = { ...targetMemo };
