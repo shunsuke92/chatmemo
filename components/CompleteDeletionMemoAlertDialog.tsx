@@ -7,14 +7,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useDataContext } from './DataContext';
 import { useOperationContext } from './OperationContext';
 
-export default function DeleteMemoAlertDialog() {
+export default function CompleteDeletionMemoAlertDialog() {
   const data = useDataContext();
   const info = useOperationContext();
 
-  const isDisplay: boolean = info?.displayAlertDialog === 'delete-memo' ?? false;
+  const isDisplay: boolean = info?.displayAlertDialog === 'complete-deletion-memo' ?? false;
 
   const handleClick = () => {
-    data?.deleteMemo(info?.deleteID);
+    data?.completeDeletionMemo(info?.deleteID);
 
     // ダイアログを閉じる
     info?.changeDisplayAlertDialog('');
@@ -32,13 +32,10 @@ export default function DeleteMemoAlertDialog() {
       aria-labelledby='alert-dialog-title'
       aria-describedby='alert-dialog-description'
     >
-      <DialogTitle id='alert-dialog-title'>このメモを削除しますか？</DialogTitle>
+      <DialogTitle id='alert-dialog-title'>メモを完全に削除しますか？</DialogTitle>
       <DialogContent>
         <DialogContentText id='alert-dialog-description'>
-          メモを削除すると、コメントもすべて削除されます。
-        </DialogContentText>
-        <DialogContentText id='alert-dialog-description'>
-          削除したメモはごみ箱に保存され、復元することもできます。
+          このメモは完全に削除されます。この操作は取消できません。
         </DialogContentText>
       </DialogContent>
       <DialogActions>

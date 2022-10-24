@@ -71,6 +71,7 @@ export interface Data {
   deleteMemo: (id: number | undefined) => void;
   deleteAccount: () => void;
   getTargetMemo: (id: number) => Memo | undefined;
+  completeDeletionMemo: (id: number | undefined) => void;
 }
 
 const DataContext = createContext<Data | null>(null);
@@ -384,7 +385,7 @@ export function DataProvider({ children }: { children: any }) {
 
     // メモが空のとき、メモ削除確認ダイアログを表示
     if (editingData.body.length === 0) {
-      info?.changeDisplayAlertDialog('delete-memo');
+      info?.changeDisplayAlertDialog('delete-memo', id);
       return;
     }
 
@@ -465,6 +466,19 @@ export function DataProvider({ children }: { children: any }) {
     localUpdateData(id, targetMemo);
   };
 
+  const completeDeletionMemo = async (id: number | undefined) => {
+    // サーバーから完全削除
+    if (user) {
+      await axios
+        .delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${id}`)
+        .then((res) => {})
+        .catch((err) => {});
+    }
+
+    // ローカルから完全削除
+    setData((prevState) => prevState.filter((value) => value.id !== id));
+  };
+
   const deleteAccount = async () => {
     if (user) {
       await axios
@@ -506,6 +520,7 @@ export function DataProvider({ children }: { children: any }) {
     deleteAccount: deleteAccount,
     updateServerCompleted: updateServerCompleted,
     getTargetMemo: getTargetMemo,
+    completeDeletionMemo: completeDeletionMemo,
   };
 
   return <DataContext.Provider value={dataHandler}>{children}</DataContext.Provider>;

@@ -67,6 +67,12 @@ const getIsOutermost = (data: InternalData): boolean => {
   return data.type === 'memo';
 };
 
+const useGetIsTrash = (): boolean => {
+  const info = useOperationContext();
+
+  return info?.selectedDisplayType.id === 3;
+};
+
 const useGetIsAdding = (data: InternalData): boolean => {
   const info = useOperationContext();
 
@@ -432,12 +438,14 @@ const CommentText = (props: ChatTextProps) => {
 const LowerButtons = (props: InternalDataProps) => {
   const { data } = props;
 
+  const isTrash = useGetIsTrash();
+
   return (
     <Stack spacing={1} direction='row' justifyContent='space-between' alignItems='center'>
       <Stack>
         <Stack spacing={1} direction='row' justifyContent='flex-start' alignItems='center'>
-          <CompletedButton data={data} />
-          <AddCommentButton data={data} />
+          {!isTrash && <CompletedButton data={data} />}
+          {!isTrash && <AddCommentButton data={data} />}
         </Stack>
       </Stack>
       <MoreButton data={data} />
@@ -513,6 +521,7 @@ const MoreButton = (props: InternalDataProps) => {
   const info = useOperationContext();
   const displayData = useDataContext();
   const editingInfo = useEditingInfoContext();
+  const isTrash = useGetIsTrash();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -541,7 +550,13 @@ const MoreButton = (props: InternalDataProps) => {
 
   function handleClickDelete(id: number) {
     return function () {
-      displayData?.deleteMemo(id);
+      if (isTrash) {
+        // 完全削除のダイアログを表示
+        info?.changeDisplayAlertDialog('complete-deletion-memo', id);
+      } else {
+        // ごみ箱に移動
+        displayData?.deleteMemo(id);
+      }
       setAnchorEl(null);
     };
   }
@@ -564,9 +579,11 @@ const MoreButton = (props: InternalDataProps) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClickEdit(data.id)} sx={{ fontSize: '0.8rem' }}>
-          編集
-        </MenuItem>
+        {!isTrash && (
+          <MenuItem onClick={handleClickEdit(data.id)} sx={{ fontSize: '0.8rem' }}>
+            編集
+          </MenuItem>
+        )}
         <MenuItem onClick={handleClickDelete(data.id)} sx={{ fontSize: '0.8rem' }}>
           削除
         </MenuItem>

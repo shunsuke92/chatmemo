@@ -10,7 +10,7 @@ export interface Operation {
   changeAddingContentID: (id: number | undefined) => void;
   changeEditingContentID: (id: number | undefined) => void;
   changeScheduledScrolling: (value: boolean) => void;
-  changeDisplayAlertDialog: (value: AlertDialog) => void;
+  changeDisplayAlertDialog: (value: AlertDialog, deleteID?: number) => void;
   changeSelectedDisplayType: (data: DisplayType) => void;
 }
 
@@ -25,7 +25,7 @@ export const DISPLAY_TYPE: DisplayType[] = [
   { id: 3, name: 'ごみ箱' },
 ];
 
-type AlertDialog = 'delete-memo' | 'delete-account' | '';
+type AlertDialog = 'delete-memo' | 'delete-account' | 'complete-deletion-memo' | '';
 
 const OperationContext = createContext<Operation | null>(null);
 
@@ -60,10 +60,10 @@ export function OperationProvider({ children }: { children: any }) {
     }
   }
 
-  function changeDisplayAlertDialog(value: AlertDialog) {
+  function changeDisplayAlertDialog(value: AlertDialog, deleteID?: number) {
     setDisplayAlertDialog(value);
     if (value) {
-      setDeleteID(editingContentID);
+      setDeleteID(deleteID);
     } else {
       setDeleteID(undefined);
     }

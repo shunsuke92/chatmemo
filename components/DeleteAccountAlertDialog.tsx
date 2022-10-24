@@ -72,15 +72,10 @@ export default function DeleteMemoAlertDialog() {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} variant='outlined'>
+        <Button onClick={handleClose} variant='outlined' autoFocus>
           キャンセル
         </Button>
-        <Button
-          onClick={handleClick}
-          autoFocus
-          disabled={user?.displayName !== value}
-          variant='contained'
-        >
+        <Button onClick={handleClick} disabled={user?.displayName !== value} variant='contained'>
           削除
         </Button>
       </DialogActions>
