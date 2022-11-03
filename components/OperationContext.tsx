@@ -1,17 +1,24 @@
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 
 export interface Operation {
-  addingContentID: number | undefined;
-  editingContentID: number | undefined;
+  addingContentID: string | undefined;
+  editingContentID: string | undefined;
   scheduledScrolling: boolean;
   displayAlertDialog: AlertDialog;
-  deleteID: number | undefined;
+  deleteID: string | undefined;
   selectedDisplayType: DisplayType;
-  changeAddingContentID: (id: number | undefined) => void;
-  changeEditingContentID: (id: number | undefined) => void;
+  isSynchronizing: boolean;
+  synchronizingProgress: number;
+  changeAddingContentID: (id: string) => void;
+  clearAddingContentID: () => void;
+  changeEditingContentID: (id: string) => void;
+  clearEditingContentID: () => void;
   changeScheduledScrolling: (value: boolean) => void;
-  changeDisplayAlertDialog: (value: AlertDialog, deleteID?: number) => void;
+  changeDisplayAlertDialog: (value: AlertDialog, deleteID?: string) => void;
+  clearDisplayAlertDialog: () => void;
   changeSelectedDisplayType: (data: DisplayType) => void;
+  changeIsSynchronizing: (value: boolean) => void;
+  changeSynchronizingProgress: (value: number) => void;
 }
 
 export interface DisplayType {
@@ -34,19 +41,29 @@ export function useOperationContext() {
 }
 
 export function OperationProvider({ children }: { children: any }) {
-  const [addingContentID, setAddingContentID] = useState<number | undefined>(undefined);
-  const [editingContentID, setEditingContentID] = useState<number | undefined>(undefined);
+  const [addingContentID, setAddingContentID] = useState<string>('');
+  const [editingContentID, setEditingContentID] = useState<string>('');
   const [scheduledScrolling, setScheduledScrolling] = useState<boolean>(false);
   const [displayAlertDialog, setDisplayAlertDialog] = useState<AlertDialog>('');
-  const [deleteID, setDeleteID] = useState<number | undefined>(undefined);
+  const [deleteID, setDeleteID] = useState<string>('');
   const [selectedDisplayType, setSelectedDisplayType] = useState<DisplayType>(DISPLAY_TYPE[0]);
+  const [isSynchronizing, setIsSynchronizing] = useState(false);
+  const [synchronizingProgress, setSynchronizingProgress] = useState(0);
 
-  function changeAddingContentID(id: number | undefined) {
+  function changeAddingContentID(id: string) {
     setAddingContentID(id);
   }
 
-  function changeEditingContentID(id: number | undefined) {
+  function clearAddingContentID() {
+    setAddingContentID('');
+  }
+
+  function changeEditingContentID(id: string) {
     setEditingContentID(id);
+  }
+
+  function clearEditingContentID() {
+    setEditingContentID('');
   }
 
   function changeScheduledScrolling(value: boolean) {
@@ -60,17 +77,29 @@ export function OperationProvider({ children }: { children: any }) {
     }
   }
 
-  function changeDisplayAlertDialog(value: AlertDialog, deleteID?: number) {
+  const changeDisplayAlertDialog = (value: AlertDialog, deleteID?: string) => {
     setDisplayAlertDialog(value);
-    if (value) {
+    if (deleteID !== undefined) {
       setDeleteID(deleteID);
     } else {
-      setDeleteID(undefined);
+      setDeleteID('');
     }
-  }
+  };
+
+  const clearDisplayAlertDialog = () => {
+    setDisplayAlertDialog('');
+  };
 
   function changeSelectedDisplayType(data: DisplayType) {
     setSelectedDisplayType(data);
+  }
+
+  function changeIsSynchronizing(value: boolean) {
+    setIsSynchronizing(value);
+  }
+
+  function changeSynchronizingProgress(value: number) {
+    setSynchronizingProgress(value);
   }
 
   const info: Operation = {
@@ -80,11 +109,18 @@ export function OperationProvider({ children }: { children: any }) {
     displayAlertDialog: displayAlertDialog,
     deleteID: deleteID,
     selectedDisplayType: selectedDisplayType,
+    isSynchronizing: isSynchronizing,
+    synchronizingProgress: synchronizingProgress,
     changeAddingContentID: changeAddingContentID,
+    clearAddingContentID: clearAddingContentID,
     changeEditingContentID: changeEditingContentID,
+    clearEditingContentID: clearEditingContentID,
     changeScheduledScrolling: changeScheduledScrolling,
     changeDisplayAlertDialog: changeDisplayAlertDialog,
+    clearDisplayAlertDialog: clearDisplayAlertDialog,
     changeSelectedDisplayType: changeSelectedDisplayType,
+    changeIsSynchronizing: changeIsSynchronizing,
+    changeSynchronizingProgress: changeSynchronizingProgress,
   };
 
   return <OperationContext.Provider value={info}>{children}</OperationContext.Provider>;

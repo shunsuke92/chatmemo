@@ -9,6 +9,7 @@ import User from './User';
 import { useOperationContext } from './OperationContext';
 import SideDrawer from './SideDrawer';
 import { useBarBackground, useLightModeColor } from '../hooks/useColor';
+import Synchronizing from '../components/Synchronizing';
 
 export default function MenuBar() {
   const info = useOperationContext();
@@ -20,8 +21,8 @@ export default function MenuBar() {
   const title = info?.selectedDisplayType.name;
 
   const handleClick = () => {
-    info?.changeAddingContentID(0);
-    info?.changeEditingContentID(0);
+    info?.clearAddingContentID();
+    info?.clearEditingContentID();
   };
 
   const handleClickOpenMenu = () => {
@@ -38,6 +39,7 @@ export default function MenuBar() {
         }}
         onClick={handleClick}
       >
+        <Synchronizing progress={true} />
         <Toolbar>
           <IconButton
             size='large'

@@ -17,12 +17,12 @@ export default function DeleteMemoAlertDialog() {
     data?.deleteMemo(info?.deleteID);
 
     // ダイアログを閉じる
-    info?.changeDisplayAlertDialog('');
+    info?.clearDisplayAlertDialog();
   };
 
   const handleClose = () => {
     // ダイアログを閉じる
-    info?.changeDisplayAlertDialog('');
+    info?.clearDisplayAlertDialog();
   };
 
   return (

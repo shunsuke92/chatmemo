@@ -4,6 +4,8 @@ import { demoData } from '../utils/demoData';
 import { useAuthContext } from '../components/AuthContext';
 import { useOperationContext } from './OperationContext';
 import { useSetTimeout } from '../hooks/useSetTimeout';
+import { useSynchronizationProsess } from '../hooks/useSynchronizationProsess';
+import { useCreateID } from '../hooks/useCreateID';
 import { EditingContent } from './EditingInfoContext';
 
 export interface Memo {
@@ -26,6 +28,7 @@ export interface Memo {
   _tmpCompleted: boolean;
   _tmpCompletedAt: string;
   _type: 'memo' | 'date';
+  _id: string;
 }
 
 export interface Comment {
@@ -43,6 +46,7 @@ export interface Comment {
   _time: string;
   _synchronized: boolean;
   _type: 'comment' | 'date';
+  _id: string;
 }
 
 interface SendMemo {
@@ -64,14 +68,14 @@ interface SendComment {
 export interface Data {
   data: Memo[];
   createMemo: (memo: Memo) => void;
-  createComment: (comment: Comment, id: number) => void;
-  updateLocalCompleted: (index: number) => void;
-  updateServerCompleted: (index: number) => void;
-  updateAllData: (data: EditingContent) => void;
-  deleteMemo: (id: number | undefined) => void;
-  deleteAccount: () => void;
-  getTargetMemo: (id: number) => Memo | undefined;
-  completeDeletionMemo: (id: number | undefined) => void;
+  createComment: (comment: Comment, id: string) => void;
+  updateLocalCompleted: (id: string) => void;
+  updateServerCompleted: (id: string) => void;
+  updateEditData: (data: EditingContent) => void;
+  deleteMemo: (id: string | undefined) => void;
+  deleteAccount: () => Promise<boolean>;
+  getTargetMemo: (id: string) => Memo | undefined;
+  completeDeletionMemo: (id: string | undefined) => void;
 }
 
 const DataContext = createContext<Data | null>(null);
@@ -85,9 +89,18 @@ export function DataProvider({ children }: { children: any }) {
   const user = userInfo?.user;
   const info = useOperationContext();
   const setTimer = useSetTimeout();
+  const synchronizationProsess = useSynchronizationProsess();
+  const setUnsynchronizedFunction = synchronizationProsess.setUnsynchronizedFunction;
+  const createManageMemoID = synchronizationProsess.createManageMemoID;
+  const createManageCommentID = synchronizationProsess.createManageCommentID;
+  const setConfirmedMemoID = synchronizationProsess.setConfirmedMemoID;
+  const setConfirmedCommentID = synchronizationProsess.setConfirmedCommentID;
+  const getConfirmedMemoID = synchronizationProsess.getConfirmedMemoID;
+  const getConfirmedCommentID = synchronizationProsess.getConfirmedCommentID;
+  const createErrID = useCreateID('E');
 
   const [data, setData] = useState<Memo[]>([]);
-  const bookDelayCompleted = useRef<number[]>([]);
+  const bookDelayCompletedID = useRef<string[]>([]);
   const dataRef = useRef<Memo[]>([]);
 
   useEffect(() => {
@@ -112,6 +125,7 @@ export function DataProvider({ children }: { children: any }) {
               data._tmpCompleted = data.completed;
               data._tmpCompletedAt = data.completedAt;
               data._type = 'memo';
+              data._id = String(data.id);
 
               data.comments.map((data) => {
                 data._text = data.body.split(/\r\n|\n|\r/gm);
@@ -119,6 +133,7 @@ export function DataProvider({ children }: { children: any }) {
                 data._time = getTime(data.createdAt);
                 data._synchronized = true;
                 data._type = 'comment';
+                data._id = String(data.id);
               });
 
               return data;
@@ -130,9 +145,7 @@ export function DataProvider({ children }: { children: any }) {
             // スクロール予約
             info?.changeScheduledScrolling(true);
           })
-          .catch((err) => {
-            console.log(err);
-          });
+          .catch((err) => {});
       } else {
         setData(demoData);
       }
@@ -147,10 +160,10 @@ export function DataProvider({ children }: { children: any }) {
     setData((prevState) => [...prevState, memo]);
   };
 
-  const addDataToComment = (memoId: number, comment: Comment) => {
+  const addDataToComment = (memoId: string, comment: Comment) => {
     setData((prevState) =>
       prevState.map((value) => {
-        if (value.id === memoId) {
+        if (value._id === memoId) {
           value.comments.push(comment);
         }
         return value;
@@ -158,10 +171,10 @@ export function DataProvider({ children }: { children: any }) {
     );
   };
 
-  const localUpdateData = (memoId: number, specifiedData: Memo) => {
+  const localUpdateData = (memoId: string, specifiedData: Memo) => {
     setData((prevState) =>
       prevState.map((value) => {
-        if (value.id === memoId) {
+        if (value._id === memoId) {
           return specifiedData;
         }
         return value;
@@ -219,16 +232,16 @@ export function DataProvider({ children }: { children: any }) {
     memo.deletedAt = date;
     memo._date = getDate(date);
     memo._time = getTime(date);
+    const errID = createErrID();
 
-    const serverRegisteredID = await serverCreateMemoTable(memo);
+    const result = await seveServerVerCreateMemo(() => serverCreateMemoTable(memo), errID);
 
-    // サーバーで決定したIDをローカルに設定する
-    if (serverRegisteredID !== undefined) {
-      memo.id = serverRegisteredID;
+    if (result !== -1) {
       memo._synchronized = true;
+      memo._id = String(result);
     } else {
-      memo.id = data[data.length - 1].id + 1;
       memo._synchronized = false;
+      memo._id = errID;
     }
 
     addDataToMemo(memo);
@@ -237,8 +250,133 @@ export function DataProvider({ children }: { children: any }) {
     info?.changeScheduledScrolling(true);
   };
 
-  const serverCreateMemoTable = async (memo: Memo) => {
-    let response;
+  const seveServerVerCreateMemo = async (
+    func: () => Promise<number>,
+    errMemoID: string,
+  ): Promise<number> => {
+    const getForSynchronization = (func: () => Promise<number>, errMemoID: string) => {
+      // 通信可能になったら実行する関数
+      return async () => {
+        const result = await func();
+
+        // 通信成功のとき
+        if (result !== -1) {
+          // 同期済みフラグをオンにする
+          changeSynchronizedFlag(errMemoID);
+
+          // サーバーで決定したIDをID管理に保存する
+          setConfirmedMemoID(errMemoID, result);
+        }
+
+        return result;
+      };
+    };
+
+    const saveUnsynchronizedFunction = (func: () => Promise<number>, errMemoID: string) => {
+      createManageMemoID(errMemoID);
+
+      setUnsynchronizedFunction(() => getForSynchronization(func, errMemoID));
+    };
+
+    const result = await func();
+
+    // 通信に失敗したとき
+    if (result === -1) {
+      saveUnsynchronizedFunction(func, errMemoID);
+    }
+
+    return result;
+  };
+
+  const seveServerVerCreateComment = async (
+    func: () => Promise<number>,
+    memoID: string,
+    errCommentID: string,
+  ): Promise<number> => {
+    const getForSynchronization = (
+      func: () => Promise<number>,
+      memoID: string,
+      errCommentID: string,
+    ) => {
+      // 通信可能になったら実行する関数
+      return async () => {
+        const result = await func();
+
+        // 通信成功のとき
+        if (result !== -1) {
+          // 同期済みフラグをオンにする
+          changeSynchronizedFlag(memoID, errCommentID);
+
+          // サーバーで決定したIDをID管理に保存する
+          setConfirmedCommentID(errCommentID, result);
+        }
+
+        return result;
+      };
+    };
+
+    const saveUnsynchronizedFunction = (
+      func: () => Promise<number>,
+      memoID: string,
+      errCommentID: string,
+    ) => {
+      createManageCommentID(errCommentID);
+
+      setUnsynchronizedFunction(() => getForSynchronization(func, memoID, errCommentID));
+    };
+
+    const result = await func();
+
+    // 通信に失敗したとき
+    if (result === -1) {
+      saveUnsynchronizedFunction(func, memoID, errCommentID);
+    }
+
+    return result;
+  };
+
+  const seveServer = async (
+    func: () => Promise<boolean>,
+    memoID: string,
+    commentID?: string,
+  ): Promise<boolean> => {
+    const getForSynchronization = (
+      func: () => Promise<boolean>,
+      memoID: string,
+      errCommentID?: string,
+    ) => {
+      // 通信可能になったら実行する関数
+      return async () => {
+        const result = await func();
+        // 通信成功のとき
+        if (result) {
+          // 同期済みフラグをオンにする
+          changeSynchronizedFlag(memoID, commentID);
+        }
+        return result;
+      };
+    };
+
+    const saveUnsynchronizedFunction = (
+      func: () => Promise<boolean>,
+      memoID: string,
+      commentID?: string,
+    ) => {
+      setUnsynchronizedFunction(() => getForSynchronization(func, memoID, commentID));
+    };
+
+    const result = await func();
+
+    // 通信に失敗したとき
+    if (!result) {
+      saveUnsynchronizedFunction(func, memoID, commentID);
+    }
+
+    return result;
+  };
+
+  const serverCreateMemoTable = async (memo: Memo): Promise<number> => {
+    let response = -1;
     if (user) {
       await axios
         .post(
@@ -257,35 +395,40 @@ export function DataProvider({ children }: { children: any }) {
     return response;
   };
 
-  const createComment = async (comment: Comment, id: number) => {
+  const createComment = async (comment: Comment, id: string) => {
     const date = getNowDate();
     comment.createdAt = date;
     comment.updatedAt = date;
     comment.deletedAt = date;
     comment._date = getDate(date);
     comment._time = getTime(date);
+    const ErrID = createErrID();
 
-    const serverRegisteredID = await serverCreateCommentTable(id, comment);
+    const result = await seveServerVerCreateComment(
+      () => serverCreateCommentTable(id, comment),
+      id,
+      ErrID,
+    );
 
-    // サーバーで決定したIDをローカルに設定する
-    if (serverRegisteredID !== undefined) {
-      comment.id = serverRegisteredID;
+    if (result !== -1) {
       comment._synchronized = true;
+      comment._id = String(result);
     } else {
-      const targetComment = data.filter((d) => d.id === id)[0].comments;
-      comment.id = targetComment[targetComment.length - 1].id + 1;
       comment._synchronized = false;
+      comment._id = ErrID;
     }
 
     addDataToComment(id, comment);
   };
 
-  const serverCreateCommentTable = async (id: number, comment: Comment) => {
-    let response;
+  const serverCreateCommentTable = async (id: string, comment: Comment): Promise<number> => {
+    const sendID = getConfirmedMemoID(id) ?? id;
+
+    let response = -1;
     if (user) {
       await axios
         .post(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${id}/comments`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${sendID}/comments`,
           convertSendComment(comment),
         )
         .then((res) => {
@@ -300,38 +443,47 @@ export function DataProvider({ children }: { children: any }) {
     return response;
   };
 
-  const serverUpdateMemoTable = async (id: number, specifiedData?: Memo) => {
+  const serverUpdateMemoTable = async (id: string, specifiedData?: Memo): Promise<boolean> => {
+    const sendID = getConfirmedMemoID(id) ?? id;
+
     let sendData: Memo;
     if (specifiedData !== undefined) {
       sendData = specifiedData;
     } else {
       const targetMemo = getTargetMemo(id);
-      if (targetMemo === undefined) return;
+      if (targetMemo === undefined) return false;
       sendData = targetMemo;
     }
 
+    let response = false;
     if (user) {
       await axios
         .patch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${id}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${sendID}`,
           convertSendMemo(sendData),
         )
-        .then((res) => {})
-        .catch((err) => {});
+        .then((res) => {
+          response = true;
+        })
+        .catch((err) => {
+          response = false;
+        });
     }
+
+    return response;
   };
 
-  const updateLocalCompleted = (id: number) => {
-    if (!bookDelayCompleted.current.includes(id)) {
-      bookDelayCompleted.current.push(id);
+  const updateLocalCompleted = (id: string) => {
+    if (!bookDelayCompletedID.current.includes(id)) {
+      bookDelayCompletedID.current.push(id);
     }
 
     setTimer(updateLocalCompletedCallback, 2000);
   };
 
   const updateLocalCompletedCallback = () => {
-    for (let i = 0; i < bookDelayCompleted.current.length; i++) {
-      const id = bookDelayCompleted.current[i];
+    for (let i = 0; i < bookDelayCompletedID.current.length; i++) {
+      const id = bookDelayCompletedID.current[i];
       const targetData = getTargetMemoRefVer(id);
       if (targetData === undefined) return;
 
@@ -348,10 +500,10 @@ export function DataProvider({ children }: { children: any }) {
       }
     }
 
-    bookDelayCompleted.current = [];
+    bookDelayCompletedID.current = [];
   };
 
-  const updateServerCompleted = (id: number) => {
+  const updateServerCompleted = async (id: string) => {
     // 制御用のローカル変数を更新
     const targetMemo = getTargetMemo(id);
     if (targetMemo === undefined) return;
@@ -364,8 +516,6 @@ export function DataProvider({ children }: { children: any }) {
       targetMemo._tmpCompletedAt = date;
     }
 
-    localUpdateData(id, targetMemo);
-
     // 完了済みフラグを更新
     const targetMemo2 = getTargetMemo(id);
     if (targetMemo2 === undefined) return;
@@ -376,10 +526,18 @@ export function DataProvider({ children }: { children: any }) {
       targetMemo2.completedAt = targetMemo._tmpCompletedAt;
     }
 
-    serverUpdateMemoTable(id, targetMemo2);
+    const result = await seveServer(() => serverUpdateMemoTable(id, targetMemo2), id);
+
+    if (result) {
+      targetMemo._synchronized = true;
+    } else {
+      targetMemo._synchronized = false;
+    }
+
+    localUpdateData(id, targetMemo);
   };
 
-  const updateAllData = async (editingData: EditingContent) => {
+  const updateEditData = async (editingData: EditingContent) => {
     const id = info?.editingContentID;
     if (id === undefined) return;
 
@@ -400,96 +558,181 @@ export function DataProvider({ children }: { children: any }) {
       targetMemo._text = editingData.body.split(/\r\n|\n|\r/gm);
       targetMemo.updatedAt = date;
 
-      serverUpdateMemoTable(id, targetMemo);
+      const result = await seveServer(() => serverUpdateMemoTable(id, targetMemo), id);
+
+      if (result) {
+        targetMemo._synchronized = true;
+      } else {
+        targetMemo._synchronized = false;
+      }
     }
 
     // コメントの更新
     for (let i = 0; i < targetMemo.comments.length; i++) {
-      if (targetMemo.comments[i].body !== editingData.comments[i].body) {
-        if (editingData.comments[i].body.length > 0) {
-          // 更新
-          targetMemo.comments[i].body = editingData.comments[i].body;
-          targetMemo.comments[i]._text = editingData.comments[i].body.split(/\r\n|\n|\r/gm);
-          targetMemo.comments[i].updatedAt = date;
-        } else {
-          // 削除
-          targetMemo.comments[i].deleted = true;
-          targetMemo.comments[i].deletedAt = date;
-        }
-
-        serverUpdateCommentTable(id, targetMemo.comments[i].id, targetMemo.comments[i]);
-      }
+      await updateEditDataComment(targetMemo.comments[i], editingData.comments[i], date, id);
     }
 
     localUpdateData(id, targetMemo);
   };
 
-  const serverUpdateCommentTable = async (
-    memoID: number,
-    commentID: number,
-    specifiedData?: Comment,
+  const updateEditDataComment = (
+    comment: Comment,
+    editingData: { id: string; body: string },
+    date: string,
+    memoID: string,
   ) => {
+    return new Promise(async (resolve) => {
+      const targetComment = comment;
+      if (targetComment.body !== editingData.body) {
+        if (editingData.body.length > 0) {
+          // 更新
+          targetComment.body = editingData.body;
+          targetComment._text = editingData.body.split(/\r\n|\n|\r/gm);
+          targetComment.updatedAt = date;
+        } else {
+          // 削除
+          targetComment.deleted = true;
+          targetComment.deletedAt = date;
+        }
+
+        const result = await seveServer(
+          () => serverUpdateCommentTable(memoID, targetComment._id, targetComment),
+          memoID,
+          targetComment._id,
+        );
+
+        if (result) {
+          targetComment._synchronized = true;
+          resolve(true);
+        } else {
+          targetComment._synchronized = false;
+          resolve(true);
+        }
+      } else {
+        resolve(true);
+      }
+    });
+  };
+
+  const serverUpdateCommentTable = async (
+    memoID: string,
+    commentID: string,
+    specifiedData?: Comment,
+  ): Promise<boolean> => {
+    const sendMemoID = getConfirmedMemoID(memoID) ?? memoID;
+    const sendCommentID = getConfirmedCommentID(commentID) ?? commentID;
+
     let sendData: Comment;
     if (specifiedData !== undefined) {
       sendData = specifiedData;
     } else {
-      const targetMemo = data.find((m) => m.id === memoID);
-      if (targetMemo === undefined) return;
-      const targetComment = targetMemo.comments.find((c) => c.id === commentID);
-      if (targetComment === undefined) return;
+      const targetMemo = data.find((m) => m._id === memoID);
+      if (targetMemo === undefined) return false;
+      const targetComment = targetMemo.comments.find((c) => c._id === commentID);
+      if (targetComment === undefined) return false;
       sendData = targetComment;
     }
 
+    let response = false;
     if (user) {
       await axios
         .patch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${memoID}/comments/${commentID}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${sendMemoID}/comments/${sendCommentID}`,
           convertSendComment(sendData),
         )
-        .then((res) => {})
-        .catch((err) => {});
+        .then((res) => {
+          response = true;
+        })
+        .catch((err) => {
+          response = false;
+        });
     }
+
+    return response;
   };
 
-  const deleteMemo = async (id: number | undefined) => {
+  const serverDeleteMemoTable = async (memoID: string): Promise<boolean> => {
+    const sendID = getConfirmedMemoID(memoID) ?? memoID;
+
+    // サーバーから完全削除
+    let response = false;
+    if (user) {
+      await axios
+        .delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${sendID}`)
+        .then((res) => {
+          response = true;
+        })
+        .catch((err) => {
+          response = false;
+        });
+    }
+
+    return response;
+  };
+
+  const deleteMemo = async (id: string | undefined) => {
     if (id === undefined) return;
 
     const date = getNowDate();
 
-    const targetMemo = data.filter((d) => d.id === id)[0];
+    const targetMemo = data.filter((d) => d._id === id)[0];
 
     targetMemo.deleted = true;
     targetMemo.deletedAt = date;
 
-    serverUpdateMemoTable(id, targetMemo);
+    const result = await seveServer(() => serverUpdateMemoTable(id, targetMemo), id);
+
+    if (result) {
+      targetMemo._synchronized = true;
+    } else {
+      targetMemo._synchronized = false;
+    }
 
     localUpdateData(id, targetMemo);
   };
 
-  const completeDeletionMemo = async (id: number | undefined) => {
+  const completeDeletionMemo = async (id: string | undefined) => {
+    if (id === undefined) return;
+
     // サーバーから完全削除
-    if (user) {
-      await axios
-        .delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${id}`)
-        .then((res) => {})
-        .catch((err) => {});
-    }
+    await seveServer(() => serverDeleteMemoTable(id), id);
 
     // ローカルから完全削除
-    setData((prevState) => prevState.filter((value) => value.id !== id));
+    setData((prevState) => prevState.filter((value) => value._id !== id));
   };
 
-  const deleteAccount = async () => {
+  const deleteAccount = async (): Promise<boolean> => {
+    let result = false;
     if (user) {
       await axios
         .delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}`)
-        .then((res) => {})
-        .catch((err) => {});
+        .then((res) => {
+          result = true;
+        })
+        .catch((err) => {
+          result = false;
+        });
     }
+    return result;
   };
 
-  const getTargetMemo = (id: number): Memo | undefined => {
-    const targetMemo = data.find((m) => m.id === id);
+  const changeSynchronizedFlag = (memoID: string, commentID?: string) => {
+    const targetMemo = getTargetMemoRefVer(memoID);
+    if (targetMemo === undefined) return;
+
+    if (commentID === undefined) {
+      targetMemo._synchronized = true;
+    } else {
+      const targetComment = targetMemo.comments.find((m) => m._id === commentID);
+      if (targetComment === undefined) return;
+      targetComment._synchronized = true;
+    }
+
+    localUpdateData(memoID, targetMemo);
+  };
+
+  const getTargetMemo = (id: string): Memo | undefined => {
+    const targetMemo = data.find((m) => m._id === id);
     if (targetMemo === undefined) return;
 
     const deepCopyMemo = { ...targetMemo };
@@ -499,8 +742,8 @@ export function DataProvider({ children }: { children: any }) {
     return deepCopyMemo;
   };
 
-  const getTargetMemoRefVer = (id: number): Memo | undefined => {
-    const targetMemo = dataRef.current.find((m) => m.id === id);
+  const getTargetMemoRefVer = (id: string): Memo | undefined => {
+    const targetMemo = dataRef.current.find((m) => m._id === id);
     if (targetMemo === undefined) return;
 
     const deepCopyMemo = { ...targetMemo };
@@ -515,7 +758,7 @@ export function DataProvider({ children }: { children: any }) {
     createMemo: createMemo,
     createComment: createComment,
     updateLocalCompleted: updateLocalCompleted,
-    updateAllData: updateAllData,
+    updateEditData: updateEditData,
     deleteMemo: deleteMemo,
     deleteAccount: deleteAccount,
     updateServerCompleted: updateServerCompleted,

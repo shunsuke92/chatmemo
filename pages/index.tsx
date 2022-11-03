@@ -3,6 +3,7 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import MenuBar from '../components/MenuBar';
 import Mask from '../components/Mask';
+import Synchronizing from '../components/Synchronizing';
 import DeleteMemoAlertDialog from '../components/DeleteMemoAlertDialog';
 import DeleteAccountAlertDialog from '../components/DeleteAccountAlertDialog';
 import CompleteDeletionMemoAlertDialog from '../components/CompleteDeletionMemoAlertDialog';
@@ -28,6 +29,7 @@ const Home: NextPage = () => {
       <MenuBar />
       <main className={styles.main}>
         <Mask />
+        <Synchronizing progress={false} />
         <DeleteMemoAlertDialog />
         <DeleteAccountAlertDialog />
         <CompleteDeletionMemoAlertDialog />

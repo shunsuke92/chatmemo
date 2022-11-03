@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack';
 import { useDataContext } from '../components/DataContext';
 import { useOperationContext } from './OperationContext';
 import { useBarBackground } from '../hooks/useColor';
+import Synchronizing from '../components/Synchronizing';
 
 export default function BottomBar() {
   const data = useDataContext();
@@ -15,12 +16,13 @@ export default function BottomBar() {
 
   const [value, setValue] = useState('');
 
-  const isAdding = info?.addingContentID !== undefined ? info?.addingContentID > 0 : false;
-  const addingContentID = info?.addingContentID !== undefined ? info?.addingContentID : 0;
-  const isEditing = info?.editingContentID !== undefined ? info?.editingContentID > 0 : false;
+  const isAdding = info?.addingContentID !== undefined ? info?.addingContentID.length > 0 : false;
+  const addingContentID = info?.addingContentID !== undefined ? info?.addingContentID : '';
+  const isEditing =
+    info?.editingContentID !== undefined ? info?.editingContentID.length > 0 : false;
 
   useEffect(() => {
-    if (info?.addingContentID !== undefined ? info?.addingContentID > 0 : false) {
+    if (info?.addingContentID !== undefined ? info?.addingContentID.length > 0 : false) {
       document.getElementById('input')?.focus();
     } else {
       document.getElementById('input')?.blur();
@@ -31,7 +33,7 @@ export default function BottomBar() {
     setValue(event.target.value);
   };
 
-  const handleClick = (id: number) => {
+  const handleClick = (id: string) => {
     if (isAdding) {
       data?.createComment(
         {
@@ -46,6 +48,7 @@ export default function BottomBar() {
           _time: '',
           _synchronized: false,
           _type: 'comment',
+          _id: '',
         },
         id,
       );
@@ -67,6 +70,7 @@ export default function BottomBar() {
         _tmpCompleted: false,
         _tmpCompletedAt: '',
         _type: 'memo',
+        _id: '',
       });
     }
 
@@ -79,8 +83,8 @@ export default function BottomBar() {
   };
 
   const handleClickMask = () => {
-    info?.changeAddingContentID(undefined);
-    info?.changeEditingContentID(undefined);
+    info?.clearAddingContentID();
+    info?.clearEditingContentID();
   };
 
   const handleClickInputArea = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -105,6 +109,7 @@ export default function BottomBar() {
         ...barBackground,
       }}
     >
+      <Synchronizing progress={false} />
       <Stack
         direction='row'
         spacing={2}

@@ -6,16 +6,17 @@ export default function Mask() {
   const info = useOperationContext();
   const maskBackground = useMaskBackground();
 
-  const isAdding: boolean = info?.addingContentID !== undefined ? info?.addingContentID > 0 : false;
+  const isAdding: boolean =
+    info?.addingContentID !== undefined ? info?.addingContentID.length > 0 : false;
 
   const isEditing: boolean =
-    info?.editingContentID !== undefined ? info?.editingContentID > 0 : false;
+    info?.editingContentID !== undefined ? info?.editingContentID.length > 0 : false;
 
   const isDisplay: boolean = isAdding || isEditing;
 
   const handleClick = () => {
-    info?.changeAddingContentID(0);
-    info?.changeEditingContentID(0);
+    info?.clearAddingContentID();
+    info?.clearEditingContentID();
   };
 
   return (

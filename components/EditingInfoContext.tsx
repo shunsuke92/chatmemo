@@ -4,17 +4,17 @@ import { useDataContext } from './DataContext';
 export interface EditingInfo {
   editingContentBefore: EditingContent | undefined;
   editingContentAfter: EditingContent | undefined;
-  createEditingContentInfo: (id: number) => void;
+  createEditingContentInfo: (id: string) => void;
   clearEditingContentInfo: () => void;
-  updateEditingContentAfter: (commentID: number, text: string) => void;
+  updateEditingContentAfter: (text: string, commentID?: string) => void;
   isChanged: () => void;
   overwriteData: () => void;
 }
 
 export interface EditingContent {
-  id: number;
+  id: string;
   body: string;
-  comments: { id: number; body: string }[];
+  comments: { id: string; body: string }[];
 }
 
 const EditingInfoContext = createContext<EditingInfo | null>(null);
@@ -32,30 +32,30 @@ export function EditingInfoProvider({ children }: { children: any }) {
     undefined,
   );
 
-  function createEditingContentInfo(id: number) {
+  function createEditingContentInfo(id: string) {
     const targetContent = data?.getTargetMemo(id);
     if (targetContent === undefined) return;
     const commentBefore = targetContent.comments.map((comment) => {
       return {
-        id: comment.id,
+        id: comment._id,
         body: comment.body,
       };
     });
     const commentAfter = targetContent.comments.map((comment) => {
       return {
-        id: comment.id,
+        id: comment._id,
         body: comment.body,
       };
     });
 
     const contentBefore = {
-      id: targetContent.id,
+      id: targetContent._id,
       body: targetContent.body,
       comments: commentBefore,
     };
 
     const contentAfter = {
-      id: targetContent.id,
+      id: targetContent._id,
       body: targetContent.body,
       comments: commentAfter,
     };
@@ -69,8 +69,8 @@ export function EditingInfoProvider({ children }: { children: any }) {
     setEditingContentAfter(undefined);
   }
 
-  const updateEditingContentAfter = (commentID: number, text: string) => {
-    if (commentID === -1) {
+  const updateEditingContentAfter = (text: string, commentID?: string) => {
+    if (commentID === undefined) {
       setEditingContentAfter((prevState) => {
         if (prevState !== undefined) {
           prevState.body = text;
@@ -107,7 +107,7 @@ export function EditingInfoProvider({ children }: { children: any }) {
 
   const overwriteData = () => {
     if (!isChanged || editingContentAfter === undefined) return;
-    data?.updateAllData(editingContentAfter);
+    data?.updateEditData(editingContentAfter);
   };
 
   const info: EditingInfo = {

@@ -24,6 +24,8 @@ import Collapse from '@mui/material/Collapse';
 import EditIcon from '@mui/icons-material/Edit';
 import { useMemoBackground, useCommentBackground } from '../hooks/useColor';
 import { useCreateDisplayData } from '../hooks/useCreateDisplayData';
+import NorthWestIcon from '@mui/icons-material/NorthWest';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 interface ChatMemoProps {
   data: Memo;
@@ -31,7 +33,7 @@ interface ChatMemoProps {
 
 interface ChatCommentProps {
   data: Comment;
-  memoID: number;
+  memoID: string;
 }
 
 interface ChatPackProps {
@@ -41,13 +43,14 @@ interface ChatPackProps {
 
 interface InternalData {
   type: 'memo' | 'comment';
-  id: number;
-  memoID?: number;
+  id: string;
+  memoID?: string;
   text: string[];
   createdAt: string;
   updatedAt: string;
   date: string;
   time: string;
+  synchronized: boolean;
 }
 
 interface ChatTextProps {
@@ -152,7 +155,7 @@ const Timeline = () => {
         }}
       >
         {displayData.map((d) => (
-          <Collapse key={d._type === 'memo' ? d.id : d._date} timeout={400} enter={false}>
+          <Collapse key={d._type === 'memo' ? d._id : d._date} timeout={400} enter={false}>
             {d._type === 'memo' && <ChatMemo data={d} />}
             {d._type === 'date' && <DateChip date={d._date} />}
           </Collapse>
@@ -194,19 +197,20 @@ const ChatMemo = (props: ChatMemoProps) => {
 
   const displayMemo: InternalData = {
     type: 'memo',
-    id: data.id,
+    id: data._id,
     text: data._text,
     createdAt: data.createdAt,
     updatedAt: data.updatedAt,
     date: data._date,
     time: data._time,
+    synchronized: data._synchronized,
   };
 
   return (
     <ChatPack data={displayMemo}>
       {data.comments.map((c, index) => (
         <div key={index}>
-          {c._type === 'comment' && <ChatComment data={c} memoID={data.id} />}
+          {c._type === 'comment' && <ChatComment data={c} memoID={data._id} />}
           {c._type === 'date' && <DateChip date={c._date} />}
         </div>
       ))}
@@ -219,13 +223,14 @@ const ChatComment = (props: ChatCommentProps) => {
 
   const displayComment: InternalData = {
     type: 'comment',
-    id: data.id,
+    id: data._id,
     memoID: memoID,
     text: data._text,
     createdAt: data.createdAt,
     updatedAt: data.updatedAt,
     date: data._date,
     time: data._time,
+    synchronized: data._synchronized,
   };
 
   return (
@@ -254,7 +259,10 @@ const ChatPack = (props: ChatPackProps) => {
       >
         <Stack spacing={0.2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
           <EditedMark data={data} />
-          <HoursChip data={data} sx={{ pb: isOutermost ? 5 : 0 }} />
+          <Stack direction='row' spacing={0.5}>
+            <SynchronizedMark data={data} />
+            <HoursChip data={data} sx={{ pb: isOutermost ? 5 : 0 }} />
+          </Stack>
         </Stack>
         <Stack spacing={1} sx={{ width: isEditing ? '100%' : null }}>
           <Stack sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -281,7 +289,7 @@ const ChatCard = (props: ChatPackProps) => {
 
   const handleClick = () => {
     // コメント追加中にチャット部分をクリックしても入力エリアからフォーカスが外れないようにする
-    if (info?.addingContentID !== undefined ? info?.addingContentID > 0 : false) {
+    if (info?.addingContentID !== undefined ? info?.addingContentID.length > 0 : false) {
       document.getElementById('input')?.focus();
     }
   };
@@ -332,12 +340,12 @@ const EditCompleteButton = () => {
   const editingInfo = useEditingInfoContext();
 
   const handleClickCancel = () => {
-    info?.changeEditingContentID(0);
+    info?.clearEditingContentID();
   };
 
   const handleClickSave = () => {
     editingInfo?.overwriteData();
-    info?.changeEditingContentID(0);
+    info?.clearEditingContentID();
   };
 
   return (
@@ -363,9 +371,9 @@ const CommonTextField = (props: InternalDataProps) => {
     setValue(event.target.value);
 
     if (data.type === 'memo') {
-      editingInfo?.updateEditingContentAfter(-1, event.target.value);
+      editingInfo?.updateEditingContentAfter(event.target.value);
     } else {
-      editingInfo?.updateEditingContentAfter(data.id, event.target.value);
+      editingInfo?.updateEditingContentAfter(event.target.value, data.id);
     }
   };
 
@@ -460,7 +468,7 @@ const CompletedButton = (props: InternalDataProps) => {
 
   const isCompleted = targetData?._tmpCompleted ?? false;
 
-  function handleClick(id: number) {
+  function handleClick(id: string) {
     return function () {
       if (targetData === undefined) return;
       displayData?.updateServerCompleted(id);
@@ -491,10 +499,10 @@ const AddCommentButton = (props: InternalDataProps) => {
 
   const info = useOperationContext();
 
-  function handleClick(id: number) {
+  function handleClick(id: string) {
     return function () {
       if (info?.addingContentID === id) {
-        info?.changeAddingContentID(0);
+        info?.clearAddingContentID();
       } else {
         info?.changeAddingContentID(id);
       }
@@ -535,10 +543,10 @@ const MoreButton = (props: InternalDataProps) => {
     setAnchorEl(null);
   };
 
-  function handleClickEdit(id: number) {
+  function handleClickEdit(id: string) {
     return function () {
       if (info?.editingContentID === id) {
-        info?.changeEditingContentID(0);
+        info?.clearEditingContentID();
         editingInfo?.clearEditingContentInfo();
       } else {
         info?.changeEditingContentID(id);
@@ -548,7 +556,7 @@ const MoreButton = (props: InternalDataProps) => {
     };
   }
 
-  function handleClickDelete(id: number) {
+  function handleClickDelete(id: string) {
     return function () {
       if (isTrash) {
         // 完全削除のダイアログを表示
@@ -618,4 +626,20 @@ const EditedMark = (props: InternalDataProps) => {
   const isEditing: boolean = useGetIsEditing(data);
 
   return <>{isEdited && !isEditing && <EditIcon color='disabled' sx={{ fontSize: 16 }} />}</>;
+};
+
+const SynchronizedMark = (props: InternalDataProps) => {
+  const { data } = props;
+
+  const isSynchronized = !data.synchronized;
+
+  return (
+    <>
+      {isSynchronized && (
+        <Tooltip title='通信エラー'>
+          <ErrorOutlineIcon color='error' sx={{ fontSize: 18 }} />
+        </Tooltip>
+      )}
+    </>
+  );
 };

@@ -25,13 +25,17 @@ export default function DeleteMemoAlertDialog() {
     setValue('');
 
     // ダイアログを閉じる
-    info?.changeDisplayAlertDialog('');
-
-    // サインアウトする
-    userInfo?.signout();
+    info?.clearDisplayAlertDialog();
 
     // サーバーからアカウントを削除する
-    data?.deleteAccount();
+    const result = await data?.deleteAccount();
+
+    if (result) {
+      // サインアウトする
+      userInfo?.signout();
+    } else {
+      alert('アカウント削除が失敗しました。');
+    }
   };
 
   const handleClose = () => {
@@ -39,7 +43,7 @@ export default function DeleteMemoAlertDialog() {
     setValue('');
 
     // ダイアログを閉じる
-    info?.changeDisplayAlertDialog('');
+    info?.clearDisplayAlertDialog();
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
