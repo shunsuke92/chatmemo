@@ -1,13 +1,9 @@
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
-import { SxProps, Theme } from '@mui/system';
 import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CommentIcon from '@mui/icons-material/Comment';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Memo, Comment, useDataContext } from './DataContext';
 import { useOperationContext } from './OperationContext';
@@ -24,8 +20,10 @@ import Collapse from '@mui/material/Collapse';
 import EditIcon from '@mui/icons-material/Edit';
 import { useMemoBackground, useCommentBackground } from '../hooks/useColor';
 import { useCreateDisplayData } from '../hooks/useCreateDisplayData';
-import NorthWestIcon from '@mui/icons-material/NorthWest';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import AddCommentIcon from '@mui/icons-material/AddComment';
 
 interface ChatMemoProps {
   data: Memo;
@@ -63,7 +61,6 @@ interface InternalDataProps {
 
 interface HoursChipProps {
   data: InternalData;
-  sx: SxProps<Theme>;
 }
 
 const getIsOutermost = (data: InternalData): boolean => {
@@ -245,6 +242,7 @@ const ChatPack = (props: ChatPackProps) => {
 
   const isEditing: boolean = useGetIsEditing(data);
   const isOutermost: boolean = getIsOutermost(data);
+  const isTrash = useGetIsTrash();
 
   return (
     <Stack
@@ -252,25 +250,32 @@ const ChatPack = (props: ChatPackProps) => {
       spacing={1}
       sx={{ width: '100%', display: 'flex', alignItems: 'flex-end' }}
     >
-      <Stack
-        direction='row'
-        spacing={1}
-        sx={{ width: isEditing ? '100%' : null, display: 'flex', alignItems: 'flex-end' }}
-      >
-        <Stack spacing={0.2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
-          <EditedMark data={data} />
-          <Stack direction='row' spacing={0.5}>
-            <SynchronizedMark data={data} />
-            <HoursChip data={data} sx={{ pb: isOutermost ? 5 : 0 }} />
+      <Stack direction='row' spacing={1}>
+        {!isTrash && isOutermost && (
+          <Stack sx={{ display: 'flex', justifyContent: 'center' }}>
+            <CompletedButton data={data} />
           </Stack>
-        </Stack>
-        <Stack spacing={1} sx={{ width: isEditing ? '100%' : null }}>
-          <Stack sx={{ display: 'flex', alignItems: 'flex-end' }}>
-            <ChatCard data={data}>{children}</ChatCard>
+        )}
+        <Stack
+          direction='row'
+          spacing={1}
+          sx={{ width: isEditing ? '100%' : null, display: 'flex', alignItems: 'flex-end' }}
+        >
+          <Stack spacing={0.2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
+            <EditedMark data={data} />
+            <Stack direction='row' spacing={0.5}>
+              <SynchronizedMark data={data} />
+              <HoursChip data={data} />
+            </Stack>
           </Stack>
-          {isOutermost && <LowerButtons data={data} />}
+          <Stack spacing={1} sx={{ width: isEditing ? '100%' : null }}>
+            <Stack sx={{ display: 'flex', alignItems: 'flex-end' }}>
+              <ChatCard data={data}>{children}</ChatCard>
+            </Stack>
+          </Stack>
         </Stack>
       </Stack>
+      {isOutermost && <LowerButtons data={data} />}
     </Stack>
   );
 };
@@ -450,12 +455,8 @@ const LowerButtons = (props: InternalDataProps) => {
 
   return (
     <Stack spacing={1} direction='row' justifyContent='space-between' alignItems='center'>
-      <Stack>
-        <Stack spacing={1} direction='row' justifyContent='flex-start' alignItems='center'>
-          {!isTrash && <CompletedButton data={data} />}
-          {!isTrash && <AddCommentButton data={data} />}
-        </Stack>
-      </Stack>
+      {!isTrash && <AddCommentButton data={data} />}
+
       <MoreButton data={data} />
     </Stack>
   );
@@ -477,20 +478,18 @@ const CompletedButton = (props: InternalDataProps) => {
   }
 
   return (
-    <Tooltip title={isCompleted ? '実行済み' : '未実行'}>
-      <IconButton
-        aria-label='completed'
-        sx={{ color: 'text.secondary' }}
-        onClick={handleClick(data.id)}
-        size='small'
-      >
-        {isCompleted ? (
-          <CheckCircleIcon fontSize='small' />
-        ) : (
-          <CheckCircleOutlineIcon fontSize='small' />
-        )}
-      </IconButton>
-    </Tooltip>
+    <IconButton
+      aria-label='completed'
+      sx={{ color: 'text.secondary' }}
+      onClick={handleClick(data.id)}
+      size='small'
+    >
+      {isCompleted ? (
+        <RadioButtonCheckedIcon fontSize='small' color='primary' />
+      ) : (
+        <RadioButtonUncheckedIcon fontSize='small' color='disabled' />
+      )}
+    </IconButton>
   );
 };
 
@@ -510,14 +509,14 @@ const AddCommentButton = (props: InternalDataProps) => {
   }
 
   return (
-    <Tooltip title='コメント'>
+    <Tooltip title='コメントを追加'>
       <IconButton
         aria-label='add-comment'
         sx={{ color: 'text.secondary' }}
         onClick={handleClick(data.id)}
         size='small'
       >
-        <CommentIcon fontSize='small' />
+        <AddCommentIcon fontSize='small' />
       </IconButton>
     </Tooltip>
   );
@@ -601,7 +600,7 @@ const MoreButton = (props: InternalDataProps) => {
 };
 
 const HoursChip = (props: HoursChipProps) => {
-  const { data, sx } = props;
+  const { data } = props;
 
   const settingInfo = useSettingInfoContext();
   const setting = settingInfo?.setting;
@@ -611,7 +610,7 @@ const HoursChip = (props: HoursChipProps) => {
   return (
     <>
       {isDisplay && (
-        <Typography variant='caption' color='text.disabled' sx={{ ...sx, whiteSpace: 'nowrap' }}>
+        <Typography variant='caption' color='text.disabled' sx={{ whiteSpace: 'nowrap' }}>
           {data.time}
         </Typography>
       )}

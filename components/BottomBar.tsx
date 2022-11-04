@@ -121,7 +121,7 @@ export default function BottomBar() {
           multiline
           maxRows={5}
           value={value}
-          placeholder='メモを入力'
+          placeholder='メモを入力…'
           size='small'
           onChange={handleChange}
           sx={{
