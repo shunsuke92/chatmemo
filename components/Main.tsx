@@ -73,6 +73,12 @@ const useGetIsTrash = (): boolean => {
   return info?.selectedDisplayType.id === 3;
 };
 
+const useGetIsAllMemo = (): boolean => {
+  const info = useOperationContext();
+
+  return info?.selectedDisplayType.id === 1;
+};
+
 const useGetIsAdding = (data: InternalData): boolean => {
   const info = useOperationContext();
 
@@ -251,7 +257,7 @@ const ChatPack = (props: ChatPackProps) => {
       sx={{ width: '100%', display: 'flex', alignItems: 'flex-end' }}
     >
       <Stack direction='row' spacing={1}>
-        {!isTrash && isOutermost && (
+        {isOutermost && (
           <Stack sx={{ display: 'flex', justifyContent: 'center' }}>
             <CompletedButton data={data} />
           </Stack>
@@ -451,11 +457,11 @@ const CommentText = (props: ChatTextProps) => {
 const LowerButtons = (props: InternalDataProps) => {
   const { data } = props;
 
-  const isTrash = useGetIsTrash();
+  const idAllMemoTab = useGetIsAllMemo();
 
   return (
     <Stack spacing={1} direction='row' justifyContent='space-between' alignItems='center'>
-      {!isTrash && <AddCommentButton data={data} />}
+      {idAllMemoTab && <AddCommentButton data={data} />}
 
       <MoreButton data={data} />
     </Stack>
@@ -468,6 +474,7 @@ const CompletedButton = (props: InternalDataProps) => {
   const targetData = displayData?.getTargetMemo(data.id);
 
   const isCompleted = targetData?._tmpCompleted ?? false;
+  const isTrash = useGetIsTrash();
 
   function handleClick(id: string) {
     return function () {
@@ -483,9 +490,10 @@ const CompletedButton = (props: InternalDataProps) => {
       sx={{ color: 'text.secondary' }}
       onClick={handleClick(data.id)}
       size='small'
+      disabled={isTrash}
     >
       {isCompleted ? (
-        <RadioButtonCheckedIcon fontSize='small' color='primary' />
+        <RadioButtonCheckedIcon fontSize='small' color={isTrash ? 'disabled' : 'primary'} />
       ) : (
         <RadioButtonUncheckedIcon fontSize='small' color='disabled' />
       )}
@@ -529,6 +537,7 @@ const MoreButton = (props: InternalDataProps) => {
   const displayData = useDataContext();
   const editingInfo = useEditingInfoContext();
   const isTrash = useGetIsTrash();
+  const idAllMemoTab = useGetIsAllMemo();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -586,7 +595,7 @@ const MoreButton = (props: InternalDataProps) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {!isTrash && (
+        {idAllMemoTab && (
           <MenuItem onClick={handleClickEdit(data.id)} sx={{ fontSize: '0.8rem' }}>
             編集
           </MenuItem>

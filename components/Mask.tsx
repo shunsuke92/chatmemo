@@ -2,7 +2,13 @@ import { Box } from '@mui/system';
 import { useOperationContext } from './OperationContext';
 import { useMaskBackground } from '../hooks/useColor';
 
-export default function Mask() {
+interface MaskProps {
+  height: any;
+  top: any;
+}
+
+export default function Mask(props: MaskProps) {
+  const { height, top } = props;
   const info = useOperationContext();
   const maskBackground = useMaskBackground();
 
@@ -25,9 +31,9 @@ export default function Mask() {
         <Box
           sx={{
             width: '100%',
-            height: { xs: 'calc(100% - 56px - 72px)', sm: 'calc(100% - 64px - 80px)' },
+            height: height,
             position: 'fixed',
-            top: { xs: 56, sm: 64 },
+            top: top,
             zIndex: 2000,
             ...maskBackground,
           }}

@@ -7,8 +7,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import FolderIcon from '@mui/icons-material/Folder';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { DisplayType, DISPLAY_TYPE, useOperationContext } from './OperationContext';
 import { useLightModeColor } from '../hooks/useColor';
 
@@ -58,7 +58,7 @@ export default function SideDrawer(props: SideDrawerProps) {
                     {index === 0 ? (
                       <FolderIcon sx={{ color: lightModeColor }} />
                     ) : (
-                      <CheckBoxIcon sx={{ color: lightModeColor }} />
+                      <CheckCircleIcon sx={{ color: lightModeColor }} />
                     )}
                   </ListItemIcon>
                   <ListItemText primary={list.name} />

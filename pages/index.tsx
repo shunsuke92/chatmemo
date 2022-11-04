@@ -28,7 +28,7 @@ const Home: NextPage = () => {
 
       <MenuBar />
       <main className={styles.main}>
-        <Mask />
+        <Mask height='100%' top={0} />
         <Synchronizing progress={false} />
         <DeleteMemoAlertDialog />
         <DeleteAccountAlertDialog />

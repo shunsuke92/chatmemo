@@ -8,6 +8,7 @@ import { useDataContext } from '../components/DataContext';
 import { useOperationContext } from './OperationContext';
 import { useBarBackground } from '../hooks/useColor';
 import Synchronizing from '../components/Synchronizing';
+import Mask from '../components/Mask';
 
 export default function BottomBar() {
   const data = useDataContext();
@@ -20,6 +21,7 @@ export default function BottomBar() {
   const addingContentID = info?.addingContentID !== undefined ? info?.addingContentID : '';
   const isEditing =
     info?.editingContentID !== undefined ? info?.editingContentID.length > 0 : false;
+  const idDisplay = info?.selectedDisplayType.id === 1;
 
   useEffect(() => {
     if (info?.addingContentID !== undefined ? info?.addingContentID.length > 0 : false) {
@@ -82,11 +84,6 @@ export default function BottomBar() {
     return validString ? true : false;
   };
 
-  const handleClickMask = () => {
-    info?.clearAddingContentID();
-    info?.clearEditingContentID();
-  };
-
   const handleClickInputArea = (event: React.MouseEvent<HTMLDivElement>) => {
     if (isAdding) {
       event.stopPropagation();
@@ -95,70 +92,77 @@ export default function BottomBar() {
   };
 
   return (
-    <Box
-      onClick={handleClickMask}
-      sx={{
-        position: 'fixed',
-        bottom: 0,
-        width: '100%',
-        display: 'flex',
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-        height: { xs: 72, sm: 80 },
-        pb: { xs: 2, sm: 2.5 },
-        ...barBackground,
-      }}
-    >
-      <Synchronizing progress={false} />
-      <Stack
-        direction='row'
-        spacing={2}
-        sx={{ maxWidth: '100vw', pr: 2, pl: 2 }}
-        onClick={handleClickInputArea}
-      >
-        <TextField
-          id='input'
-          multiline
-          maxRows={5}
-          value={value}
-          placeholder='メモを入力…'
-          size='small'
-          onChange={handleChange}
+    <>
+      {idDisplay && (
+        <Box
           sx={{
-            width: 500,
-            zIndex: isAdding ? 2500 : null,
-            position: isAdding ? 'relative' : null,
+            position: 'fixed',
+            bottom: 0,
+            width: '100%',
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'center',
+            height: { xs: 72, sm: 80 },
+            pb: { xs: 2, sm: 2.5 },
+            ...barBackground,
           }}
-          disabled={isEditing}
-        />
-        {hasValidString(value) ? (
-          <IconButton
-            aria-label='send'
-            color='primary'
-            onClick={() => handleClick(addingContentID)}
-            sx={{
-              display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'center',
-            }}
+        >
+          <Mask
+            height={{ xs: '72px', sm: '80px' }}
+            top={{ xs: 'calc(100% - 72px)', sm: 'calc(100%  - 80px)' }}
+          />
+          <Synchronizing progress={false} />
+          <Stack
+            direction='row'
+            spacing={2}
+            sx={{ maxWidth: '100vw', pr: 2, pl: 2 }}
+            onClick={handleClickInputArea}
           >
-            <SendIcon />
-          </IconButton>
-        ) : (
-          <IconButton
-            aria-label='send'
-            color='primary'
-            disabled
-            sx={{
-              display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'center',
-            }}
-          >
-            <SendIcon />
-          </IconButton>
-        )}
-      </Stack>
-    </Box>
+            <TextField
+              id='input'
+              multiline
+              maxRows={5}
+              value={value}
+              placeholder='メモを入力…'
+              size='small'
+              onChange={handleChange}
+              sx={{
+                width: 500,
+                zIndex: isAdding ? 2500 : null,
+                position: isAdding ? 'relative' : null,
+              }}
+              disabled={isEditing}
+            />
+            {hasValidString(value) ? (
+              <IconButton
+                aria-label='send'
+                color='primary'
+                onClick={() => handleClick(addingContentID)}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  justifyContent: 'center',
+                }}
+              >
+                <SendIcon />
+              </IconButton>
+            ) : (
+              <IconButton
+                aria-label='send'
+                color='primary'
+                disabled
+                sx={{
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  justifyContent: 'center',
+                }}
+              >
+                <SendIcon />
+              </IconButton>
+            )}
+          </Stack>
+        </Box>
+      )}
+    </>
   );
 }

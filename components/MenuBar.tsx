@@ -10,6 +10,7 @@ import { useOperationContext } from './OperationContext';
 import SideDrawer from './SideDrawer';
 import { useBarBackground, useLightModeColor } from '../hooks/useColor';
 import Synchronizing from '../components/Synchronizing';
+import Mask from '../components/Mask';
 
 export default function MenuBar() {
   const info = useOperationContext();
@@ -19,11 +20,6 @@ export default function MenuBar() {
   const [open, setOpen] = useState(false);
 
   const title = info?.selectedDisplayType.name;
-
-  const handleClick = () => {
-    info?.clearAddingContentID();
-    info?.clearEditingContentID();
-  };
 
   const handleClickOpenMenu = () => {
     setOpen(true);
@@ -37,8 +33,8 @@ export default function MenuBar() {
           backgroundImage: 'none',
           ...barBackground,
         }}
-        onClick={handleClick}
       >
+        <Mask height={{ xs: '56px', sm: '64px' }} top={0} />
         <Synchronizing progress={true} />
         <Toolbar>
           <IconButton
