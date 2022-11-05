@@ -142,6 +142,7 @@ export default function BottomBar() {
                   display: 'flex',
                   alignItems: 'flex-end',
                   justifyContent: 'center',
+                  zIndex: isAdding ? 2500 : null,
                 }}
               >
                 <SendIcon />
@@ -149,12 +150,12 @@ export default function BottomBar() {
             ) : (
               <IconButton
                 aria-label='send'
-                color='primary'
                 disabled
                 sx={{
                   display: 'flex',
                   alignItems: 'flex-end',
                   justifyContent: 'center',
+                  zIndex: isAdding ? 2500 : null,
                 }}
               >
                 <SendIcon />
