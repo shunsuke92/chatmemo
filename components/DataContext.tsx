@@ -125,7 +125,7 @@ export function DataProvider({ children }: { children: any }) {
               data._tmpCompleted = data.completed;
               data._tmpCompletedAt = data.completedAt;
               data._type = 'memo';
-              data._id = String(data.id);
+              data._id = data.id.toString();
 
               data.comments.map((data) => {
                 data._text = data.body.split(/\r\n|\n|\r/gm);
@@ -133,7 +133,7 @@ export function DataProvider({ children }: { children: any }) {
                 data._time = getTime(data.createdAt);
                 data._synchronized = true;
                 data._type = 'comment';
-                data._id = String(data.id);
+                data._id = data.id.toString();
               });
 
               return data;
@@ -238,7 +238,7 @@ export function DataProvider({ children }: { children: any }) {
 
     if (result !== -1) {
       memo._synchronized = true;
-      memo._id = String(result);
+      memo._id = result.toString();
     } else {
       memo._synchronized = false;
       memo._id = errID;
@@ -412,7 +412,7 @@ export function DataProvider({ children }: { children: any }) {
 
     if (result !== -1) {
       comment._synchronized = true;
-      comment._id = String(result);
+      comment._id = result.toString();
     } else {
       comment._synchronized = false;
       comment._id = ErrID;
