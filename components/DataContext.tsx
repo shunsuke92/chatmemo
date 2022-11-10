@@ -478,6 +478,7 @@ export function DataProvider({ children }: { children: any }) {
       bookDelayCompletedID.current.push(id);
     }
 
+    // 時間差で更新
     setTimer(updateLocalCompletedCallback, 2000);
   };
 
@@ -504,37 +505,32 @@ export function DataProvider({ children }: { children: any }) {
   };
 
   const updateServerCompleted = async (id: string) => {
-    // 制御用のローカル変数を更新
-    const targetMemo = getTargetMemo(id);
-    if (targetMemo === undefined) return;
+    const targetMemoForLocal = getTargetMemo(id);
+    if (targetMemoForLocal === undefined) return;
 
-    const updateValue = !targetMemo._tmpCompleted;
+    const targetMemoForServer = getTargetMemo(id);
+    if (targetMemoForServer === undefined) return;
 
-    targetMemo._tmpCompleted = updateValue;
+    const updateValue = !targetMemoForLocal._tmpCompleted;
+
+    targetMemoForLocal._tmpCompleted = updateValue;
+    targetMemoForServer.completed = updateValue;
+
     if (updateValue) {
       const date = getNowDate();
-      targetMemo._tmpCompletedAt = date;
+      targetMemoForLocal._tmpCompletedAt = date;
+      targetMemoForServer.completedAt = date;
     }
 
-    // 完了済みフラグを更新
-    const targetMemo2 = getTargetMemo(id);
-    if (targetMemo2 === undefined) return;
-
-    targetMemo2.completed = updateValue;
-
-    if (updateValue) {
-      targetMemo2.completedAt = targetMemo._tmpCompletedAt;
-    }
-
-    const result = await seveServer(() => serverUpdateMemoTable(id, targetMemo2), id);
+    const result = await seveServer(() => serverUpdateMemoTable(id, targetMemoForServer), id);
 
     if (result) {
-      targetMemo._synchronized = true;
+      targetMemoForLocal._synchronized = true;
     } else {
-      targetMemo._synchronized = false;
+      targetMemoForLocal._synchronized = false;
     }
 
-    localUpdateData(id, targetMemo);
+    localUpdateData(id, targetMemoForLocal);
   };
 
   const updateEditData = async (editingData: EditingContent) => {
