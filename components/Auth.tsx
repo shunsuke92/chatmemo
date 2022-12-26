@@ -47,7 +47,7 @@ export function Auth({ children }: { children: any }) {
     return () => {
       unsubscribed();
     };
-  }, []);
+  }, [setUser, initializationProcess]);
 
   return <>{isAuthChecking ? <LinearProgress /> : children}</>;
 }
