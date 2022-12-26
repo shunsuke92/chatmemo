@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
@@ -6,23 +5,25 @@ import AppBar from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
 import Login from './Login';
 import User from './User';
-import { useOperationContext } from './OperationContext';
 import SideDrawer from './SideDrawer';
 import { useBarBackground, useLightModeColor } from '../hooks/useColor';
 import Synchronizing from '../components/Synchronizing';
 import Mask from '../components/Mask';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
+import { openSideDrawerState } from '../states/openSideDrawerState';
 
 export default function MenuBar() {
-  const info = useOperationContext();
   const barBackground = useBarBackground();
   const lightModeColor = useLightModeColor();
 
-  const [open, setOpen] = useState(false);
+  const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
+  const setOpenSideDrawer = useSetRecoilState(openSideDrawerState);
 
-  const title = info?.selectedDisplayType.name;
+  const title = selectedDisplayType.name;
 
   const handleClickOpenMenu = () => {
-    setOpen(true);
+    setOpenSideDrawer(true);
   };
 
   return (
@@ -57,7 +58,7 @@ export default function MenuBar() {
           <User />
         </Toolbar>
       </AppBar>
-      <SideDrawer open={open} setOpen={setOpen} />
+      <SideDrawer />
     </>
   );
 }

@@ -5,7 +5,7 @@ export const useSetTimeout = () => {
 
   const setTimer = (callback: any, delay: number) => {
     // 設定済みのタイマーがあればクリア
-    if (timeoutID.current !== undefined) {
+    if (timeoutID !== undefined) {
       clearTimeout(timeoutID.current);
     }
 

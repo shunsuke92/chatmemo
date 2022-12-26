@@ -1,25 +1,32 @@
 import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useDataContext } from './DataContext';
-import { useOperationContext } from './OperationContext';
-import { useEditingInfoContext } from './EditingInfoContext';
+import { EditingInfo } from './EditingInfoContext';
 import { useState } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { InternalData, useGetIsTrash, useGetIsAllMemo } from './Timeline';
+import { InternalData } from './Timeline';
+import { AlertDialog } from '../states/displayAlertDialogState';
 
 interface MoreButtonProps {
   data: InternalData;
+  isTrash: boolean;
+  isAllMemo: boolean;
+  editingInfo: EditingInfo | undefined;
+  changeDisplayAlertDialog: (value: AlertDialog, deleteID?: string | undefined) => void;
+  changeEditingContentID: (id: string) => void;
+  deleteMemo: (id: string | undefined) => Promise<void>;
 }
 
 export const MoreButton = (props: MoreButtonProps) => {
-  const { data } = props;
-
-  const info = useOperationContext();
-  const displayData = useDataContext();
-  const editingInfo = useEditingInfoContext();
-  const isTrash = useGetIsTrash();
-  const idAllMemoTab = useGetIsAllMemo();
+  const {
+    data,
+    isTrash,
+    isAllMemo,
+    editingInfo,
+    changeDisplayAlertDialog,
+    changeEditingContentID,
+    deleteMemo,
+  } = props;
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -35,13 +42,9 @@ export const MoreButton = (props: MoreButtonProps) => {
 
   function handleClickEdit(id: string) {
     return function () {
-      if (info?.editingContentID === id) {
-        info?.clearEditingContentID();
-        editingInfo?.clearEditingContentInfo();
-      } else {
-        info?.changeEditingContentID(id);
-        editingInfo?.createEditingContentInfo(id);
-      }
+      changeEditingContentID(id);
+      editingInfo?.createEditingContentInfo(data);
+
       setAnchorEl(null);
     };
   }
@@ -50,10 +53,10 @@ export const MoreButton = (props: MoreButtonProps) => {
     return function () {
       if (isTrash) {
         // 完全削除のダイアログを表示
-        info?.changeDisplayAlertDialog('complete-deletion-memo', id);
+        changeDisplayAlertDialog('complete-deletion-memo', id);
       } else {
         // ごみ箱に移動
-        displayData?.deleteMemo(id);
+        deleteMemo(id);
       }
       setAnchorEl(null);
     };
@@ -77,7 +80,7 @@ export const MoreButton = (props: MoreButtonProps) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {idAllMemoTab && (
+        {isAllMemo && (
           <MenuItem onClick={handleClickEdit(data.id)} sx={{ fontSize: '0.8rem' }}>
             編集
           </MenuItem>

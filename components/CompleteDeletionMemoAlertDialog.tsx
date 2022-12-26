@@ -4,25 +4,31 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useDataContext } from './DataContext';
-import { useOperationContext } from './OperationContext';
+import { useOperateCompleteDeletionMemo } from '../hooks/useOperateCompleteDeletionMemo';
+import { useRecoilValue } from 'recoil';
+import { displayAlertDialogState } from '../states/displayAlertDialogState';
+import { deleteIDState } from '../states/deleteIDState';
+import { useClearDisplayAlertDialog } from '../hooks/useClearDisplayAlertDialog';
 
 export default function CompleteDeletionMemoAlertDialog() {
-  const data = useDataContext();
-  const info = useOperationContext();
+  const completeDeletionMemo = useOperateCompleteDeletionMemo();
 
-  const isDisplay: boolean = info?.displayAlertDialog === 'complete-deletion-memo' ?? false;
+  const displayAlertDialog = useRecoilValue(displayAlertDialogState);
+  const deleteID = useRecoilValue(deleteIDState);
+  const clearDisplayAlertDialog = useClearDisplayAlertDialog();
+
+  const isDisplay: boolean = displayAlertDialog === 'complete-deletion-memo';
 
   const handleClick = () => {
-    data?.completeDeletionMemo(info?.deleteID);
+    completeDeletionMemo(deleteID);
 
     // ダイアログを閉じる
-    info?.clearDisplayAlertDialog();
+    clearDisplayAlertDialog();
   };
 
   const handleClose = () => {
     // ダイアログを閉じる
-    info?.clearDisplayAlertDialog();
+    clearDisplayAlertDialog();
   };
 
   return (

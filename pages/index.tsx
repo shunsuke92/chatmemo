@@ -1,17 +1,9 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
-import MenuBar from '../components/MenuBar';
-import Mask from '../components/Mask';
-import Synchronizing from '../components/Synchronizing';
-import DeleteMemoAlertDialog from '../components/DeleteMemoAlertDialog';
-import DeleteAccountAlertDialog from '../components/DeleteAccountAlertDialog';
-import CompleteDeletionMemoAlertDialog from '../components/CompleteDeletionMemoAlertDialog';
-import Main from '../components/Main';
-import BottomBar from '../components/BottomBar';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useCreateTheme } from '../hooks/useCreateTheme';
+import Main from '../components/Main';
 
 const Home: NextPage = () => {
   const theme = useCreateTheme();
@@ -26,16 +18,7 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <MenuBar />
-      <main className={styles.main}>
-        <Mask height='100%' top={0} />
-        <Synchronizing progress={false} />
-        <DeleteMemoAlertDialog />
-        <DeleteAccountAlertDialog />
-        <CompleteDeletionMemoAlertDialog />
-        <Main />
-      </main>
-      <BottomBar />
+      <Main />
     </ThemeProvider>
   );
 };

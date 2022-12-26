@@ -1,7 +1,9 @@
 import { Box } from '@mui/system';
-import { useOperationContext } from './OperationContext';
 import { useMaskBackground } from '../hooks/useColor';
 import LinearProgress from '@mui/material/LinearProgress';
+import { useRecoilValue } from 'recoil';
+import { isSynchronizingState } from '../states/isSynchronizingState';
+import { synchronizingProgressState } from '../states/synchronizingProgressState';
 
 interface SynchronizingProps {
   progress: boolean;
@@ -9,10 +11,12 @@ interface SynchronizingProps {
 
 export default function Synchronizing(props: SynchronizingProps) {
   const { progress } = props;
-  const info = useOperationContext();
   const maskBackground = useMaskBackground();
 
-  const isDisplay: boolean = info?.isSynchronizing ?? false;
+  const isSynchronizing = useRecoilValue(isSynchronizingState);
+  const synchronizingProgress = useRecoilValue(synchronizingProgressState);
+
+  const isDisplay: boolean = isSynchronizing;
 
   return (
     <>
@@ -27,7 +31,7 @@ export default function Synchronizing(props: SynchronizingProps) {
             ...maskBackground,
           }}
         >
-          {progress && <LinearProgress variant='determinate' value={info?.synchronizingProgress} />}
+          {progress && <LinearProgress variant='determinate' value={synchronizingProgress} />}
         </Box>
       )}
     </>

@@ -1,16 +1,15 @@
-import { useEditingInfoContext } from './EditingInfoContext';
+import { EditingInfo } from './EditingInfoContext';
 import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { InternalData } from './Timeline';
 
 interface CommonTextFieldProps {
   data: InternalData;
+  editingInfo: EditingInfo | undefined;
 }
 
 export const CommonTextField = (props: CommonTextFieldProps) => {
-  const { data } = props;
-
-  const editingInfo = useEditingInfoContext();
+  const { data, editingInfo } = props;
 
   const [value, setValue] = useState(data.text.join('\n'));
 

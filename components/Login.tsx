@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Button from '@mui/material/Button';
 import { app, provider } from '../utils/firebase';
 import { getAuth, signInWithRedirect } from 'firebase/auth';
-import { useAuthContext } from './AuthContext';
 import Dialog from '@mui/material/Dialog';
 import { Box } from '@mui/system';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -10,6 +9,8 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { useRecoilValue } from 'recoil';
+import { authUserState } from '../states/authUserState';
 
 interface LoginDialogProps {
   open: boolean;
@@ -107,8 +108,7 @@ function LoginDialog(props: LoginDialogProps) {
 
 export default function Login() {
   const [open, setOpen] = useState(false);
-  const userInfo = useAuthContext();
-  const user = userInfo?.user;
+  const user = useRecoilValue(authUserState);
 
   const handleClickOpen = () => {
     setOpen(true);

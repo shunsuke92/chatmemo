@@ -1,23 +1,31 @@
 import IconButton from '@mui/material/IconButton';
-import { useDataContext } from './DataContext';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import { InternalData, useGetIsTrash } from './Timeline';
+import { InternalData } from './Timeline';
+import { getNowDate } from '../utils/getNowDate';
+import { DelayCompleted } from '../components/DelayCompletedContext';
 
 interface CompletedButtonProps {
   data: InternalData;
+  isTrash: boolean;
+  delayCompleted: DelayCompleted | undefined;
+  updateServerCompleted: (id: string, value: boolean, date?: string | undefined) => Promise<void>;
 }
 
 export const CompletedButton = (props: CompletedButtonProps) => {
-  const { data } = props;
+  const { data, isTrash, delayCompleted, updateServerCompleted } = props;
 
   const isCompleted = data.completed;
-  const isTrash = useGetIsTrash();
-  const originalData = useDataContext();
 
   const handleClick = () => {
-    originalData?.updateServerCompleted(data.id);
-    originalData?.updateLocalCompleted(data.id);
+    if (!data.completed) {
+      const date = getNowDate();
+      updateServerCompleted(data.id, !data.completed, date);
+      delayCompleted?.updateLocalCompleted(data.id, !data.completed, date);
+    } else {
+      updateServerCompleted(data.id, !data.completed);
+      delayCompleted?.updateLocalCompleted(data.id, !data.completed);
+    }
   };
 
   return (

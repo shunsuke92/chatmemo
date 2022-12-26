@@ -1,19 +1,26 @@
 import Stack from '@mui/material/Stack';
-import { useOperationContext } from './OperationContext';
-import { useEditingInfoContext } from './EditingInfoContext';
+import { EditingInfo } from './EditingInfoContext';
 import Button from '@mui/material/Button';
+import { useClearEditingContentID } from '../hooks/useClearEditingContentID';
 
-export const EditCompleteButton = () => {
-  const info = useOperationContext();
-  const editingInfo = useEditingInfoContext();
+interface EditCompleteButtonProps {
+  editingInfo: EditingInfo | undefined;
+}
+
+export const EditCompleteButton = (props: EditCompleteButtonProps) => {
+  const { editingInfo } = props;
+
+  const clearEditingContentID = useClearEditingContentID();
 
   const handleClickCancel = () => {
-    info?.clearEditingContentID();
+    clearEditingContentID();
+    editingInfo?.clearEditingContentInfo();
   };
 
   const handleClickSave = () => {
     editingInfo?.overwriteData();
-    info?.clearEditingContentID();
+    clearEditingContentID();
+    editingInfo?.clearEditingContentInfo();
   };
 
   return (

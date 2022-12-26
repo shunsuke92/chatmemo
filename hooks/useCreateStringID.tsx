@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-export const useCreateID = (text: string) => {
+export const useCreateStringID = (text: string) => {
   const count = useRef(0);
 
   const createID = () => {

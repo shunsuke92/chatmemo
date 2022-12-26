@@ -1,6 +1,9 @@
 import { Box } from '@mui/system';
-import { useOperationContext } from './OperationContext';
 import { useMaskBackground } from '../hooks/useColor';
+import { useClearAddingContentID } from '../hooks/useClearAddingContentID';
+import { useClearEditingContentID } from '../hooks/useClearEditingContentID';
+import { useGetIsAdding } from '../components/Main';
+import { useGetIsEditing } from '../components/Main';
 
 interface MaskProps {
   height: any;
@@ -9,20 +12,19 @@ interface MaskProps {
 
 export default function Mask(props: MaskProps) {
   const { height, top } = props;
-  const info = useOperationContext();
   const maskBackground = useMaskBackground();
 
-  const isAdding: boolean =
-    info?.addingContentID !== undefined ? info?.addingContentID.length > 0 : false;
+  const clearAddingContentID = useClearAddingContentID();
+  const clearEditingContentID = useClearEditingContentID();
 
-  const isEditing: boolean =
-    info?.editingContentID !== undefined ? info?.editingContentID.length > 0 : false;
+  const isAdding = useGetIsAdding();
+  const isEditing = useGetIsEditing();
 
   const isDisplay: boolean = isAdding || isEditing;
 
   const handleClick = () => {
-    info?.clearAddingContentID();
-    info?.clearEditingContentID();
+    clearAddingContentID();
+    clearEditingContentID();
   };
 
   return (

@@ -2,16 +2,14 @@ import Typography from '@mui/material/Typography';
 
 import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
-import { useMemoBackground } from '../hooks/useColor';
 
 interface MemoTextProps {
   data: string[];
+  memoBackground: string;
 }
 
 export const MemoText = (props: MemoTextProps) => {
-  const { data } = props;
-
-  const memoBackground = useMemoBackground();
+  const { data, memoBackground } = props;
 
   return (
     <>

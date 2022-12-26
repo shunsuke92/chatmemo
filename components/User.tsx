@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
-import { useAuthContext } from './AuthContext';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
@@ -13,27 +12,34 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Switch from '@mui/material/Switch';
 import { DarkMode, useSettingInfoContext } from '../components/SettingInfoContext';
 import DangerousIcon from '@mui/icons-material/Dangerous';
-import { useOperationContext } from './OperationContext';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import { authUserState } from '../states/authUserState';
+import { openUserMenuState } from '../states/openUserMenuState';
+import { isLoggingoutState } from '../states/isLoggingoutState';
+import { signout } from '../utils/signout';
+import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
 
 export default function User() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
   const [setting, setSetting] = useState(false);
 
-  const userInfo = useAuthContext();
-  const user = userInfo?.user;
+  const user = useRecoilValue(authUserState);
   const userPhotoURL = user?.photoURL !== null ? user?.photoURL : undefined;
+  const [openUserMenu, setopenUserMenu] = useRecoilState(openUserMenuState);
+  const setIsLoggingout = useSetRecoilState(isLoggingoutState);
 
-  const info = useOperationContext();
+  const changeDisplayAlertDialog = useChangeDisplayAlertDialog();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
+    setopenUserMenu(true);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+    setopenUserMenu(false);
     setTimeout(() => setSetting(false), 500);
   };
 
@@ -42,12 +48,13 @@ export default function User() {
   };
 
   const handleClickLogout = () => {
-    userInfo?.signout();
+    signout();
+    setIsLoggingout(true);
     handleClose();
   };
 
   const handleClickDeleteAccount = () => {
-    info?.changeDisplayAlertDialog('delete-account');
+    changeDisplayAlertDialog('delete-account');
     handleClose();
   };
 
@@ -142,7 +149,7 @@ export default function User() {
         size='small'
         aria-label='Dark-Mode'
       >
-        <ToggleButton value='os'>OSの設定</ToggleButton>
+        <ToggleButton value='os'>デバイスの設定</ToggleButton>
         <ToggleButton value='dark'>DARK</ToggleButton>
         <ToggleButton value='light'>LIGHT</ToggleButton>
       </ToggleButtonGroup>
@@ -161,7 +168,7 @@ export default function User() {
         </IconButton>
       )}
 
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose} sx={{ mt: 1 }}>
+      <Menu anchorEl={anchorEl} open={openUserMenu} onClose={handleClose} sx={{ mt: 1 }}>
         {setting ? (
           <div>
             <MyMenuItem>

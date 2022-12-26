@@ -1,22 +1,17 @@
-import { createContext, useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { app } from '../utils/firebase';
-import { getAuth, onAuthStateChanged, User, signOut } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import LinearProgress from '@mui/material/LinearProgress';
 import axios from 'axios';
+import { useSetRecoilState } from 'recoil';
+import { authUserState } from '../states/authUserState';
+import { useInitializationProcess } from '../hooks/useInitializationProcess';
 
-interface UserInfo {
-  user: User | null;
-  signout: () => void;
-}
+export function Auth({ children }: { children: any }) {
+  const setUser = useSetRecoilState(authUserState);
 
-const AuthContext = createContext<UserInfo | null>(null);
+  const initializationProcess = useInitializationProcess();
 
-export function useAuthContext() {
-  return useContext(AuthContext);
-}
-
-export function AuthProvider({ children }: { children: any }) {
-  const [user, setUser] = useState<User | null>(null);
   const [isAuthChecking, setIsAuthChecking] = useState(true);
 
   useEffect(() => {
@@ -43,7 +38,8 @@ export function AuthProvider({ children }: { children: any }) {
         })();
       } else {
         // サインアウトしている
-        setUser(null);
+        setUser(undefined);
+        initializationProcess();
         setIsAuthChecking(false);
       }
     });
@@ -53,19 +49,5 @@ export function AuthProvider({ children }: { children: any }) {
     };
   }, []);
 
-  const signout = async () => {
-    const auth = getAuth(app);
-    await signOut(auth);
-  };
-
-  const userInfo: UserInfo = {
-    user: user,
-    signout: signout,
-  };
-
-  return (
-    <AuthContext.Provider value={userInfo}>
-      {isAuthChecking ? <LinearProgress /> : children}
-    </AuthContext.Provider>
-  );
+  return <>{isAuthChecking ? <LinearProgress /> : children}</>;
 }

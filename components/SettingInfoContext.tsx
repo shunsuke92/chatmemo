@@ -1,6 +1,8 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import { useAuthContext } from '../components/AuthContext';
 import axios from 'axios';
+import { useRecoilValue } from 'recoil';
+import { authUserState } from '../states/authUserState';
+import LinearProgress from '@mui/material/LinearProgress';
 
 export interface SettingInfo {
   setting: Setting;
@@ -43,8 +45,8 @@ export function useSettingInfoContext() {
 }
 
 export function SettingInfoProvider({ children }: { children: any }) {
-  const userInfo = useAuthContext();
-  const user = userInfo?.user;
+  const [isLoading, setIsLoading] = useState(true);
+  const user = useRecoilValue(authUserState);
 
   const initialSetting: Setting = {
     id: 0,
@@ -69,6 +71,7 @@ export function SettingInfoProvider({ children }: { children: any }) {
             _synchronized: true,
           });
         }
+        setIsLoading(false);
       }
     })();
   }, [user]);
@@ -132,5 +135,9 @@ export function SettingInfoProvider({ children }: { children: any }) {
     changeDarkMode: changeDarkMode,
   };
 
-  return <SettingInfoContext.Provider value={info}>{children}</SettingInfoContext.Provider>;
+  return (
+    <SettingInfoContext.Provider value={info}>
+      {isLoading ? <LinearProgress /> : children}
+    </SettingInfoContext.Provider>
+  );
 }

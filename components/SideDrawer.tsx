@@ -9,21 +9,30 @@ import ListItemText from '@mui/material/ListItemText';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { DisplayType, DISPLAY_TYPE, useOperationContext } from './OperationContext';
 import { useLightModeColor } from '../hooks/useColor';
+import {
+  selectedDisplayTypeState,
+  DisplayType,
+  DISPLAY_TYPE,
+} from '../states/selectedDisplayTypeState';
+import { useChangeSelectedDisplayType } from '../hooks/useChangeSelectedDisplayType';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
+import { openSideDrawerState } from '../states/openSideDrawerState';
+import { resetDisplayPositionState } from '../states/resetDisplayPositionState';
+import { displayStepState } from '../states/displayStepState';
 
-interface SideDrawerProps {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-}
+export default function SideDrawer() {
+  const [openSideDrawer, setOpenSideDrawer] = useRecoilState(openSideDrawerState);
 
-export default function SideDrawer(props: SideDrawerProps) {
-  const { open, setOpen } = props;
-
-  const info = useOperationContext();
   const lightModeColor = useLightModeColor();
   const list1 = DISPLAY_TYPE.slice(0, 2);
   const list2 = DISPLAY_TYPE.slice(2, 3);
+
+  const changeSelectedDisplayType = useChangeSelectedDisplayType();
+
+  const setResetDisplayPosition = useSetRecoilState(resetDisplayPositionState);
+  const setDisplayStep = useSetRecoilState(displayStepState);
+  const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -34,16 +43,22 @@ export default function SideDrawer(props: SideDrawerProps) {
       return;
     }
 
-    setOpen(open);
+    setOpenSideDrawer(open);
   };
 
   const handleClick = (data: DisplayType) => () => {
-    info?.changeSelectedDisplayType(data);
+    if (selectedDisplayType.id !== data.id) {
+      changeSelectedDisplayType(data);
+
+      // ページ切り替え時は表示数と表示位置をリセットする
+      setResetDisplayPosition(true);
+      setDisplayStep(1);
+    }
   };
 
   return (
     <div>
-      <Drawer anchor='left' open={open} onClose={toggleDrawer(false)}>
+      <Drawer anchor='left' open={openSideDrawer} onClose={toggleDrawer(false)}>
         <Box
           sx={{ width: 250 }}
           role='presentation'

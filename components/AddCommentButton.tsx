@@ -1,25 +1,19 @@
 import IconButton from '@mui/material/IconButton';
-import { useOperationContext } from './OperationContext';
 import Tooltip from '@mui/material/Tooltip';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import { InternalData } from './Timeline';
 
 interface AddCommentButtonProps {
   data: InternalData;
+  changeAddingContentID: (id: string) => void;
 }
 
 export const AddCommentButton = (props: AddCommentButtonProps) => {
-  const { data } = props;
-
-  const info = useOperationContext();
+  const { data, changeAddingContentID } = props;
 
   function handleClick(id: string) {
     return function () {
-      if (info?.addingContentID === id) {
-        info?.clearAddingContentID();
-      } else {
-        info?.changeAddingContentID(id);
-      }
+      changeAddingContentID(id);
     };
   }
 

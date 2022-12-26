@@ -1,15 +1,25 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { useAuthContext } from '../components/AuthContext';
-import { useOperationContext } from '../components/OperationContext';
-import { useManageID } from './useManageID';
+import { createContext, useState, useContext, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
+import { useRecoilValue } from 'recoil';
+import { authUserState } from '../states/authUserState';
+import { useChangeIsSynchronizing } from '../hooks/useChangeIsSynchronizing';
+import { useChangeSynchronizingProgress } from '../hooks/useChangeSynchronizingProgress';
 
-export const useSynchronizationProsess = () => {
-  const userInfo = useAuthContext();
-  const user = userInfo?.user;
-  const info = useOperationContext();
-  const manageMemoID = useManageID();
-  const manageCommentID = useManageID();
+export interface Synchronization {
+  setUnsynchronizedFunction: (func: () => () => Promise<boolean> | Promise<number>) => void;
+}
+
+const SynchronizationContext = createContext<Synchronization | null>(null);
+
+export function useSynchronizationContext() {
+  return useContext(SynchronizationContext);
+}
+
+export function SynchronizationProvider({ children }: { children: any }) {
+  const user = useRecoilValue(authUserState);
+
+  const changeIsSynchronizing = useChangeIsSynchronizing();
+  const changeSynchronizingProgress = useChangeSynchronizingProgress();
 
   const CONNECTION_CHECK_INTERVAL = 2000;
   const SYNCHRONIZATION_INTERVAL = 300;
@@ -29,9 +39,9 @@ export const useSynchronizationProsess = () => {
     synchronizing.current = true;
 
     // 同期画面を表示
-    info?.changeIsSynchronizing(true);
+    changeIsSynchronizing(true);
     const total = unsynchronizedFunction.current.length;
-    info?.changeSynchronizingProgress(0);
+    changeSynchronizingProgress(0);
 
     for (let i = 0; unsynchronizedFunction.current.length > 0; i++) {
       // 初回以外のときは、遅延実行する
@@ -46,7 +56,7 @@ export const useSynchronizationProsess = () => {
 
       if (result || result !== -1) {
         unsynchronizedFunction.current.shift();
-        info?.changeSynchronizingProgress(((i + 2) / total) * 100);
+        changeSynchronizingProgress(((i + 2) / total) * 100);
       } else {
         break;
       }
@@ -57,11 +67,11 @@ export const useSynchronizationProsess = () => {
     }
 
     // 同期画面を非表示
-    info?.changeIsSynchronizing(false);
-    info?.changeSynchronizingProgress(0);
+    changeIsSynchronizing(false);
+    changeSynchronizingProgress(0);
 
     synchronizing.current = false;
-  }, [info]);
+  }, [changeIsSynchronizing, changeSynchronizingProgress]);
 
   const checkConnection = useCallback(async () => {
     // 同期中は接続確認しない
@@ -93,15 +103,11 @@ export const useSynchronizationProsess = () => {
     return new Promise((resolve) => setTimeout(resolve, second));
   };
 
-  const functions = {
+  const value: Synchronization = {
     setUnsynchronizedFunction: setUnsynchronizedFunction,
-    createManageMemoID: manageMemoID.createManageID,
-    createManageCommentID: manageCommentID.createManageID,
-    setConfirmedMemoID: manageMemoID.setConfirmedID,
-    setConfirmedCommentID: manageCommentID.setConfirmedID,
-    getConfirmedMemoID: manageMemoID.getConfirmedID,
-    getConfirmedCommentID: manageCommentID.getConfirmedID,
   };
 
-  return functions;
-};
+  return (
+    <SynchronizationContext.Provider value={value}>{children}</SynchronizationContext.Provider>
+  );
+}

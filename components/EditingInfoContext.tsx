@@ -1,10 +1,11 @@
 import { createContext, useState, useContext } from 'react';
-import { useDataContext } from './DataContext';
+import { useOperateUpdateEditData } from '../hooks/useOperateUpdateEditData';
+import { InternalData } from './Timeline';
 
 export interface EditingInfo {
   editingContentBefore: EditingContent | undefined;
   editingContentAfter: EditingContent | undefined;
-  createEditingContentInfo: (id: string) => void;
+  createEditingContentInfo: (data: InternalData) => void;
   clearEditingContentInfo: () => void;
   updateEditingContentAfter: (text: string, commentID?: string) => void;
   isChanged: () => void;
@@ -17,14 +18,13 @@ export interface EditingContent {
   comments: { id: string; body: string }[];
 }
 
-const EditingInfoContext = createContext<EditingInfo | null>(null);
+const EditingInfoContext = createContext<EditingInfo | undefined>(undefined);
 
 export function useEditingInfoContext() {
   return useContext(EditingInfoContext);
 }
 
 export function EditingInfoProvider({ children }: { children: any }) {
-  const data = useDataContext();
   const [editingContentBefore, setEditingContentBefore] = useState<EditingContent | undefined>(
     undefined,
   );
@@ -32,16 +32,17 @@ export function EditingInfoProvider({ children }: { children: any }) {
     undefined,
   );
 
-  function createEditingContentInfo(id: string) {
-    const targetContent = data?.getTargetMemo(id);
-    if (targetContent === undefined) return;
-    const commentBefore = targetContent.comments.map((comment) => {
+  const updateEditData = useOperateUpdateEditData();
+
+  function createEditingContentInfo(data: InternalData) {
+    if (data.comments === undefined) return;
+    const commentBefore = data.comments.map((comment) => {
       return {
         id: comment._id,
         body: comment.body,
       };
     });
-    const commentAfter = targetContent.comments.map((comment) => {
+    const commentAfter = data.comments.map((comment) => {
       return {
         id: comment._id,
         body: comment.body,
@@ -49,14 +50,14 @@ export function EditingInfoProvider({ children }: { children: any }) {
     });
 
     const contentBefore = {
-      id: targetContent._id,
-      body: targetContent.body,
+      id: data.id,
+      body: data.body,
       comments: commentBefore,
     };
 
     const contentAfter = {
-      id: targetContent._id,
-      body: targetContent.body,
+      id: data.id,
+      body: data.body,
       comments: commentAfter,
     };
 
@@ -106,8 +107,9 @@ export function EditingInfoProvider({ children }: { children: any }) {
   };
 
   const overwriteData = () => {
-    if (!isChanged || editingContentAfter === undefined) return;
-    data?.updateEditData(editingContentAfter);
+    if (!isChanged || editingContentBefore === undefined || editingContentAfter === undefined)
+      return;
+    updateEditData(editingContentBefore, editingContentAfter);
   };
 
   const info: EditingInfo = {

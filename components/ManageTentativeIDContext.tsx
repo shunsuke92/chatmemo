@@ -1,11 +1,23 @@
-import { useRef } from 'react';
+import { createContext, useContext, useRef } from 'react';
+
+export interface ManageTentativeID {
+  createManageID: (tentativeID: string) => void;
+  setConfirmedID: (tentativeID: string, confirmedID: number) => void;
+  getConfirmedID: (tentativeID: string) => number | undefined;
+}
 
 interface ManageID {
   tentativeID: string;
   confirmedID: number | undefined;
 }
 
-export const useManageID = () => {
+const ManageTentativeIDContext = createContext<ManageTentativeID | null>(null);
+
+export function useManageTentativeIDContext() {
+  return useContext(ManageTentativeIDContext);
+}
+
+export function ManageTentativeIDProvider({ children }: { children: any }) {
   const manageID = useRef<ManageID[]>([]);
 
   const createManageID = (tentativeID: string) => {
@@ -32,5 +44,9 @@ export const useManageID = () => {
     getConfirmedID: getConfirmedID,
   };
 
-  return functions;
-};
+  return (
+    <ManageTentativeIDContext.Provider value={functions}>
+      {children}
+    </ManageTentativeIDContext.Provider>
+  );
+}

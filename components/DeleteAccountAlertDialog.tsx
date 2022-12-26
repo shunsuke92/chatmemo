@@ -4,35 +4,40 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useDataContext } from './DataContext';
-import { useOperationContext } from './OperationContext';
-import { useAuthContext } from '../components/AuthContext';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { authUserState } from '../states/authUserState';
+import { signout } from '../utils/signout';
+import { useServerDeleteAccount } from '../hooks/useServerDeleteAccount';
+import { displayAlertDialogState } from '../states/displayAlertDialogState';
+import { useClearDisplayAlertDialog } from '../hooks/useClearDisplayAlertDialog';
 
-export default function DeleteMemoAlertDialog() {
-  const data = useDataContext();
-  const info = useOperationContext();
-  const userInfo = useAuthContext();
-  const user = userInfo?.user;
+export default function DeleteAccountAlertDialog() {
+  const user = useRecoilValue(authUserState);
+
+  const displayAlertDialog = useRecoilValue(displayAlertDialogState);
+  const clearDisplayAlertDialog = useClearDisplayAlertDialog();
+
+  const deleteAccount = useServerDeleteAccount();
 
   const [value, setValue] = useState('');
 
-  const isDisplay: boolean = info?.displayAlertDialog === 'delete-account' ?? false;
+  const isDisplay: boolean = displayAlertDialog === 'delete-account';
 
   const handleClick = async () => {
     // 入力値初期化
     setValue('');
 
     // ダイアログを閉じる
-    info?.clearDisplayAlertDialog();
+    clearDisplayAlertDialog();
 
     // サーバーからアカウントを削除する
-    const result = await data?.deleteAccount();
+    const result = await deleteAccount();
 
     if (result) {
       // サインアウトする
-      userInfo?.signout();
+      signout();
     } else {
       alert('アカウント削除が失敗しました。');
     }
@@ -43,7 +48,7 @@ export default function DeleteMemoAlertDialog() {
     setValue('');
 
     // ダイアログを閉じる
-    info?.clearDisplayAlertDialog();
+    clearDisplayAlertDialog();
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

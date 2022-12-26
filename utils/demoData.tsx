@@ -1,4 +1,4 @@
-import { Memo } from '../components/DataContext';
+import { Memo } from '../states/memoState';
 
 export const demoData: Memo[] = [
   {
@@ -32,6 +32,7 @@ export const demoData: Memo[] = [
         _synchronized: true,
         _type: 'comment',
         _id: '1',
+        _memoId: '1',
       },
       {
         id: 2,
@@ -46,6 +47,7 @@ export const demoData: Memo[] = [
         _synchronized: true,
         _type: 'comment',
         _id: '2',
+        _memoId: '1',
       },
       {
         id: 3,
@@ -60,6 +62,7 @@ export const demoData: Memo[] = [
         _synchronized: true,
         _type: 'comment',
         _id: '3',
+        _memoId: '1',
       },
     ],
   },
@@ -94,6 +97,7 @@ export const demoData: Memo[] = [
         _synchronized: true,
         _type: 'comment',
         _id: '4',
+        _memoId: '2',
       },
       {
         id: 4,
@@ -108,6 +112,7 @@ export const demoData: Memo[] = [
         _synchronized: true,
         _type: 'comment',
         _id: '4',
+        _memoId: '2',
       },
       {
         id: 4,
@@ -122,6 +127,7 @@ export const demoData: Memo[] = [
         _synchronized: true,
         _type: 'comment',
         _id: '4',
+        _memoId: '2',
       },
     ],
   },
@@ -156,6 +162,7 @@ export const demoData: Memo[] = [
         _synchronized: true,
         _type: 'comment',
         _id: '5',
+        _memoId: '3',
       },
     ],
   },
