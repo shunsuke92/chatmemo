@@ -7,12 +7,15 @@ import { Comment } from '../states/memoState';
 import { useSaveServerVerCreateComment } from './useSaveServerVerCreateComment';
 import { useServerCreateCommentTable } from './useServerCreateCommentTable';
 import { useLocalCreateComment } from './useLocalCreateComment';
+import { useSetRecoilState } from 'recoil';
+import { scrollingIDState } from '../states/scrollingIDState';
 
 export const useOperateCreateComment = () => {
   const createErrID = useRecoilValue(createErrIDState);
   const saveServerVerCreateComment = useSaveServerVerCreateComment();
   const serverCreateCommentTable = useServerCreateCommentTable();
   const localAddComment = useLocalCreateComment();
+  const setScrollingID = useSetRecoilState(scrollingIDState);
 
   const createComment = async (comment: Comment, id: string) => {
     const date = getNowDate();
@@ -39,6 +42,9 @@ export const useOperateCreateComment = () => {
     }
 
     localAddComment(id, comment);
+
+    // スクロール予約
+    setScrollingID(id);
   };
 
   return createComment;

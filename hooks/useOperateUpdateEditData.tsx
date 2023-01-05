@@ -13,12 +13,15 @@ import { useServerUpdateCommentTable } from './useServerUpdateCommentTable';
 import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
 import { useRecoilValue } from 'recoil';
 import { editingContentIDState } from '../states/editingContentIDState';
+import { useSetRecoilState } from 'recoil';
+import { scrollingIDState } from '../states/scrollingIDState';
 
 export const useOperateUpdateEditData = () => {
   const saveServer = useSaveServer();
   const serverUpdateMemoTable = useServerUpdateMemoTable();
   const serverUpdateCommentTable = useServerUpdateCommentTable();
   const localUpdateData = useLocalUpdateData();
+  const setScrollingID = useSetRecoilState(scrollingIDState);
 
   const changeDisplayAlertDialog = useChangeDisplayAlertDialog();
   const editingContentID = useRecoilValue(editingContentIDState);
@@ -71,6 +74,9 @@ export const useOperateUpdateEditData = () => {
     }
 
     localUpdateData(setData);
+
+    // スクロール予約
+    setScrollingID(id);
   };
 
   const updateEditDataComment = (

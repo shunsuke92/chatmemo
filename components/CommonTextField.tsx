@@ -2,6 +2,9 @@ import { EditingInfo } from './EditingInfoContext';
 import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { InternalData } from './Timeline';
+import { useSetRecoilState } from 'recoil';
+import { scrollingIDState } from '../states/scrollingIDState';
+import Stack from '@mui/material/Stack';
 
 interface CommonTextFieldProps {
   data: InternalData;
@@ -13,6 +16,8 @@ export const CommonTextField = (props: CommonTextFieldProps) => {
 
   const [value, setValue] = useState(data.text.join('\n'));
 
+  const setScrollingID = useSetRecoilState(scrollingIDState);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
 
@@ -21,17 +26,22 @@ export const CommonTextField = (props: CommonTextFieldProps) => {
     } else {
       editingInfo?.updateEditingContentAfter(event.target.value, data.id);
     }
+
+    // スクロール予約
+    setScrollingID(data.type === 'memo' ? data.id : data.memoID ?? '');
   };
 
   return (
-    <TextField
-      value={value}
-      variant='outlined'
-      size='small'
-      fullWidth
-      multiline
-      sx={{ width: '100%', maxWidth: '100%' }}
-      onChange={handleChange}
-    />
+    <Stack sx={{ display: 'flex', alignItems: 'flex-start' }}>
+      <TextField
+        value={value}
+        variant='outlined'
+        size='small'
+        fullWidth
+        multiline
+        sx={{ width: '479px' }}
+        onChange={handleChange}
+      />
+    </Stack>
   );
 };

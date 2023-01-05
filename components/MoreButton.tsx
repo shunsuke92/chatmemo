@@ -6,6 +6,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { InternalData } from './Timeline';
 import { AlertDialog } from '../states/displayAlertDialogState';
+import { useSetRecoilState } from 'recoil';
+import { scrollingIDState } from '../states/scrollingIDState';
 
 interface MoreButtonProps {
   data: InternalData;
@@ -30,6 +32,8 @@ export const MoreButton = (props: MoreButtonProps) => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
+  const setScrollingID = useSetRecoilState(scrollingIDState);
+
   const open = Boolean(anchorEl);
 
   function handleClickMore(event: React.MouseEvent<HTMLButtonElement>) {
@@ -42,10 +46,17 @@ export const MoreButton = (props: MoreButtonProps) => {
 
   function handleClickEdit(id: string) {
     return function () {
-      changeEditingContentID(id);
-      editingInfo?.createEditingContentInfo(data);
-
       setAnchorEl(null);
+
+      // HACK: 特定条件で意図しないスクロールが発生する事象に対応するため
+      //       MUIのMenuコンポーネントで、メニューを開いているときにスクロールを無効にしていることが影響？
+      setTimeout(() => {
+        changeEditingContentID(id);
+        editingInfo?.createEditingContentInfo(data);
+
+        // スクロール予約
+        setScrollingID(id);
+      }, 1);
     };
   }
 

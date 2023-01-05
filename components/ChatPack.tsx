@@ -37,6 +37,7 @@ export const ChatPack = (props: ChatPackProps) => {
       mt={isOutermost ? 2 : 0}
       spacing={1}
       sx={{ width: '100%', display: 'flex', alignItems: 'flex-end' }}
+      className={isOutermost ? `content${data.id}` : ''}
     >
       <Stack direction='row' spacing={1}>
         {isOutermost && (
