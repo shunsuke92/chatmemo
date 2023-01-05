@@ -22,6 +22,7 @@ import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialo
 import { useChangeEditingContentID } from '../hooks/useChangeEditingContentID';
 import { convertInternalDataToMemo } from '../utils/convertInternalDataToMemo';
 import { useOperateDeleteMemo } from '../hooks/useOperateDeleteMemo';
+import { useOperateRevertMemo } from '../hooks/useOperateRevertMemo';
 import { useOperateUpdateServerCompleted } from '../hooks/useOperateUpdateServerCompleted';
 
 export interface InternalData {
@@ -88,6 +89,7 @@ export const Timeline = (props: TimelineProps) => {
   const changeDisplayAlertDialog = useChangeDisplayAlertDialog();
   const changeEditingContentID = useChangeEditingContentID();
   const deleteMemo = useOperateDeleteMemo();
+  const revertMemo = useOperateRevertMemo();
   const updateServerCompleted = useOperateUpdateServerCompleted();
 
   useEffect(() => {
@@ -124,6 +126,7 @@ export const Timeline = (props: TimelineProps) => {
                 changeDisplayAlertDialog={changeDisplayAlertDialog}
                 changeEditingContentID={changeEditingContentID}
                 deleteMemo={deleteMemo}
+                revertMemo={revertMemo}
                 updateServerCompleted={updateServerCompleted}
               />
             )}

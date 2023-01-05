@@ -14,6 +14,7 @@ interface LowerButtonsProps {
   changeDisplayAlertDialog: (value: AlertDialog, deleteID?: string | undefined) => void;
   changeEditingContentID: (id: string) => void;
   deleteMemo: (id: string | undefined) => Promise<void>;
+  revertMemo: (id: string | undefined) => Promise<void>;
 }
 
 export const LowerButtons = (props: LowerButtonsProps) => {
@@ -26,6 +27,7 @@ export const LowerButtons = (props: LowerButtonsProps) => {
     changeDisplayAlertDialog,
     changeEditingContentID,
     deleteMemo,
+    revertMemo,
   } = props;
 
   return (
@@ -39,6 +41,7 @@ export const LowerButtons = (props: LowerButtonsProps) => {
         changeDisplayAlertDialog={changeDisplayAlertDialog}
         changeEditingContentID={changeEditingContentID}
         deleteMemo={deleteMemo}
+        revertMemo={revertMemo}
       />
     </Stack>
   );

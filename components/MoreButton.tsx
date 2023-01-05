@@ -17,6 +17,7 @@ interface MoreButtonProps {
   changeDisplayAlertDialog: (value: AlertDialog, deleteID?: string | undefined) => void;
   changeEditingContentID: (id: string) => void;
   deleteMemo: (id: string | undefined) => Promise<void>;
+  revertMemo: (id: string | undefined) => Promise<void>;
 }
 
 export const MoreButton = (props: MoreButtonProps) => {
@@ -28,6 +29,7 @@ export const MoreButton = (props: MoreButtonProps) => {
     changeDisplayAlertDialog,
     changeEditingContentID,
     deleteMemo,
+    revertMemo,
   } = props;
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -73,6 +75,14 @@ export const MoreButton = (props: MoreButtonProps) => {
     };
   }
 
+  function handleClickRevert(id: string) {
+    return function () {
+      revertMemo(id);
+
+      setAnchorEl(null);
+    };
+  }
+
   return (
     <>
       <IconButton
@@ -94,6 +104,11 @@ export const MoreButton = (props: MoreButtonProps) => {
         {isAllMemo && (
           <MenuItem onClick={handleClickEdit(data.id)} sx={{ fontSize: '0.8rem' }}>
             編集
+          </MenuItem>
+        )}
+        {isTrash && (
+          <MenuItem onClick={handleClickRevert(data.id)} sx={{ fontSize: '0.8rem' }}>
+            元に戻す
           </MenuItem>
         )}
         <MenuItem onClick={handleClickDelete(data.id)} sx={{ fontSize: '0.8rem' }}>

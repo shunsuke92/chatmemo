@@ -23,6 +23,7 @@ export interface ChatMemoProps {
   changeDisplayAlertDialog: (value: AlertDialog, deleteID?: string | undefined) => void;
   changeEditingContentID: (id: string) => void;
   deleteMemo: (id: string | undefined) => Promise<void>;
+  revertMemo: (id: string | undefined) => Promise<void>;
   updateServerCompleted: (id: string, value: boolean, date?: string | undefined) => Promise<void>;
 }
 

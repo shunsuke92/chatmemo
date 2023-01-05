@@ -27,6 +27,7 @@ export const ChatPack = (props: ChatPackProps) => {
     changeDisplayAlertDialog,
     changeEditingContentID,
     deleteMemo,
+    revertMemo,
     updateServerCompleted,
     isOutermost,
     children,
@@ -89,6 +90,7 @@ export const ChatPack = (props: ChatPackProps) => {
           changeDisplayAlertDialog={changeDisplayAlertDialog}
           changeEditingContentID={changeEditingContentID}
           deleteMemo={deleteMemo}
+          revertMemo={revertMemo}
         />
       )}
     </Stack>
