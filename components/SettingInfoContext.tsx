@@ -72,6 +72,8 @@ export function SettingInfoProvider({ children }: { children: any }) {
           });
         }
         setIsLoading(false);
+      } else {
+        setIsLoading(false);
       }
     })();
   }, [user]);
