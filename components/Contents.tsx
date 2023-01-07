@@ -7,8 +7,10 @@ import { scrollingIDState } from '../states/scrollingIDState';
 import { isRenderingState } from '../states/isRenderingState';
 import { useChangeScheduledScrolling } from '../hooks/useChangeScheduledScrolling';
 import { useCreateDisplayData } from '../hooks/useCreateDisplayData';
+import { authUserState } from '../states/authUserState';
 
 export default function Contents() {
+  const user = useRecoilValue(authUserState);
   const setIsRendering = useSetRecoilState(isRenderingState);
   const scheduledScrolling = useRecoilValue(scheduledScrollingState);
   const [resetDisplayPosition, setResetDisplayPosition] = useRecoilState(resetDisplayPositionState);
@@ -18,35 +20,44 @@ export default function Contents() {
   const changeScheduledScrolling = useChangeScheduledScrolling();
 
   useEffect(() => {
-    scrollToBottom();
+    // 初回のスクロール
+    if (user) {
+      scrollToBottom();
+    }
     addScrollBehavior();
     setIsRendering(false);
-  }, [setIsRendering]);
+  }, [user, setIsRendering]);
 
   useEffect(() => {
+    // 新規メモ作成時のスクロール
     if (scheduledScrolling) {
       scrollToBottom();
       changeScheduledScrolling(false);
-    } else if (resetDisplayPosition) {
+    }
+  }, [scheduledScrolling, changeScheduledScrolling]);
+
+  useEffect(() => {
+    // ページ切り替え時のスクロール
+    if (resetDisplayPosition) {
       clearScrollBehavior();
-      scrollToBottom();
+      if (user) {
+        scrollToBottom();
+      }
       addScrollBehavior();
       setResetDisplayPosition(false);
-    } else if (scrollingID) {
+    }
+  }, [user, resetDisplayPosition, setResetDisplayPosition]);
+
+  useEffect(() => {
+    // 新規コメント作成・メモ編集時のスクロール
+    if (scrollingID) {
       // HACK: 正しいオブジェクトサイズを取得するためにsetTimeoutで暫定対応
       setTimeout(() => {
         scrollToTargetMemo(scrollingID);
       }, 1);
       setScrollingIDState('');
     }
-  }, [
-    scheduledScrolling,
-    changeScheduledScrolling,
-    resetDisplayPosition,
-    setResetDisplayPosition,
-    scrollingID,
-    setScrollingIDState,
-  ]);
+  }, [scrollingID, setScrollingIDState]);
 
   const scrollToBottom = () => {
     const element = document.documentElement;
