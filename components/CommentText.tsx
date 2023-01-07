@@ -1,4 +1,4 @@
-import Typography from '@mui/material/Typography';
+import { CommonText } from './CommonText';
 
 interface CommentTextProps {
   data: string[];
@@ -7,15 +7,5 @@ interface CommentTextProps {
 export const CommentText = (props: CommentTextProps) => {
   const { data } = props;
 
-  return (
-    <>
-      {data.map((text, index) => {
-        if (text) {
-          return <Typography key={index}>{text}</Typography>;
-        } else {
-          return <br key={index}></br>;
-        }
-      })}
-    </>
-  );
+  return <CommonText data={data} />;
 };

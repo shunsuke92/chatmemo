@@ -38,16 +38,20 @@ export const ChatCard = (props: ChatCardProps) => {
     }
   };
 
+  const Texts = () => {
+    return isEditingContents ? (
+      <CommonTextField data={data} editingInfo={editingInfo} />
+    ) : isOutermost ? (
+      <MemoText data={data.text} memoBackground={memoBackground} />
+    ) : (
+      <CommentText data={data.text} />
+    );
+  };
+
   return (
     <>
       {isEditingContents && !isOutermost ? (
-        isEditingContents ? (
-          <CommonTextField data={data} editingInfo={editingInfo} />
-        ) : isOutermost ? (
-          <MemoText data={data.text} memoBackground={memoBackground} />
-        ) : (
-          <CommentText data={data.text} />
-        )
+        <Texts />
       ) : (
         <Card
           sx={{
@@ -64,13 +68,7 @@ export const ChatCard = (props: ChatCardProps) => {
           }}
           onClick={handleClick}
         >
-          {isEditingContents ? (
-            <CommonTextField data={data} editingInfo={editingInfo} />
-          ) : isOutermost ? (
-            <MemoText data={data.text} memoBackground={memoBackground} />
-          ) : (
-            <CommentText data={data.text} />
-          )}
+          <Texts />
           {children}
           {isEditingContents && isOutermost && <EditCompleteButton editingInfo={editingInfo} />}
         </Card>
