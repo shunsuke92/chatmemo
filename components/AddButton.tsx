@@ -6,6 +6,7 @@ import { useOperateCreateComment } from '../hooks/useOperateCreateComment';
 import { useRecoilValue } from 'recoil';
 import { addingContentIDState } from '../states/addingContentIDState';
 import { useGetIsAdding } from '../components/Main';
+import Stack from '@mui/material/Stack';
 
 interface AddButtonProps {
   value: string;
@@ -81,16 +82,13 @@ export default function AddButton(props: AddButtonProps) {
   };
 
   return (
-    <>
+    <Stack sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       {hasValidString(value) ? (
         <IconButton
           aria-label='send'
           color='primary'
           onClick={() => handleClick(addingContentID)}
           sx={{
-            display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'center',
             zIndex: isAdding ? 2500 : null,
           }}
         >
@@ -101,15 +99,12 @@ export default function AddButton(props: AddButtonProps) {
           aria-label='send'
           disabled
           sx={{
-            display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'center',
             zIndex: isAdding ? 2500 : null,
           }}
         >
           <SendIcon />
         </IconButton>
       )}
-    </>
+    </Stack>
   );
 }

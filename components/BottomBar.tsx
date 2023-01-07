@@ -1,7 +1,6 @@
 import { Box } from '@mui/system';
 import { useBarBackground } from '../hooks/useColor';
 import Synchronizing from '../components/Synchronizing';
-import Mask from '../components/Mask';
 import InputText from '../components/InputText';
 import { useRecoilValue } from 'recoil';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
@@ -23,15 +22,13 @@ export default function BottomBar() {
             display: 'flex',
             alignItems: 'flex-end',
             justifyContent: 'center',
-            height: { xs: 72, sm: 80 },
+            minHeight: { xs: 72, sm: 80 },
+            pt: { xs: 2, sm: 2.5 },
             pb: { xs: 2, sm: 2.5 },
             ...barBackground,
           }}
+          className='bottom-bar'
         >
-          <Mask
-            height={{ xs: '72px', sm: '80px' }}
-            top={{ xs: 'calc(100% - 72px)', sm: 'calc(100%  - 80px)' }}
-          />
           <Synchronizing progress={false} />
           <InputText />
         </Box>
