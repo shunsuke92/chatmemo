@@ -6,6 +6,9 @@ import { useGetIsAdding } from '../components/Main';
 import { useGetIsEditing } from '../components/Main';
 import { useEffect } from 'react';
 import Mask from '../components/Mask';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import ClearIcon from '@mui/icons-material/Clear';
 
 export default function InputText() {
   const [value, setValue] = useState('');
@@ -25,9 +28,15 @@ export default function InputText() {
     }
   };
 
+  const handleClickClearCharacter = () => {
+    setValue('');
+    document.getElementById('input')?.focus();
+  };
+
   useEffect(() => {
     // HACK: 正しいオブジェクトサイズを取得するためにsetTimeoutで暫定対応
     setTimeout(() => {
+      // マスクサイズを取得する
       const element = document.getElementsByClassName('bottom-bar');
       if (element.length === 0) return;
       setHeight(element[0].clientHeight);
@@ -56,6 +65,21 @@ export default function InputText() {
             position: isAdding ? 'relative' : null,
           }}
           disabled={isEditing}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                {Boolean(value) && (
+                  <IconButton
+                    aria-label='clear input character'
+                    onClick={handleClickClearCharacter}
+                    edge='end'
+                  >
+                    <ClearIcon />
+                  </IconButton>
+                )}
+              </InputAdornment>
+            ),
+          }}
         />
         <AddButton value={value} setValue={setValue} />
       </Stack>
