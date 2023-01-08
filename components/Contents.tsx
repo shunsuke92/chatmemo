@@ -21,8 +21,11 @@ export default function Contents() {
 
   useEffect(() => {
     // 初回のスクロール
+    clearScrollBehavior();
     if (user) {
       scrollToBottom();
+    } else {
+      scrollToTop();
     }
     addScrollBehavior();
     setIsRendering(false);
@@ -58,6 +61,13 @@ export default function Contents() {
       setScrollingIDState('');
     }
   }, [scrollingID, setScrollingIDState]);
+
+  const scrollToTop = () => {
+    // HACK: topは必ず0になるけど、タイミングを合わせるためにElementから位置を取得している
+    const element = document.documentElement;
+    const top = element.offsetTop;
+    window.scroll(0, top);
+  };
 
   const scrollToBottom = () => {
     const element = document.documentElement;
