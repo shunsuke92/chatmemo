@@ -22,10 +22,8 @@ export default function InputText() {
   };
 
   const handleClickInputArea = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (isAdding) {
-      event.stopPropagation();
-      document.getElementById('input')?.focus();
-    }
+    event.stopPropagation();
+    document.getElementById('input')?.focus();
   };
 
   const handleClickClearCharacter = () => {
