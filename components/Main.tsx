@@ -1,4 +1,3 @@
-import styles from '../styles/Home.module.css';
 import MenuBar from '../components/MenuBar';
 import Mask from '../components/Mask';
 import Synchronizing from '../components/Synchronizing';
@@ -11,6 +10,7 @@ import { Data } from '../components/Data';
 import { useRecoilValue } from 'recoil';
 import { addingContentIDState } from '../states/addingContentIDState';
 import { editingContentIDState } from '../states/editingContentIDState';
+import Stack from '@mui/material/Stack';
 
 export const useGetIsAdding = () => {
   const addingContentID = useRecoilValue(addingContentIDState);
@@ -29,7 +29,19 @@ export default function Main() {
     <>
       <MenuBar />
       <Data>
-        <main className={styles.main}>
+        <Stack
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            pt: '64px',
+            pb: '80px',
+            minHeight: '100vh',
+            opacity: 0.999999 /* スタッキングコンテキストを生成するため */,
+          }}
+        >
           <Mask height='100%' top={0} />
           <Synchronizing progress={false} />
           <DeleteMemoAlertDialog />
@@ -37,7 +49,7 @@ export default function Main() {
           <CompleteDeletionMemoAlertDialog />
 
           <Contents />
-        </main>
+        </Stack>
       </Data>
       <BottomBar />
     </>

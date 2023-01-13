@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { Timeline } from './Timeline';
+import Timeline from './Timeline';
+import NoContent from './NoContent';
 import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 import { scheduledScrollingState } from '../states/scheduledScrollingState';
 import { resetDisplayPositionState } from '../states/resetDisplayPositionState';
@@ -106,5 +107,5 @@ export default function Contents() {
     }
   };
 
-  return <Timeline data={displayData} />;
+  return displayData.length > 0 ? <Timeline data={displayData} /> : <NoContent />;
 }

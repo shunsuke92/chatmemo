@@ -11,7 +11,7 @@ import { editingContentIDState } from '../states/editingContentIDState';
 import { Memo } from '../states/memoState';
 import { useEditingInfoContext } from './EditingInfoContext';
 import { useDelayCompletedContext } from '../components/DelayCompletedContext';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { openSideDrawerState } from '../states/openSideDrawerState';
 import { openUserMenuState } from '../states/openUserMenuState';
 import { isLoggingoutState } from '../states/isLoggingoutState';
@@ -44,19 +44,7 @@ interface TimelineProps {
   data: Memo[];
 }
 
-export const useGetIsTrashNext = () => {
-  const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
-
-  return selectedDisplayType.id === 3;
-};
-
-export const useGetIsAllMemoNext = () => {
-  const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
-
-  return selectedDisplayType.id === 1;
-};
-
-export const useGetIsAddingContentsNext = () => {
+const useGetIsAddingContents = () => {
   const addingContentID = useRecoilValue(addingContentIDState);
 
   return (id: string): boolean => {
@@ -64,19 +52,20 @@ export const useGetIsAddingContentsNext = () => {
   };
 };
 
-export const useGetIsEditingContentsNext = () => {
+const useGetIsEditingContents = () => {
   const editingContentID = useRecoilValue(editingContentIDState);
   return (id: string) => {
     return id === editingContentID;
   };
 };
 
-export const Timeline = (props: TimelineProps) => {
+export default function Timeline(props: TimelineProps) {
   const { data } = props;
-  const getIsAddingContents = useGetIsAddingContentsNext();
-  const getIsEditingContents = useGetIsEditingContentsNext();
-  const getIsTrash = useGetIsTrashNext();
-  const getIsAllMemo = useGetIsAllMemoNext();
+  const getIsAddingContents = useGetIsAddingContents();
+  const getIsEditingContents = useGetIsEditingContents();
+  const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
+  const getIsTrash = selectedDisplayType.id === 3;
+  const getIsAllMemo = selectedDisplayType.id === 1;
   const editingInfo = useEditingInfoContext();
   const delayCompleted = useDelayCompletedContext();
   const openSideDrawer = useRecoilValue(openSideDrawerState);
@@ -136,4 +125,4 @@ export const Timeline = (props: TimelineProps) => {
       </TransitionGroup>
     </TimelineWrapper>
   );
-};
+}
