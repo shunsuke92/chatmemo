@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRecoilValue } from 'recoil';
 import { authUserState } from '../states/authUserState';
+import Logo from './Logo';
 
 interface LoginDialogProps {
   open: boolean;
@@ -44,8 +45,10 @@ function LoginDialog(props: LoginDialogProps) {
     <Dialog onClose={handleClose} open={open}>
       <Box
         sx={{
-          width: 300,
-          height: 200,
+          width: 500,
+          maxWidth: '100%',
+          height: 700,
+          maxHeight: '100%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -65,9 +68,7 @@ function LoginDialog(props: LoginDialogProps) {
           <CloseIcon />
         </IconButton>
         <Stack spacing={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Typography fontSize={'1.6rem'} fontWeight={500}>
-            チャットメモ
-          </Typography>
+          <Logo type={isDarkMode ? 'dark' : 'light'} />
           <Button
             sx={{
               p: 0,
