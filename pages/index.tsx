@@ -1,9 +1,12 @@
-import type { NextPage } from 'next';
 import Head from 'next/head';
-import { ThemeProvider } from '@mui/material/styles';
+
 import CssBaseline from '@mui/material/CssBaseline';
-import { useCreateTheme } from '../hooks/useCreateTheme';
+import { ThemeProvider } from '@mui/material/styles';
+
 import { Main } from '../components/Main';
+import { useCreateTheme } from '../hooks/useCreateTheme';
+
+import type { NextPage } from 'next';
 
 const Home: NextPage = () => {
   const theme = useCreateTheme();

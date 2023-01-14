@@ -1,10 +1,11 @@
 import Card from '@mui/material/Card';
-import { InternalData } from './Timeline';
-import { CommonTextField } from './CommonTextField';
-import { MemoText } from './MemoText';
+
 import { CommentText } from './CommentText';
+import { CommonTextField } from './CommonTextField';
 import { EditCompleteButton } from './EditCompleteButton';
 import { EditingInfo } from './EditingInfoContext';
+import { MemoText } from './MemoText';
+import { InternalData } from './Timeline';
 
 interface ChatCardProps {
   data: InternalData;

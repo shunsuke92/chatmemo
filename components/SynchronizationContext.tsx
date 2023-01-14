@@ -1,9 +1,12 @@
 import { createContext, useState, useContext, useEffect, useCallback, useRef } from 'react';
-import axios from 'axios';
+
 import { useRecoilValue } from 'recoil';
-import { authUserState } from '../states/authUserState';
+
+import axios from 'axios';
+
 import { useChangeIsSynchronizing } from '../hooks/useChangeIsSynchronizing';
 import { useChangeSynchronizingProgress } from '../hooks/useChangeSynchronizingProgress';
+import { authUserState } from '../states/authUserState';
 
 export interface Synchronization {
   setUnsynchronizedFunction: (func: () => () => Promise<boolean> | Promise<number>) => void;

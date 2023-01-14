@@ -1,7 +1,9 @@
-import { Box } from '@mui/system';
-import { useMaskBackground } from '../hooks/useColor';
-import LinearProgress from '@mui/material/LinearProgress';
 import { useRecoilValue } from 'recoil';
+
+import LinearProgress from '@mui/material/LinearProgress';
+import { Box } from '@mui/system';
+
+import { useMaskBackground } from '../hooks/useColor';
 import { isSynchronizingState } from '../states/isSynchronizingState';
 import { synchronizingProgressState } from '../states/synchronizingProgressState';
 

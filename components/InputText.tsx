@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import TextField from '@mui/material/TextField';
+import { useEffect } from 'react';
+
+import ClearIcon from '@mui/icons-material/Clear';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+
 import { AddButton } from '../components/AddButton';
 import { useGetIsAdding } from '../components/Main';
 import { useGetIsEditing } from '../components/Main';
-import { useEffect } from 'react';
 import { Mask } from '../components/Mask';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import ClearIcon from '@mui/icons-material/Clear';
 
 export const InputText = () => {
   const [value, setValue] = useState('');

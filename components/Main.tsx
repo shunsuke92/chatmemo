@@ -1,16 +1,18 @@
-import { MenuBar } from '../components/MenuBar';
-import { Mask } from '../components/Mask';
-import { Synchronizing } from '../components/Synchronizing';
-import { DeleteMemoAlertDialog } from '../components/DeleteMemoAlertDialog';
-import { DeleteAccountAlertDialog } from '../components/DeleteAccountAlertDialog';
+import { useRecoilValue } from 'recoil';
+
+import Stack from '@mui/material/Stack';
+
+import { BottomBar } from '../components/BottomBar';
 import { CompleteDeletionMemoAlertDialog } from '../components/CompleteDeletionMemoAlertDialog';
 import { Contents } from '../components/Contents';
-import { BottomBar } from '../components/BottomBar';
 import { Data } from '../components/Data';
-import { useRecoilValue } from 'recoil';
+import { DeleteAccountAlertDialog } from '../components/DeleteAccountAlertDialog';
+import { DeleteMemoAlertDialog } from '../components/DeleteMemoAlertDialog';
+import { Mask } from '../components/Mask';
+import { MenuBar } from '../components/MenuBar';
+import { Synchronizing } from '../components/Synchronizing';
 import { addingContentIDState } from '../states/addingContentIDState';
 import { editingContentIDState } from '../states/editingContentIDState';
-import Stack from '@mui/material/Stack';
 
 export const useGetIsAdding = () => {
   const addingContentID = useRecoilValue(addingContentIDState);

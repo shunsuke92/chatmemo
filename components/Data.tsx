@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { demoData } from '../utils/demoData';
-import LinearProgress from '@mui/material/LinearProgress';
+
 import { useSetRecoilState, useRecoilValue } from 'recoil';
-import { memoState } from '../states/memoState';
+
+import LinearProgress from '@mui/material/LinearProgress';
+
+import axios from 'axios';
+
 import { authUserState } from '../states/authUserState';
+import { memoState } from '../states/memoState';
+import { Memo } from '../states/memoState';
+import { demoData } from '../utils/demoData';
 import { getDate } from '../utils/getDate';
 import { getTime } from '../utils/getTime';
-import { Memo } from '../states/memoState';
 
 export function Data({ children }: { children: any }) {
   const [isChecking, setIsAuthChecking] = useState(true);

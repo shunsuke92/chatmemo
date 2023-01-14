@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react';
-import { app } from '../utils/firebase';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import LinearProgress from '@mui/material/LinearProgress';
-import axios from 'axios';
+
 import { useSetRecoilState } from 'recoil';
-import { authUserState } from '../states/authUserState';
+
+import LinearProgress from '@mui/material/LinearProgress';
+
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
+import axios from 'axios';
+
 import { useInitializationProcess } from '../hooks/useInitializationProcess';
+import { authUserState } from '../states/authUserState';
+import { app } from '../utils/firebase';
 
 export function Auth({ children }: { children: any }) {
   const setUser = useSetRecoilState(authUserState);

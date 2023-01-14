@@ -1,5 +1,5 @@
-import { useOperateUpdateSynchronizedFlag } from './useOperateUpdateSynchronizedFlag';
 import { useSynchronizationContext } from '../components/SynchronizationContext';
+import { useOperateUpdateSynchronizedFlag } from './useOperateUpdateSynchronizedFlag';
 
 export const useSaveServer = () => {
   const synchronization = useSynchronizationContext();

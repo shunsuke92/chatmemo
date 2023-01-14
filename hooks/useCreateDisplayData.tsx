@@ -1,12 +1,13 @@
-import { useSettingInfoContext } from '../components/SettingInfoContext';
 import { useRecoilValue } from 'recoil';
-import { memoFilterAllState } from '../states/memoFilterAllState';
+
+import { useSettingInfoContext } from '../components/SettingInfoContext';
+import { useAddDateForDisplay } from '../hooks/useAddDateForDisplay';
+import { useIncreaseDisplayContent } from '../hooks/useIncreaseDisplayContent';
 import { memoFilterAllHideCompletedState } from '../states/memoFilterAllHideCompletedState';
+import { memoFilterAllState } from '../states/memoFilterAllState';
 import { memoFilterCompletedState } from '../states/memoFilterCompletedState';
 import { memoFilterTrashState } from '../states/memoFilterTrashState';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
-import { useAddDateForDisplay } from '../hooks/useAddDateForDisplay';
-import { useIncreaseDisplayContent } from '../hooks/useIncreaseDisplayContent';
 
 export const useCreateDisplayData = () => {
   const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);

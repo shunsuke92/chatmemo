@@ -1,5 +1,5 @@
-import { Memo } from '../states/memoState';
 import { InternalData } from '../components/Timeline';
+import { Memo } from '../states/memoState';
 
 export const convertInternalDataToMemo = (data: Memo): InternalData => {
   const res: InternalData = {

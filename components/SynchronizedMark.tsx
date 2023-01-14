@@ -1,5 +1,6 @@
-import Tooltip from '@mui/material/Tooltip';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import Tooltip from '@mui/material/Tooltip';
+
 import { InternalData } from './Timeline';
 
 interface SynchronizedMarkProps {

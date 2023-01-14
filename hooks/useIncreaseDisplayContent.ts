@@ -1,6 +1,8 @@
-import { useSetRecoilState } from 'recoil';
-import { displayStepState } from '../states/displayStepState';
 import { useEffect, useCallback } from 'react';
+
+import { useSetRecoilState } from 'recoil';
+
+import { displayStepState } from '../states/displayStepState';
 
 export const useIncreaseDisplayContent = (displayedAll: boolean) => {
   const setDisplayStep = useSetRecoilState(displayStepState);

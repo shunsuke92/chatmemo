@@ -1,3 +1,7 @@
+import { useState } from 'react';
+
+import { useRecoilValue } from 'recoil';
+
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -5,13 +9,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { authUserState } from '../states/authUserState';
-import { signout } from '../utils/signout';
-import { useServerDeleteAccount } from '../hooks/useServerDeleteAccount';
-import { displayAlertDialogState } from '../states/displayAlertDialogState';
+
 import { useClearDisplayAlertDialog } from '../hooks/useClearDisplayAlertDialog';
+import { useServerDeleteAccount } from '../hooks/useServerDeleteAccount';
+import { authUserState } from '../states/authUserState';
+import { displayAlertDialogState } from '../states/displayAlertDialogState';
+import { signout } from '../utils/signout';
 
 export const DeleteAccountAlertDialog = () => {
   const user = useRecoilValue(authUserState);

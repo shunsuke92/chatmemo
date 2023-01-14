@@ -1,10 +1,13 @@
-import { EditingInfo } from './EditingInfoContext';
 import { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import { InternalData } from './Timeline';
+
 import { useSetRecoilState } from 'recoil';
-import { scrollingIDState } from '../states/scrollingIDState';
+
 import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+
+import { scrollingIDState } from '../states/scrollingIDState';
+import { EditingInfo } from './EditingInfoContext';
+import { InternalData } from './Timeline';
 
 interface CommonTextFieldProps {
   data: InternalData;

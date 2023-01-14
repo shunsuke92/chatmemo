@@ -1,7 +1,9 @@
 import { useRecoilValue } from 'recoil';
-import { authUserState } from '../states/authUserState';
+
 import axios from 'axios';
+
 import { useManageTentativeIDContext } from '../components/ManageTentativeIDContext';
+import { authUserState } from '../states/authUserState';
 
 interface SendMemo {
   body?: string;

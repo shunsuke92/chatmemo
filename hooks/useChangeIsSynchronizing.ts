@@ -1,4 +1,5 @@
 import { useSetRecoilState } from 'recoil';
+
 import { isSynchronizingState } from '../states/isSynchronizingState';
 
 export const useChangeIsSynchronizing = () => {

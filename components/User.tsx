@@ -1,25 +1,28 @@
 import { useState } from 'react';
+
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DangerousIcon from '@mui/icons-material/Dangerous';
+import LogoutIcon from '@mui/icons-material/Logout';
+import SettingsIcon from '@mui/icons-material/Settings';
+import Avatar from '@mui/material/Avatar';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Avatar from '@mui/material/Avatar';
-import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import SettingsIcon from '@mui/icons-material/Settings';
-import LogoutIcon from '@mui/icons-material/Logout';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Switch from '@mui/material/Switch';
-import { DarkMode, useSettingInfoContext } from '../components/SettingInfoContext';
-import DangerousIcon from '@mui/icons-material/Dangerous';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
-import { authUserState } from '../states/authUserState';
-import { openUserMenuState } from '../states/openUserMenuState';
-import { isLoggingoutState } from '../states/isLoggingoutState';
-import { signout } from '../utils/signout';
+import Typography from '@mui/material/Typography';
+
+import { DarkMode, useSettingInfoContext } from '../components/SettingInfoContext';
 import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
+import { authUserState } from '../states/authUserState';
+import { isLoggingoutState } from '../states/isLoggingoutState';
+import { openUserMenuState } from '../states/openUserMenuState';
+import { signout } from '../utils/signout';
 
 export const User = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

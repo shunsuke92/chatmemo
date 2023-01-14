@@ -1,6 +1,8 @@
+import { useRecoilValue } from 'recoil';
+
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useRecoilValue } from 'recoil';
+
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
 
 export const NoContent = () => {

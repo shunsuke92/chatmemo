@@ -1,7 +1,7 @@
 import { getNowDate } from '../utils/getNowDate';
+import { useLocalUpdateMemo, ChangeableMemo } from './useLocalUpdateData';
 import { useSaveServer } from './useSaveServer';
 import { useServerUpdateMemoTable } from './useServerUpdateMemoTable';
-import { useLocalUpdateMemo, ChangeableMemo } from './useLocalUpdateData';
 
 export const useOperateDeleteMemo = () => {
   const saveServer = useSaveServer();

@@ -1,25 +1,27 @@
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
+
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
+import FolderIcon from '@mui/icons-material/Folder';
 import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import FolderIcon from '@mui/icons-material/Folder';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
+import { useChangeSelectedDisplayType } from '../hooks/useChangeSelectedDisplayType';
 import { useLightModeColor } from '../hooks/useColor';
+import { displayStepState } from '../states/displayStepState';
+import { openSideDrawerState } from '../states/openSideDrawerState';
+import { resetDisplayPositionState } from '../states/resetDisplayPositionState';
 import {
   selectedDisplayTypeState,
   DisplayType,
   DISPLAY_TYPE,
 } from '../states/selectedDisplayTypeState';
-import { useChangeSelectedDisplayType } from '../hooks/useChangeSelectedDisplayType';
-import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
-import { openSideDrawerState } from '../states/openSideDrawerState';
-import { resetDisplayPositionState } from '../states/resetDisplayPositionState';
-import { displayStepState } from '../states/displayStepState';
 
 export const SideDrawer = () => {
   const [openSideDrawer, setOpenSideDrawer] = useRecoilState(openSideDrawerState);

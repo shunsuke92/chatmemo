@@ -1,7 +1,8 @@
-import Stack from '@mui/material/Stack';
-import { EditingInfo } from './EditingInfoContext';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+
 import { useClearEditingContentID } from '../hooks/useClearEditingContentID';
+import { EditingInfo } from './EditingInfoContext';
 
 interface EditCompleteButtonProps {
   editingInfo: EditingInfo | undefined;

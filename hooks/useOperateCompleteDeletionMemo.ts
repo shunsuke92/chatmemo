@@ -1,6 +1,6 @@
+import { useLocalDeleteMemo } from './useLocalUpdateData';
 import { useSaveServer } from './useSaveServer';
 import { useServerDeleteMemoTable } from './useServerDeleteMemoTable';
-import { useLocalDeleteMemo } from './useLocalUpdateData';
 
 export const useOperateCompleteDeletionMemo = () => {
   const saveServer = useSaveServer();

@@ -1,6 +1,6 @@
+import { useLocalUpdateMemo, ChangeableMemo } from './useLocalUpdateData';
 import { useSaveServer } from './useSaveServer';
 import { useServerUpdateMemoTable } from './useServerUpdateMemoTable';
-import { useLocalUpdateMemo, ChangeableMemo } from './useLocalUpdateData';
 
 export const useOperateRevertMemo = () => {
   const saveServer = useSaveServer();

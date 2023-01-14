@@ -1,29 +1,33 @@
-import { TransitionGroup } from 'react-transition-group';
-import Collapse from '@mui/material/Collapse';
-import { DateChip } from './DateChip';
-import { ChatMemo } from './ChatMemo';
-import { TimelineWrapper } from './TimelineWrapper';
-import { Comment } from '../states/memoState';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
-import { addingContentIDState } from '../states/addingContentIDState';
-import { editingContentIDState } from '../states/editingContentIDState';
-import { Memo } from '../states/memoState';
-import { useEditingInfoContext } from './EditingInfoContext';
-import { useDelayCompletedContext } from '../components/DelayCompletedContext';
 import { useEffect } from 'react';
-import { openSideDrawerState } from '../states/openSideDrawerState';
-import { openUserMenuState } from '../states/openUserMenuState';
-import { isLoggingoutState } from '../states/isLoggingoutState';
-import { authUserState } from '../states/authUserState';
-import { useMemoBackground, useCommentBackground } from '../hooks/useColor';
+
+import { useRecoilValue, useRecoilState } from 'recoil';
+
+import Collapse from '@mui/material/Collapse';
+
+import { TransitionGroup } from 'react-transition-group';
+
+import { useDelayCompletedContext } from '../components/DelayCompletedContext';
 import { useChangeAddingContentID } from '../hooks/useChangeAddingContentID';
 import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
 import { useChangeEditingContentID } from '../hooks/useChangeEditingContentID';
-import { convertInternalDataToMemo } from '../utils/convertInternalDataToMemo';
+import { useMemoBackground, useCommentBackground } from '../hooks/useColor';
 import { useOperateDeleteMemo } from '../hooks/useOperateDeleteMemo';
 import { useOperateRevertMemo } from '../hooks/useOperateRevertMemo';
 import { useOperateUpdateServerCompleted } from '../hooks/useOperateUpdateServerCompleted';
+import { addingContentIDState } from '../states/addingContentIDState';
+import { authUserState } from '../states/authUserState';
+import { editingContentIDState } from '../states/editingContentIDState';
+import { isLoggingoutState } from '../states/isLoggingoutState';
+import { Memo } from '../states/memoState';
+import { Comment } from '../states/memoState';
+import { openSideDrawerState } from '../states/openSideDrawerState';
+import { openUserMenuState } from '../states/openUserMenuState';
+import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
+import { convertInternalDataToMemo } from '../utils/convertInternalDataToMemo';
+import { ChatMemo } from './ChatMemo';
+import { DateChip } from './DateChip';
+import { useEditingInfoContext } from './EditingInfoContext';
+import { TimelineWrapper } from './TimelineWrapper';
 
 export interface InternalData {
   type: 'memo' | 'comment';

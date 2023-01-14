@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
-import { Timeline } from './Timeline';
-import { NoContent } from './NoContent';
+
 import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
-import { scheduledScrollingState } from '../states/scheduledScrollingState';
-import { resetDisplayPositionState } from '../states/resetDisplayPositionState';
-import { scrollingIDState } from '../states/scrollingIDState';
-import { isRenderingState } from '../states/isRenderingState';
+
 import { useChangeScheduledScrolling } from '../hooks/useChangeScheduledScrolling';
 import { useCreateDisplayData } from '../hooks/useCreateDisplayData';
 import { authUserState } from '../states/authUserState';
+import { isRenderingState } from '../states/isRenderingState';
+import { resetDisplayPositionState } from '../states/resetDisplayPositionState';
+import { scheduledScrollingState } from '../states/scheduledScrollingState';
+import { scrollingIDState } from '../states/scrollingIDState';
+import { NoContent } from './NoContent';
+import { Timeline } from './Timeline';
 
 export const Contents = () => {
   const user = useRecoilValue(authUserState);

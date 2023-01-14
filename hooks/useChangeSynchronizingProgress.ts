@@ -1,4 +1,5 @@
 import { useSetRecoilState } from 'recoil';
+
 import { synchronizingProgressState } from '../states/synchronizingProgressState';
 
 export const useChangeSynchronizingProgress = () => {

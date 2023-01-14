@@ -1,4 +1,5 @@
 import { useSetRecoilState } from 'recoil';
+
 import { selectedDisplayTypeState, DisplayType } from '../states/selectedDisplayTypeState';
 
 export const useChangeSelectedDisplayType = () => {

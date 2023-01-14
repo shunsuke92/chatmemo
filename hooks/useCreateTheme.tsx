@@ -1,9 +1,9 @@
-import { useSettingInfoContext } from '../components/SettingInfoContext';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useLayoutEffect } from 'react';
+
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
-import { setLocalStorageDarkMode } from '../utils/setLocalStorageDarkMode';
-import { getLocalStorageDarkMode } from '../utils/getLocalStorageDarkMode';
-import { useLayoutEffect, useState, useEffect } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
+import { useSettingInfoContext } from '../components/SettingInfoContext';
 
 export const useCreateTheme = () => {
   const settingInfo = useSettingInfoContext();

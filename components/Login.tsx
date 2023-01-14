@@ -1,16 +1,20 @@
 import { useState } from 'react';
-import Button from '@mui/material/Button';
-import { app, provider } from '../utils/firebase';
-import { getAuth, signInWithRedirect } from 'firebase/auth';
-import Dialog from '@mui/material/Dialog';
-import { Box } from '@mui/system';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+
 import { useRecoilValue } from 'recoil';
+
+import CloseIcon from '@mui/icons-material/Close';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { Box } from '@mui/system';
+
+import { getAuth, signInWithRedirect } from 'firebase/auth';
+
 import { authUserState } from '../states/authUserState';
+import { app, provider } from '../utils/firebase';
 import { Logo } from './Logo';
 
 interface LoginDialogProps {

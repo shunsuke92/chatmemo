@@ -1,8 +1,12 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+
 import { useRecoilValue } from 'recoil';
-import { authUserState } from '../states/authUserState';
+
 import LinearProgress from '@mui/material/LinearProgress';
+
+import axios from 'axios';
+
+import { authUserState } from '../states/authUserState';
 
 export interface SettingInfo {
   setting: Setting;

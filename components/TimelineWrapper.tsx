@@ -1,5 +1,5 @@
-import { Box } from '@mui/system';
 import Stack from '@mui/material/Stack';
+import { Box } from '@mui/system';
 
 interface TimelineWrapperProps {
   children: any;

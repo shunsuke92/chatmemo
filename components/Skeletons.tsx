@@ -1,10 +1,12 @@
-import Stack from '@mui/material/Stack';
-import Skeleton from '@mui/material/Skeleton';
-import styles from '../styles/Home.module.css';
 import { useRecoilValue } from 'recoil';
+
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
+
 import { isRenderingState } from '../states/isRenderingState';
-import { TimelineWrapper } from './TimelineWrapper';
+import styles from '../styles/Home.module.css';
 import { DateChipWrapper } from './DateChipWrapper';
+import { TimelineWrapper } from './TimelineWrapper';
 
 const ContentsSkeleton = () => {
   return (

@@ -1,9 +1,10 @@
 import { Box } from '@mui/system';
-import { useMaskBackground } from '../hooks/useColor';
-import { useClearAddingContentID } from '../hooks/useClearAddingContentID';
-import { useClearEditingContentID } from '../hooks/useClearEditingContentID';
+
 import { useGetIsAdding } from '../components/Main';
 import { useGetIsEditing } from '../components/Main';
+import { useClearAddingContentID } from '../hooks/useClearAddingContentID';
+import { useClearEditingContentID } from '../hooks/useClearEditingContentID';
+import { useMaskBackground } from '../hooks/useColor';
 
 interface MaskProps {
   height: any;

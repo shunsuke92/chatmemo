@@ -1,4 +1,5 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
+
 import { useSettingInfoContext } from '../components/SettingInfoContext';
 
 export const useDarkMode = (): boolean => {

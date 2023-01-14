@@ -1,17 +1,19 @@
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Toolbar from '@mui/material/Toolbar';
-import AppBar from '@mui/material/AppBar';
-import MenuIcon from '@mui/icons-material/Menu';
-import { Login } from './Login';
-import { User } from './User';
-import { SideDrawer } from './SideDrawer';
-import { useBarBackground, useLightModeColor } from '../hooks/useColor';
-import { Synchronizing } from '../components/Synchronizing';
-import { Mask } from '../components/Mask';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
+
+import MenuIcon from '@mui/icons-material/Menu';
+import AppBar from '@mui/material/AppBar';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+
+import { Mask } from '../components/Mask';
+import { Synchronizing } from '../components/Synchronizing';
+import { useBarBackground, useLightModeColor } from '../hooks/useColor';
 import { openSideDrawerState } from '../states/openSideDrawerState';
+import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
+import { Login } from './Login';
+import { SideDrawer } from './SideDrawer';
+import { User } from './User';
 
 export const MenuBar = () => {
   const barBackground = useBarBackground();

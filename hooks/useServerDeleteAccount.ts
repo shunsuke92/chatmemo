@@ -1,6 +1,8 @@
 import { useRecoilValue } from 'recoil';
-import { authUserState } from '../states/authUserState';
+
 import axios from 'axios';
+
+import { authUserState } from '../states/authUserState';
 
 export const useServerDeleteAccount = () => {
   const user = useRecoilValue(authUserState);

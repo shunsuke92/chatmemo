@@ -1,12 +1,15 @@
 import { useEffect, SetStateAction } from 'react';
-import Stack from '@mui/material/Stack';
+
+import { useRecoilValue } from 'recoil';
+
 import SendIcon from '@mui/icons-material/Send';
 import IconButton from '@mui/material/IconButton';
-import { useOperateCreateMemo } from '../hooks/useOperateCreateMemo';
-import { useOperateCreateComment } from '../hooks/useOperateCreateComment';
-import { useRecoilValue } from 'recoil';
-import { addingContentIDState } from '../states/addingContentIDState';
+import Stack from '@mui/material/Stack';
+
 import { useGetIsAdding } from '../components/Main';
+import { useOperateCreateComment } from '../hooks/useOperateCreateComment';
+import { useOperateCreateMemo } from '../hooks/useOperateCreateMemo';
+import { addingContentIDState } from '../states/addingContentIDState';
 
 interface AddButtonProps {
   value: string;

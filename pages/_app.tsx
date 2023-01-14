@@ -1,15 +1,18 @@
-import Head from 'next/head';
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
+
+import { RecoilRoot } from 'recoil';
+
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
+
 import { Auth } from '../components/Auth';
-import { SettingInfoProvider } from '../components/SettingInfoContext';
-import { EditingInfoProvider } from '../components/EditingInfoContext';
-import { SynchronizationProvider } from '../components/SynchronizationContext';
-import { ManageTentativeIDProvider } from '../components/ManageTentativeIDContext';
 import { DelayCompletedProvider } from '../components/DelayCompletedContext';
+import { EditingInfoProvider } from '../components/EditingInfoContext';
+import { ManageTentativeIDProvider } from '../components/ManageTentativeIDContext';
+import { SettingInfoProvider } from '../components/SettingInfoContext';
+import { SynchronizationProvider } from '../components/SynchronizationContext';
 import { useCreateTheme } from '../hooks/useCreateTheme';
-import { RecoilRoot } from 'recoil';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const theme = useCreateTheme();

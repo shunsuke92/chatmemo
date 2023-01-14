@@ -1,5 +1,5 @@
-import { Comment } from '../states/memoState';
 import { InternalData } from '../components/Timeline';
+import { Comment } from '../states/memoState';
 
 export const convertInternalDataToComment = (data: Comment): InternalData => {
   const res: InternalData = {

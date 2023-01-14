@@ -1,3 +1,11 @@
+import { useRecoilValue } from 'recoil';
+import { useSetRecoilState } from 'recoil';
+
+import { EditingContent } from '../components/EditingInfoContext';
+import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
+import { editingContentIDState } from '../states/editingContentIDState';
+import { scrollingIDState } from '../states/scrollingIDState';
+import { getNowDate } from '../utils/getNowDate';
 import {
   ChangeableMemo,
   ChangeableComment,
@@ -5,16 +13,9 @@ import {
   LocalUpdateDataProps,
   useLocalUpdateData,
 } from './useLocalUpdateData';
-import { getNowDate } from '../utils/getNowDate';
 import { useSaveServer } from './useSaveServer';
-import { useServerUpdateMemoTable } from './useServerUpdateMemoTable';
-import { EditingContent } from '../components/EditingInfoContext';
 import { useServerUpdateCommentTable } from './useServerUpdateCommentTable';
-import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
-import { useRecoilValue } from 'recoil';
-import { editingContentIDState } from '../states/editingContentIDState';
-import { useSetRecoilState } from 'recoil';
-import { scrollingIDState } from '../states/scrollingIDState';
+import { useServerUpdateMemoTable } from './useServerUpdateMemoTable';
 
 export const useOperateUpdateEditData = () => {
   const saveServer = useSaveServer();

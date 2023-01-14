@@ -1,13 +1,16 @@
-import IconButton from '@mui/material/IconButton';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { EditingInfo } from './EditingInfoContext';
 import { useState } from 'react';
+
+import { useSetRecoilState } from 'recoil';
+
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { InternalData } from './Timeline';
+
 import { AlertDialog } from '../states/displayAlertDialogState';
-import { useSetRecoilState } from 'recoil';
 import { scrollingIDState } from '../states/scrollingIDState';
+import { EditingInfo } from './EditingInfoContext';
+import { InternalData } from './Timeline';
 
 interface MoreButtonProps {
   data: InternalData;

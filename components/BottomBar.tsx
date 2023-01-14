@@ -1,8 +1,10 @@
-import { Box } from '@mui/system';
-import { useBarBackground } from '../hooks/useColor';
-import { Synchronizing } from '../components/Synchronizing';
-import { InputText } from '../components/InputText';
 import { useRecoilValue } from 'recoil';
+
+import { Box } from '@mui/system';
+
+import { InputText } from '../components/InputText';
+import { Synchronizing } from '../components/Synchronizing';
+import { useBarBackground } from '../hooks/useColor';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
 
 export const BottomBar = () => {

@@ -1,11 +1,12 @@
 import { useSetRecoilState } from 'recoil';
+
 import { addingContentIDState } from '../states/addingContentIDState';
-import { editingContentIDState } from '../states/editingContentIDState';
-import { scheduledScrollingState } from '../states/scheduledScrollingState';
-import { displayAlertDialogState } from '../states/displayAlertDialogState';
 import { deleteIDState } from '../states/deleteIDState';
-import { selectedDisplayTypeState, DISPLAY_TYPE } from '../states/selectedDisplayTypeState';
+import { displayAlertDialogState } from '../states/displayAlertDialogState';
+import { editingContentIDState } from '../states/editingContentIDState';
 import { isSynchronizingState } from '../states/isSynchronizingState';
+import { scheduledScrollingState } from '../states/scheduledScrollingState';
+import { selectedDisplayTypeState, DISPLAY_TYPE } from '../states/selectedDisplayTypeState';
 import { synchronizingProgressState } from '../states/synchronizingProgressState';
 
 export const useInitializationProcess = () => {

@@ -1,4 +1,5 @@
 import EditIcon from '@mui/icons-material/Edit';
+
 import { InternalData } from './Timeline';
 
 interface EditedMarkProps {

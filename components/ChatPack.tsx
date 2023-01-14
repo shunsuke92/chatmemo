@@ -1,11 +1,12 @@
 import Stack from '@mui/material/Stack';
+
+import { ChatMemoProps } from '../components/ChatMemo';
+import { ChatCard } from './ChatCard';
 import { CompletedButton } from './CompletedButton';
 import { EditedMark } from './EditedMark';
-import { SynchronizedMark } from './SynchronizedMark';
 import { HoursChip } from './HoursChip';
-import { ChatCard } from './ChatCard';
 import { LowerButtons } from './LowerButtons';
-import { ChatMemoProps } from '../components/ChatMemo';
+import { SynchronizedMark } from './SynchronizedMark';
 
 interface ChatPackProps extends ChatMemoProps {
   children?: any;

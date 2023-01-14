@@ -1,6 +1,7 @@
+import AddCommentIcon from '@mui/icons-material/AddComment';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import AddCommentIcon from '@mui/icons-material/AddComment';
+
 import { InternalData } from './Timeline';
 
 interface AddCommentButtonProps {

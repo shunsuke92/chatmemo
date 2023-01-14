@@ -1,6 +1,7 @@
-import { Memo, Comment } from '../states/memoState';
 import { useRecoilValue } from 'recoil';
+
 import { displayStepState } from '../states/displayStepState';
+import { Memo, Comment } from '../states/memoState';
 
 interface AddDateForDisplayRes {
   data: Memo[];
