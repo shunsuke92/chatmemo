@@ -5,9 +5,9 @@ import { addingContentIDState } from '../states/addingContentIDState';
 export const useClearAddingContentID = () => {
   const setAddingContentID = useSetRecoilState(addingContentIDState);
 
-  function clearAddingContentID() {
+  const clearAddingContentID = () => {
     setAddingContentID('');
-  }
+  };
 
   return clearAddingContentID;
 };

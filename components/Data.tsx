@@ -13,7 +13,7 @@ import { demoData } from '../utils/demoData';
 import { getDate } from '../utils/getDate';
 import { getTime } from '../utils/getTime';
 
-export function Data({ children }: { children: any }) {
+export const Data = ({ children }: { children: any }) => {
   const [isChecking, setIsAuthChecking] = useState(true);
   const setMemo = useSetRecoilState(memoState);
 
@@ -68,4 +68,4 @@ export function Data({ children }: { children: any }) {
   }, [user, setMemo]);
 
   return <>{isChecking ? <LinearProgress /> : children}</>;
-}
+};

@@ -12,11 +12,11 @@ interface AddCommentButtonProps {
 export const AddCommentButton = (props: AddCommentButtonProps) => {
   const { data, changeAddingContentID } = props;
 
-  function handleClick(id: string) {
-    return function () {
+  const handleClick = (id: string) => {
+    return () => {
       changeAddingContentID(id);
     };
-  }
+  };
 
   return (
     <Tooltip title='コメントを追加'>

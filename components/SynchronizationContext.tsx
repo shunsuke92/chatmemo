@@ -14,11 +14,11 @@ export interface Synchronization {
 
 const SynchronizationContext = createContext<Synchronization | null>(null);
 
-export function useSynchronizationContext() {
+export const useSynchronizationContext = () => {
   return useContext(SynchronizationContext);
-}
+};
 
-export function SynchronizationProvider({ children }: { children: any }) {
+export const SynchronizationProvider = ({ children }: { children: any }) => {
   const user = useRecoilValue(authUserState);
 
   const changeIsSynchronizing = useChangeIsSynchronizing();
@@ -113,4 +113,4 @@ export function SynchronizationProvider({ children }: { children: any }) {
   return (
     <SynchronizationContext.Provider value={value}>{children}</SynchronizationContext.Provider>
   );
-}
+};

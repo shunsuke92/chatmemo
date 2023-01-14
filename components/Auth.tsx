@@ -12,7 +12,7 @@ import { useInitializationProcess } from '../hooks/useInitializationProcess';
 import { authUserState } from '../states/authUserState';
 import { app } from '../utils/firebase';
 
-export function Auth({ children }: { children: any }) {
+export const Auth = ({ children }: { children: any }) => {
   const setUser = useSetRecoilState(authUserState);
 
   const initializationProcess = useInitializationProcess();
@@ -55,4 +55,4 @@ export function Auth({ children }: { children: any }) {
   }, [setUser, initializationProcess]);
 
   return <>{isAuthChecking ? <LinearProgress /> : children}</>;
-}
+};

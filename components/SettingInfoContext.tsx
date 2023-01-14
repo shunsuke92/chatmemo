@@ -44,11 +44,11 @@ export type DarkMode = 'os' | 'dark' | 'light';
 
 const SettingInfoContext = createContext<SettingInfo | null>(null);
 
-export function useSettingInfoContext() {
+export const useSettingInfoContext = () => {
   return useContext(SettingInfoContext);
-}
+};
 
-export function SettingInfoProvider({ children }: { children: any }) {
+export const SettingInfoProvider = ({ children }: { children: any }) => {
   const [isLoading, setIsLoading] = useState(true);
   const user = useRecoilValue(authUserState);
 
@@ -90,7 +90,7 @@ export function SettingInfoProvider({ children }: { children: any }) {
     };
   };
 
-  async function changeHideCompleted(value: boolean) {
+  const changeHideCompleted = async (value: boolean) => {
     const sendData = getSendSetting();
     sendData.hide_completed_memo = value;
     // サーバーに保存
@@ -98,9 +98,9 @@ export function SettingInfoProvider({ children }: { children: any }) {
 
     // ローカルに保存
     setSetting((prevState) => ({ ...prevState, hide_completed_memo: value }));
-  }
+  };
 
-  async function changeDisplayCommentDate(value: boolean) {
+  const changeDisplayCommentDate = async (value: boolean) => {
     const sendData = getSendSetting();
     sendData.display_comment_date = value;
     // サーバーに保存
@@ -108,9 +108,9 @@ export function SettingInfoProvider({ children }: { children: any }) {
 
     // ローカルに保存
     setSetting((prevState) => ({ ...prevState, display_comment_date: value }));
-  }
+  };
 
-  async function changeDarkMode(value: DarkMode) {
+  const changeDarkMode = async (value: DarkMode) => {
     const sendData = getSendSetting();
     sendData.dark_mode = value;
     // サーバーに保存
@@ -118,9 +118,9 @@ export function SettingInfoProvider({ children }: { children: any }) {
 
     // ローカルに保存
     setSetting((prevState) => ({ ...prevState, dark_mode: value }));
-  }
+  };
 
-  async function updateServer(data: SendSetting) {
+  const updateServer = async (data: SendSetting) => {
     if (user) {
       await axios
         .patch(
@@ -132,7 +132,7 @@ export function SettingInfoProvider({ children }: { children: any }) {
           setSetting((prevState) => ({ ...prevState, _synchronized: false }));
         });
     }
-  }
+  };
 
   const info: SettingInfo = {
     setting: setting,
@@ -146,4 +146,4 @@ export function SettingInfoProvider({ children }: { children: any }) {
       {isLoading ? <LinearProgress /> : children}
     </SettingInfoContext.Provider>
   );
-}
+};

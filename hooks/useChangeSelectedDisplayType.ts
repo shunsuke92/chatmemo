@@ -5,9 +5,9 @@ import { selectedDisplayTypeState, DisplayType } from '../states/selectedDisplay
 export const useChangeSelectedDisplayType = () => {
   const setSelectedDisplayType = useSetRecoilState(selectedDisplayTypeState);
 
-  function changeSelectedDisplayType(data: DisplayType) {
+  const changeSelectedDisplayType = (data: DisplayType) => {
     setSelectedDisplayType(data);
-  }
+  };
 
   return changeSelectedDisplayType;
 };

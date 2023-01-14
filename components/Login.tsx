@@ -23,7 +23,7 @@ interface LoginDialogProps {
   onClose: () => void;
 }
 
-function LoginDialog(props: LoginDialogProps) {
+const LoginDialog = (props: LoginDialogProps) => {
   const { open, onClose, onClick } = props;
   const [focus, setFocus] = useState(false);
 
@@ -109,7 +109,7 @@ function LoginDialog(props: LoginDialogProps) {
       </Box>
     </Dialog>
   );
-}
+};
 
 export const Login = () => {
   const [open, setOpen] = useState(false);

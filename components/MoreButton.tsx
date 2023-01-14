@@ -41,16 +41,16 @@ export const MoreButton = (props: MoreButtonProps) => {
 
   const open = Boolean(anchorEl);
 
-  function handleClickMore(event: React.MouseEvent<HTMLButtonElement>) {
+  const handleClickMore = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
-  }
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  function handleClickEdit(id: string) {
-    return function () {
+  const handleClickEdit = (id: string) => {
+    return () => {
       setAnchorEl(null);
 
       // HACK: 特定条件で意図しないスクロールが発生する事象に対応するため
@@ -63,10 +63,10 @@ export const MoreButton = (props: MoreButtonProps) => {
         setScrollingID(id);
       }, 1);
     };
-  }
+  };
 
-  function handleClickDelete(id: string) {
-    return function () {
+  const handleClickDelete = (id: string) => {
+    return () => {
       if (isTrash) {
         // 完全削除のダイアログを表示
         changeDisplayAlertDialog('complete-deletion-memo', id);
@@ -76,15 +76,15 @@ export const MoreButton = (props: MoreButtonProps) => {
       }
       setAnchorEl(null);
     };
-  }
+  };
 
-  function handleClickRevert(id: string) {
-    return function () {
+  const handleClickRevert = (id: string) => {
+    return () => {
       revertMemo(id);
 
       setAnchorEl(null);
     };
-  }
+  };
 
   return (
     <>

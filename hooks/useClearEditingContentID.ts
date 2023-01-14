@@ -5,9 +5,9 @@ import { editingContentIDState } from '../states/editingContentIDState';
 export const useClearEditingContentID = () => {
   const setEditingContentID = useSetRecoilState(editingContentIDState);
 
-  function clearEditingContentID() {
+  const clearEditingContentID = () => {
     setEditingContentID('');
-  }
+  };
 
   return clearEditingContentID;
 };

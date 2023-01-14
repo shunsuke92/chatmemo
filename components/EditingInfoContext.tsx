@@ -21,11 +21,11 @@ export interface EditingContent {
 
 const EditingInfoContext = createContext<EditingInfo | undefined>(undefined);
 
-export function useEditingInfoContext() {
+export const useEditingInfoContext = () => {
   return useContext(EditingInfoContext);
-}
+};
 
-export function EditingInfoProvider({ children }: { children: any }) {
+export const EditingInfoProvider = ({ children }: { children: any }) => {
   const [editingContentBefore, setEditingContentBefore] = useState<EditingContent | undefined>(
     undefined,
   );
@@ -35,7 +35,7 @@ export function EditingInfoProvider({ children }: { children: any }) {
 
   const updateEditData = useOperateUpdateEditData();
 
-  function createEditingContentInfo(data: InternalData) {
+  const createEditingContentInfo = (data: InternalData) => {
     if (data.comments === undefined) return;
     const commentBefore = data.comments.map((comment) => {
       return {
@@ -64,12 +64,12 @@ export function EditingInfoProvider({ children }: { children: any }) {
 
     setEditingContentBefore(contentBefore);
     setEditingContentAfter(contentAfter);
-  }
+  };
 
-  function clearEditingContentInfo() {
+  const clearEditingContentInfo = () => {
     setEditingContentBefore(undefined);
     setEditingContentAfter(undefined);
-  }
+  };
 
   const updateEditingContentAfter = (text: string, commentID?: string) => {
     if (commentID === undefined) {
@@ -124,4 +124,4 @@ export function EditingInfoProvider({ children }: { children: any }) {
   };
 
   return <EditingInfoContext.Provider value={info}>{children}</EditingInfoContext.Provider>;
-}
+};

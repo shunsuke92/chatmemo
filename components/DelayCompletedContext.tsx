@@ -19,11 +19,11 @@ interface BookDelayCompletedID {
 
 const DelayCompletedContext = createContext<DelayCompleted | undefined>(undefined);
 
-export function useDelayCompletedContext() {
+export const useDelayCompletedContext = () => {
   return useContext(DelayCompletedContext);
-}
+};
 
-export function DelayCompletedProvider({ children }: { children: any }) {
+export const DelayCompletedProvider = ({ children }: { children: any }) => {
   const bookDelayCompletedIDRef = useRef<BookDelayCompletedID[]>([]);
   const localUpdateData = useLocalUpdateMemoMulti();
   const setTimer = useSetTimeout();
@@ -58,4 +58,4 @@ export function DelayCompletedProvider({ children }: { children: any }) {
   };
 
   return <DelayCompletedContext.Provider value={value}>{children}</DelayCompletedContext.Provider>;
-}
+};

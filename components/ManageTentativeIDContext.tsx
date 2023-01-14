@@ -13,11 +13,11 @@ interface ManageID {
 
 const ManageTentativeIDContext = createContext<ManageTentativeID | null>(null);
 
-export function useManageTentativeIDContext() {
+export const useManageTentativeIDContext = () => {
   return useContext(ManageTentativeIDContext);
-}
+};
 
-export function ManageTentativeIDProvider({ children }: { children: any }) {
+export const ManageTentativeIDProvider = ({ children }: { children: any }) => {
   const manageID = useRef<ManageID[]>([]);
 
   const createManageID = (tentativeID: string) => {
@@ -49,4 +49,4 @@ export function ManageTentativeIDProvider({ children }: { children: any }) {
       {children}
     </ManageTentativeIDContext.Provider>
   );
-}
+};

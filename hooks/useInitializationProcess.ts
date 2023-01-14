@@ -19,7 +19,7 @@ export const useInitializationProcess = () => {
   const setIsSynchronizing = useSetRecoilState(isSynchronizingState);
   const setSynchronizingProgress = useSetRecoilState(synchronizingProgressState);
 
-  function initializationProcess() {
+  const initializationProcess = () => {
     setAddingContentID('');
     setEditingContentID('');
     setScheduledScrolling(false);
@@ -28,7 +28,7 @@ export const useInitializationProcess = () => {
     setSelectedDisplayType(DISPLAY_TYPE[0]);
     setIsSynchronizing(false);
     setSynchronizingProgress(0);
-  }
+  };
 
   return initializationProcess;
 };
