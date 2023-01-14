@@ -10,7 +10,7 @@ import { displayAlertDialogState } from '../states/displayAlertDialogState';
 import { deleteIDState } from '../states/deleteIDState';
 import { useClearDisplayAlertDialog } from '../hooks/useClearDisplayAlertDialog';
 
-export default function DeleteMemoAlertDialog() {
+export const DeleteMemoAlertDialog = () => {
   const deleteMemo = useOperateDeleteMemo();
 
   const displayAlertDialog = useRecoilValue(displayAlertDialogState);
@@ -57,4 +57,4 @@ export default function DeleteMemoAlertDialog() {
       </DialogActions>
     </Dialog>
   );
-}
+};

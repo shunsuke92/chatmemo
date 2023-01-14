@@ -1,11 +1,11 @@
-import MenuBar from '../components/MenuBar';
-import Mask from '../components/Mask';
-import Synchronizing from '../components/Synchronizing';
-import DeleteMemoAlertDialog from '../components/DeleteMemoAlertDialog';
-import DeleteAccountAlertDialog from '../components/DeleteAccountAlertDialog';
-import CompleteDeletionMemoAlertDialog from '../components/CompleteDeletionMemoAlertDialog';
-import Contents from '../components/Contents';
-import BottomBar from '../components/BottomBar';
+import { MenuBar } from '../components/MenuBar';
+import { Mask } from '../components/Mask';
+import { Synchronizing } from '../components/Synchronizing';
+import { DeleteMemoAlertDialog } from '../components/DeleteMemoAlertDialog';
+import { DeleteAccountAlertDialog } from '../components/DeleteAccountAlertDialog';
+import { CompleteDeletionMemoAlertDialog } from '../components/CompleteDeletionMemoAlertDialog';
+import { Contents } from '../components/Contents';
+import { BottomBar } from '../components/BottomBar';
 import { Data } from '../components/Data';
 import { useRecoilValue } from 'recoil';
 import { addingContentIDState } from '../states/addingContentIDState';
@@ -24,7 +24,7 @@ export const useGetIsEditing = () => {
   return editingContentID.length > 0;
 };
 
-export default function Main() {
+export const Main = () => {
   return (
     <>
       <MenuBar />
@@ -54,4 +54,4 @@ export default function Main() {
       <BottomBar />
     </>
   );
-}
+};

@@ -3,17 +3,17 @@ import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 import AppBar from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
-import Login from './Login';
-import User from './User';
-import SideDrawer from './SideDrawer';
+import { Login } from './Login';
+import { User } from './User';
+import { SideDrawer } from './SideDrawer';
 import { useBarBackground, useLightModeColor } from '../hooks/useColor';
-import Synchronizing from '../components/Synchronizing';
-import Mask from '../components/Mask';
+import { Synchronizing } from '../components/Synchronizing';
+import { Mask } from '../components/Mask';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
 import { openSideDrawerState } from '../states/openSideDrawerState';
 
-export default function MenuBar() {
+export const MenuBar = () => {
   const barBackground = useBarBackground();
   const lightModeColor = useLightModeColor();
 
@@ -61,4 +61,4 @@ export default function MenuBar() {
       <SideDrawer />
     </>
   );
-}
+};

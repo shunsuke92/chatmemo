@@ -9,7 +9,7 @@ interface SynchronizingProps {
   progress: boolean;
 }
 
-export default function Synchronizing(props: SynchronizingProps) {
+export const Synchronizing = (props: SynchronizingProps) => {
   const { progress } = props;
   const maskBackground = useMaskBackground();
 
@@ -36,4 +36,4 @@ export default function Synchronizing(props: SynchronizingProps) {
       )}
     </>
   );
-}
+};

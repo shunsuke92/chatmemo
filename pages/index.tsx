@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useCreateTheme } from '../hooks/useCreateTheme';
-import Main from '../components/Main';
+import { Main } from '../components/Main';
 
 const Home: NextPage = () => {
   const theme = useCreateTheme();

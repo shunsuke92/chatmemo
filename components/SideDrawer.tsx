@@ -21,7 +21,7 @@ import { openSideDrawerState } from '../states/openSideDrawerState';
 import { resetDisplayPositionState } from '../states/resetDisplayPositionState';
 import { displayStepState } from '../states/displayStepState';
 
-export default function SideDrawer() {
+export const SideDrawer = () => {
   const [openSideDrawer, setOpenSideDrawer] = useRecoilState(openSideDrawerState);
 
   const lightModeColor = useLightModeColor();
@@ -98,4 +98,4 @@ export default function SideDrawer() {
       </Drawer>
     </div>
   );
-}
+};

@@ -21,7 +21,7 @@ import { isLoggingoutState } from '../states/isLoggingoutState';
 import { signout } from '../utils/signout';
 import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
 
-export default function User() {
+export const User = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [setting, setSetting] = useState(false);
 
@@ -231,4 +231,4 @@ export default function User() {
       </Menu>
     </div>
   );
-}
+};

@@ -3,7 +3,7 @@ import Skeleton from '@mui/material/Skeleton';
 import styles from '../styles/Home.module.css';
 import { useRecoilValue } from 'recoil';
 import { isRenderingState } from '../states/isRenderingState';
-import TimelineWrapper from './TimelineWrapper';
+import { TimelineWrapper } from './TimelineWrapper';
 import { DateChipWrapper } from './DateChipWrapper';
 
 const ContentsSkeleton = () => {

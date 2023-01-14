@@ -13,7 +13,7 @@ import { useServerDeleteAccount } from '../hooks/useServerDeleteAccount';
 import { displayAlertDialogState } from '../states/displayAlertDialogState';
 import { useClearDisplayAlertDialog } from '../hooks/useClearDisplayAlertDialog';
 
-export default function DeleteAccountAlertDialog() {
+export const DeleteAccountAlertDialog = () => {
   const user = useRecoilValue(authUserState);
 
   const displayAlertDialog = useRecoilValue(displayAlertDialogState);
@@ -90,4 +90,4 @@ export default function DeleteAccountAlertDialog() {
       </DialogActions>
     </Dialog>
   );
-}
+};

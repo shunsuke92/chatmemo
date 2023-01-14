@@ -1,11 +1,11 @@
 import { Box } from '@mui/system';
 import { useBarBackground } from '../hooks/useColor';
-import Synchronizing from '../components/Synchronizing';
-import InputText from '../components/InputText';
+import { Synchronizing } from '../components/Synchronizing';
+import { InputText } from '../components/InputText';
 import { useRecoilValue } from 'recoil';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
 
-export default function BottomBar() {
+export const BottomBar = () => {
   const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
   const idDisplay = selectedDisplayType.id === 1;
 
@@ -35,4 +35,4 @@ export default function BottomBar() {
       )}
     </>
   );
-}
+};

@@ -10,7 +10,7 @@ interface MaskProps {
   top: any;
 }
 
-export default function Mask(props: MaskProps) {
+export const Mask = (props: MaskProps) => {
   const { height, top } = props;
   const maskBackground = useMaskBackground();
 
@@ -44,4 +44,4 @@ export default function Mask(props: MaskProps) {
       )}
     </>
   );
-}
+};

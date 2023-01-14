@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import { useRecoilValue } from 'recoil';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
 
-export default function NoContent() {
+export const NoContent = () => {
   const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
 
   return (
@@ -17,4 +17,4 @@ export default function NoContent() {
       </Typography>
     </Stack>
   );
-}
+};

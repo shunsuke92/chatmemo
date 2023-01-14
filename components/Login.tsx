@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRecoilValue } from 'recoil';
 import { authUserState } from '../states/authUserState';
-import Logo from './Logo';
+import { Logo } from './Logo';
 
 interface LoginDialogProps {
   open: boolean;
@@ -107,7 +107,7 @@ function LoginDialog(props: LoginDialogProps) {
   );
 }
 
-export default function Login() {
+export const Login = () => {
   const [open, setOpen] = useState(false);
   const user = useRecoilValue(authUserState);
 
@@ -134,4 +134,4 @@ export default function Login() {
       <LoginDialog open={open} onClick={handleSignInWithGoogle} onClose={handleClose} />
     </div>
   );
-}
+};

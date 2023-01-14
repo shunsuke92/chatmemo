@@ -2,7 +2,7 @@ import { TransitionGroup } from 'react-transition-group';
 import Collapse from '@mui/material/Collapse';
 import { DateChip } from './DateChip';
 import { ChatMemo } from './ChatMemo';
-import TimelineWrapper from './TimelineWrapper';
+import { TimelineWrapper } from './TimelineWrapper';
 import { Comment } from '../states/memoState';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
@@ -59,7 +59,7 @@ const useGetIsEditingContents = () => {
   };
 };
 
-export default function Timeline(props: TimelineProps) {
+export const Timeline = (props: TimelineProps) => {
   const { data } = props;
   const getIsAddingContents = useGetIsAddingContents();
   const getIsEditingContents = useGetIsEditingContents();
@@ -125,4 +125,4 @@ export default function Timeline(props: TimelineProps) {
       </TransitionGroup>
     </TimelineWrapper>
   );
-}
+};

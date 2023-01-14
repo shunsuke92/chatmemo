@@ -5,7 +5,7 @@ interface TimelineWrapperProps {
   children: any;
 }
 
-export default function TimelineWrapper(props: TimelineWrapperProps) {
+export const TimelineWrapper = (props: TimelineWrapperProps) => {
   const { children } = props;
 
   return (
@@ -42,4 +42,4 @@ export default function TimelineWrapper(props: TimelineWrapperProps) {
       </Box>
     </Box>
   );
-}
+};

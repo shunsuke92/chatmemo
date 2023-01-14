@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import Timeline from './Timeline';
-import NoContent from './NoContent';
+import { Timeline } from './Timeline';
+import { NoContent } from './NoContent';
 import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 import { scheduledScrollingState } from '../states/scheduledScrollingState';
 import { resetDisplayPositionState } from '../states/resetDisplayPositionState';
@@ -10,7 +10,7 @@ import { useChangeScheduledScrolling } from '../hooks/useChangeScheduledScrollin
 import { useCreateDisplayData } from '../hooks/useCreateDisplayData';
 import { authUserState } from '../states/authUserState';
 
-export default function Contents() {
+export const Contents = () => {
   const user = useRecoilValue(authUserState);
   const setIsRendering = useSetRecoilState(isRenderingState);
   const scheduledScrolling = useRecoilValue(scheduledScrollingState);
@@ -108,4 +108,4 @@ export default function Contents() {
   };
 
   return displayData.length > 0 ? <Timeline data={displayData} /> : <NoContent />;
-}
+};

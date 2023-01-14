@@ -1,8 +1,8 @@
-interface LoginProps {
+interface LogoProps {
   type: 'dark' | 'light';
 }
 
-export default function Login(props: LoginProps) {
+export const Logo = (props: LogoProps) => {
   const { type } = props;
   return type === 'light' ? (
     <svg
@@ -87,4 +87,4 @@ export default function Login(props: LoginProps) {
       />
     </svg>
   );
-}
+};

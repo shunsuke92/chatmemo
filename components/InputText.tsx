@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import AddButton from '../components/AddButton';
+import { AddButton } from '../components/AddButton';
 import { useGetIsAdding } from '../components/Main';
 import { useGetIsEditing } from '../components/Main';
 import { useEffect } from 'react';
-import Mask from '../components/Mask';
+import { Mask } from '../components/Mask';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 
-export default function InputText() {
+export const InputText = () => {
   const [value, setValue] = useState('');
   const [height, setHeight] = useState(0);
 
@@ -87,4 +87,4 @@ export default function InputText() {
       />
     </>
   );
-}
+};

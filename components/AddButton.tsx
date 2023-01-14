@@ -1,4 +1,5 @@
 import { useEffect, SetStateAction } from 'react';
+import Stack from '@mui/material/Stack';
 import SendIcon from '@mui/icons-material/Send';
 import IconButton from '@mui/material/IconButton';
 import { useOperateCreateMemo } from '../hooks/useOperateCreateMemo';
@@ -6,14 +7,13 @@ import { useOperateCreateComment } from '../hooks/useOperateCreateComment';
 import { useRecoilValue } from 'recoil';
 import { addingContentIDState } from '../states/addingContentIDState';
 import { useGetIsAdding } from '../components/Main';
-import Stack from '@mui/material/Stack';
 
 interface AddButtonProps {
   value: string;
   setValue: (value: SetStateAction<string>) => void;
 }
 
-export default function AddButton(props: AddButtonProps) {
+export const AddButton = (props: AddButtonProps) => {
   const addingContentID = useRecoilValue(addingContentIDState);
 
   const createMemo = useOperateCreateMemo();
@@ -107,4 +107,4 @@ export default function AddButton(props: AddButtonProps) {
       )}
     </Stack>
   );
-}
+};
