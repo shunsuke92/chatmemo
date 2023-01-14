@@ -88,7 +88,7 @@ export const AddButton = (props: AddButtonProps) => {
     <Stack sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       {hasValidString(value) ? (
         <IconButton
-          aria-label='send'
+          aria-label='add memo'
           color='primary'
           onClick={() => handleClick(addingContentID)}
           sx={{
@@ -99,7 +99,7 @@ export const AddButton = (props: AddButtonProps) => {
         </IconButton>
       ) : (
         <IconButton
-          aria-label='send'
+          aria-label='add memo'
           disabled
           sx={{
             zIndex: isAdding ? 2500 : null,

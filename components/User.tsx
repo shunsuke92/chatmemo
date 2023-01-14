@@ -100,11 +100,7 @@ export const User = () => {
     };
 
     return (
-      <Switch
-        checked={checked}
-        onChange={handleChange}
-        inputProps={{ 'aria-label': 'hideCompleted' }}
-      />
+      <Switch checked={checked} onChange={handleChange} inputProps={{ 'aria-label': 'switch' }} />
     );
   };
 
@@ -150,7 +146,7 @@ export const User = () => {
         exclusive
         onChange={handleChange}
         size='small'
-        aria-label='Dark-Mode'
+        aria-label='dark mode'
       >
         <ToggleButton value='os'>デバイスの設定</ToggleButton>
         <ToggleButton value='dark'>DARK</ToggleButton>

@@ -21,7 +21,7 @@ export const AddCommentButton = (props: AddCommentButtonProps) => {
   return (
     <Tooltip title='コメントを追加'>
       <IconButton
-        aria-label='add-comment'
+        aria-label='add comment'
         sx={{ color: 'text.secondary' }}
         onClick={handleClick(data.id)}
         size='small'

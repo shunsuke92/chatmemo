@@ -43,7 +43,7 @@ export const MenuBar = () => {
           <IconButton
             size='large'
             edge='start'
-            aria-label='menu'
+            aria-label='open menu'
             sx={{ mr: 2, color: lightModeColor }}
             onClick={handleClickOpenMenu}
           >

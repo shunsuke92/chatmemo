@@ -89,7 +89,7 @@ export const MoreButton = (props: MoreButtonProps) => {
   return (
     <>
       <IconButton
-        aria-label='more'
+        aria-label='more button'
         sx={{ color: 'text.secondary' }}
         onClick={handleClickMore}
         size='small'
