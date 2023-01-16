@@ -13,6 +13,7 @@ export interface SettingInfo {
   changeHideCompleted: (value: boolean) => void;
   changeDisplayCommentDate: (value: boolean) => void;
   changeDarkMode: (value: DarkMode) => void;
+  changePushWithEnter: (value: boolean) => void;
 }
 
 interface Setting {
@@ -22,6 +23,7 @@ interface Setting {
   hide_completed_memo: boolean;
   display_comment_date: boolean;
   dark_mode: DarkMode;
+  push_with_enter: boolean;
   _synchronized: boolean;
 }
 
@@ -32,12 +34,14 @@ interface ServerData {
   hide_completed_memo: boolean;
   display_comment_date: boolean;
   dark_mode: DarkMode;
+  push_with_enter: boolean;
 }
 
 interface SendSetting {
   hide_completed_memo: boolean;
   display_comment_date: boolean;
   dark_mode: DarkMode;
+  push_with_enter: boolean;
 }
 
 export type DarkMode = 'os' | 'dark' | 'light';
@@ -57,6 +61,7 @@ export const SettingInfoProvider = ({ children }: { children: any }) => {
     hide_completed_memo: true,
     display_comment_date: true,
     dark_mode: 'os',
+    push_with_enter: true,
     _synchronized: true,
   };
   const [setting, setSetting] = useState<Setting>(initialSetting);
@@ -87,6 +92,7 @@ export const SettingInfoProvider = ({ children }: { children: any }) => {
       hide_completed_memo: setting.hide_completed_memo,
       display_comment_date: setting.display_comment_date,
       dark_mode: setting.dark_mode,
+      push_with_enter: setting.push_with_enter,
     };
   };
 
@@ -120,6 +126,16 @@ export const SettingInfoProvider = ({ children }: { children: any }) => {
     setSetting((prevState) => ({ ...prevState, dark_mode: value }));
   };
 
+  const changePushWithEnter = async (value: boolean) => {
+    const sendData = getSendSetting();
+    sendData.push_with_enter = value;
+    // サーバーに保存
+    updateServer(sendData);
+
+    // ローカルに保存
+    setSetting((prevState) => ({ ...prevState, push_with_enter: value }));
+  };
+
   const updateServer = async (data: SendSetting) => {
     if (user) {
       await axios
@@ -139,6 +155,7 @@ export const SettingInfoProvider = ({ children }: { children: any }) => {
     changeHideCompleted: changeHideCompleted,
     changeDisplayCommentDate: changeDisplayCommentDate,
     changeDarkMode: changeDarkMode,
+    changePushWithEnter: changePushWithEnter,
   };
 
   return (

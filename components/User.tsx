@@ -75,10 +75,33 @@ export const User = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-start',
-          pt: '6px',
-          pb: '6px',
-          pl: '16px',
-          pr: '16px',
+          mt: '12px',
+          mb: '12px',
+          ml: '16px',
+          mr: '16px',
+          userSelect: 'none',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {children}
+      </Stack>
+    );
+  };
+
+  const MyMenuItemSub = (props: any) => {
+    const { children } = props;
+    return (
+      <Stack
+        direction='row'
+        spacing={1.5}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          mt: '-12px',
+          mb: '20px',
+          ml: '16px',
+          mr: '16px',
           userSelect: 'none',
           whiteSpace: 'nowrap',
         }}
@@ -125,6 +148,15 @@ export const User = () => {
         checked={setting?.display_comment_date}
         onChange={settingInfo?.changeDisplayCommentDate}
       />
+    );
+  };
+
+  const PushWithEnterSwitch = () => {
+    const settingInfo = useSettingInfoContext();
+    const setting = settingInfo?.setting;
+
+    return (
+      <MySwitch checked={setting?.push_with_enter} onChange={settingInfo?.changePushWithEnter} />
     );
   };
 
@@ -182,15 +214,32 @@ export const User = () => {
             </MyMenuItem>
             <Divider sx={{ mt: 1, mb: 1 }} />
             <MyMenuItem>
-              <Typography>実行済みを非表示</Typography>
+              <Typography variant='body1' component='h3'>
+                実行済みを非表示
+              </Typography>
               <HideCompletedSwitch />
             </MyMenuItem>
             <MyMenuItem>
-              <Typography>コメントに日付を表示する</Typography>
+              <Typography variant='body1' component='h3'>
+                コメントに日付を表示する
+              </Typography>
               <DisplayCommentDateSwitch />
             </MyMenuItem>
             <MyMenuItem>
-              <Typography>ダークモード</Typography>
+              <Typography variant='body1' component='h3'>
+                Enterで入力する
+              </Typography>
+              <PushWithEnterSwitch />
+            </MyMenuItem>
+            <MyMenuItemSub>
+              <Typography variant='caption' component='h4' sx={{ color: 'text.secondary' }}>
+                改行は Shift + Enter になります。
+              </Typography>
+            </MyMenuItemSub>
+            <MyMenuItem>
+              <Typography variant='body1' component='h3'>
+                ダークモード
+              </Typography>
               <DarkModeToggleButton />
             </MyMenuItem>
           </div>

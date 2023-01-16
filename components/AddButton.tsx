@@ -1,30 +1,20 @@
-import { useEffect, SetStateAction } from 'react';
-
-import { useRecoilValue } from 'recoil';
+import { useEffect } from 'react';
 
 import SendIcon from '@mui/icons-material/Send';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 
 import { useGetIsAdding } from '../components/Main';
-import { useOperateCreateComment } from '../hooks/useOperateCreateComment';
-import { useOperateCreateMemo } from '../hooks/useOperateCreateMemo';
-import { addingContentIDState } from '../states/addingContentIDState';
 
 interface AddButtonProps {
-  value: string;
-  setValue: (value: SetStateAction<string>) => void;
+  hasValidString: boolean;
+  createMemo: () => void;
 }
 
 export const AddButton = (props: AddButtonProps) => {
-  const addingContentID = useRecoilValue(addingContentIDState);
-
-  const createMemo = useOperateCreateMemo();
-  const createComment = useOperateCreateComment();
-
   const isAdding = useGetIsAdding();
 
-  const { value, setValue } = props;
+  const { hasValidString, createMemo } = props;
 
   useEffect(() => {
     if (isAdding) {
@@ -34,63 +24,13 @@ export const AddButton = (props: AddButtonProps) => {
     }
   }, [isAdding]);
 
-  const handleClick = (id: string) => {
-    if (isAdding) {
-      createComment(
-        {
-          id: 0,
-          body: value,
-          createdAt: '',
-          updatedAt: '',
-          deleted: false,
-          deletedAt: '',
-          _text: value.split(/\r\n|\n|\r/gm),
-          _date: '',
-          _time: '',
-          _synchronized: false,
-          _type: 'comment',
-          _id: '',
-          _memoId: '',
-        },
-        id,
-      );
-    } else {
-      createMemo({
-        id: 0,
-        body: value,
-        createdAt: '',
-        updatedAt: '',
-        completed: false,
-        completedAt: '',
-        deleted: false,
-        deletedAt: '',
-        comments: [],
-        _text: value.split(/\r\n|\n|\r/gm),
-        _date: '',
-        _time: '',
-        _synchronized: false,
-        _tmpCompleted: false,
-        _tmpCompletedAt: '',
-        _type: 'memo',
-        _id: '',
-      });
-    }
-
-    setValue('');
-  };
-
-  const hasValidString = (string: string): boolean => {
-    const validString = string.replace(/\r\n|\n|\r|\s/gm, '');
-    return validString ? true : false;
-  };
-
   return (
     <Stack sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      {hasValidString(value) ? (
+      {hasValidString ? (
         <IconButton
           aria-label='add memo'
           color='primary'
-          onClick={() => handleClick(addingContentID)}
+          onClick={() => createMemo()}
           sx={{
             zIndex: isAdding ? 2500 : null,
           }}

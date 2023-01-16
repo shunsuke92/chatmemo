@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
@@ -11,6 +10,9 @@ import { AddButton } from '../components/AddButton';
 import { useGetIsAdding } from '../components/Main';
 import { useGetIsEditing } from '../components/Main';
 import { Mask } from '../components/Mask';
+import { useSettingInfoContext } from '../components/SettingInfoContext';
+import { useOperateCreateData } from '../hooks/useOperateCreateData';
+import { hasValidString } from '../utils/hasValidString';
 
 export const InputText = () => {
   const [value, setValue] = useState('');
@@ -19,8 +21,30 @@ export const InputText = () => {
   const isAdding = useGetIsAdding();
   const isEditing = useGetIsEditing();
 
+  const createData = useOperateCreateData();
+
+  const settingInfo = useSettingInfoContext();
+  const setting = settingInfo?.setting;
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    // Shiftが押されていないEnterでメモの作成を行う
+    if (setting?.push_with_enter) {
+      if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
+        event.preventDefault();
+        if (hasValidString(value)) {
+          createMemo();
+        }
+      }
+    }
+  };
+
+  const createMemo = () => {
+    createData(value);
+    setValue('');
   };
 
   const handleClickInputArea = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -59,6 +83,7 @@ export const InputText = () => {
           placeholder='メモを入力…'
           size='small'
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
           sx={{
             width: 500,
             zIndex: isAdding ? 2500 : null,
@@ -81,7 +106,7 @@ export const InputText = () => {
             ),
           }}
         />
-        <AddButton value={value} setValue={setValue} />
+        <AddButton hasValidString={hasValidString(value)} createMemo={createMemo} />
       </Stack>
       <Mask
         height={`${height}px`}
