@@ -35,6 +35,7 @@ export const MenuBar = () => {
         sx={{
           backgroundImage: 'none',
           ...barBackground,
+          boxShadow: 'none',
         }}
       >
         <Mask height={{ xs: '56px', sm: '64px' }} top={0} />
