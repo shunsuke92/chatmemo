@@ -73,9 +73,9 @@ export const SideDrawer = () => {
                 <ListItemButton onClick={handleClick(list)}>
                   <ListItemIcon>
                     {index === 0 ? (
-                      <FolderIcon sx={{ color: lightModeColor }} />
+                      <FolderIcon sx={{ color: 'text.secondary' }} />
                     ) : (
-                      <CheckCircleIcon sx={{ color: lightModeColor }} />
+                      <CheckCircleIcon sx={{ color: 'text.secondary' }} />
                     )}
                   </ListItemIcon>
                   <ListItemText primary={list.name} />
@@ -89,7 +89,7 @@ export const SideDrawer = () => {
               <ListItem key={list.id} disablePadding>
                 <ListItemButton onClick={handleClick(list)}>
                   <ListItemIcon>
-                    <DeleteIcon sx={{ color: lightModeColor }} />
+                    <DeleteIcon sx={{ color: 'text.secondary' }} />
                   </ListItemIcon>
                   <ListItemText primary={list.name} />
                 </ListItemButton>

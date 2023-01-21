@@ -1,13 +1,15 @@
 interface LogoProps {
   type: 'dark' | 'light';
+  width?: string;
+  height?: string;
 }
 
 export const Logo = (props: LogoProps) => {
-  const { type } = props;
+  const { type, width, height } = props;
   return type === 'light' ? (
     <svg
-      width='237'
-      height='34'
+      width={width !== undefined ? width : '237'}
+      height={height !== undefined ? height : '34'}
       viewBox='0 0 237 34'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
@@ -47,8 +49,8 @@ export const Logo = (props: LogoProps) => {
     </svg>
   ) : (
     <svg
-      width='237'
-      height='33'
+      width={width !== undefined ? width : '237'}
+      height={height !== undefined ? height : '33'}
       viewBox='0 0 237 33'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'

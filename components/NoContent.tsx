@@ -10,7 +10,7 @@ export const NoContent = () => {
 
   return (
     <Stack mt={2}>
-      <Typography variant='h6' component='h2' fontWeight={400}>
+      <Typography variant='h6' component='h2' fontWeight={400} color='text.secondary'>
         {selectedDisplayType.id === 1
           ? ''
           : selectedDisplayType.id === 2

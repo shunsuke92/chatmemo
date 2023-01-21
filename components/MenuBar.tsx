@@ -53,7 +53,7 @@ export const MenuBar = () => {
           <Typography
             variant='subtitle1'
             component='h2'
-            sx={{ flexGrow: 1, color: lightModeColor }}
+            sx={{ flexGrow: 1, color: 'text.primary' }}
           >
             {title}
           </Typography>

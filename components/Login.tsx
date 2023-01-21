@@ -1,11 +1,14 @@
 import { useState } from 'react';
 
+import NextLink from 'next/link';
+
 import { useRecoilValue } from 'recoil';
 
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
+import MuiLink from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -48,14 +51,17 @@ const LoginDialog = (props: LoginDialogProps) => {
   return (
     <Dialog onClose={handleClose} open={open}>
       <Box
+        pt={7}
+        pb={7}
+        pr={4}
+        pl={4}
         sx={{
-          width: 500,
-          maxWidth: '100%',
-          height: 700,
+          maxWidth: '500px',
           maxHeight: '100%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          backgroundColor: isDarkMode ? 'grey.800' : 'grey.100',
         }}
       >
         <IconButton
@@ -71,8 +77,23 @@ const LoginDialog = (props: LoginDialogProps) => {
         >
           <CloseIcon />
         </IconButton>
-        <Stack spacing={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Stack spacing={4} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Logo type={isDarkMode ? 'dark' : 'light'} />
+          <Typography variant='subtitle2' component='div' gutterBottom color='text.secondary'>
+            ChatMemoはチャット形式のメモアプリです。気軽にどんどんメモしていきましょう。
+            <NextLink href='/about' passHref>
+              <MuiLink
+                color='inherit'
+                variant='inherit'
+                gutterBottom
+                sx={{
+                  '&:hover': { color: 'primary.main' },
+                }}
+              >
+                ChatMemoについて
+              </MuiLink>
+            </NextLink>
+          </Typography>
           <Button
             sx={{
               p: 0,
@@ -102,8 +123,33 @@ const LoginDialog = (props: LoginDialogProps) => {
               }
             />
           </Button>
-          <Typography variant='subtitle2' gutterBottom>
-            使用上の注意事項を記載する
+          <Typography variant='subtitle2' component='div' gutterBottom color='text.secondary'>
+            <NextLink href='/about#terms' passHref>
+              <MuiLink
+                color='inherit'
+                variant='inherit'
+                gutterBottom
+                sx={{
+                  '&:hover': { color: 'primary.main' },
+                }}
+              >
+                利用規約
+              </MuiLink>
+            </NextLink>
+            、
+            <NextLink href='/about#policy' passHref>
+              <MuiLink
+                color='inherit'
+                variant='inherit'
+                gutterBottom
+                sx={{
+                  '&:hover': { color: 'primary.main' },
+                }}
+              >
+                プライバシーポリシー
+              </MuiLink>
+            </NextLink>
+            に同意の上、ご使用ください。
           </Typography>
         </Stack>
       </Box>
@@ -131,7 +177,7 @@ export const Login = () => {
   return (
     <div>
       {!user && (
-        <Button variant='contained' onClick={handleClickOpen}>
+        <Button variant='contained' onClick={handleClickOpen} sx={{ boxShadow: 'none' }}>
           ログイン
         </Button>
       )}
