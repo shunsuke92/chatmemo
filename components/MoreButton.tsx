@@ -9,18 +9,17 @@ import MenuItem from '@mui/material/MenuItem';
 
 import { AlertDialog } from '../states/displayAlertDialogState';
 import { scrollingIDState } from '../states/scrollingIDState';
-import { EditingInfo } from './EditingInfoContext';
 import { InternalData } from './Timeline';
 
 interface MoreButtonProps {
   data: InternalData;
   isTrash: boolean;
   isAllMemo: boolean;
-  editingInfo: EditingInfo | undefined;
   changeDisplayAlertDialog: (value: AlertDialog, deleteID?: string | undefined) => void;
   changeEditingContentID: (id: string) => void;
   deleteMemo: (id: string | undefined) => Promise<void>;
   revertMemo: (id: string | undefined) => Promise<void>;
+  createEditingInfo: (data: InternalData) => void;
 }
 
 export const MoreButton = (props: MoreButtonProps) => {
@@ -28,11 +27,11 @@ export const MoreButton = (props: MoreButtonProps) => {
     data,
     isTrash,
     isAllMemo,
-    editingInfo,
     changeDisplayAlertDialog,
     changeEditingContentID,
     deleteMemo,
     revertMemo,
+    createEditingInfo,
   } = props;
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -57,7 +56,7 @@ export const MoreButton = (props: MoreButtonProps) => {
       //       MUIのMenuコンポーネントで、メニューを開いているときにスクロールを無効にしていることが影響？
       setTimeout(() => {
         changeEditingContentID(id);
-        editingInfo?.createEditingContentInfo(data);
+        createEditingInfo(data);
 
         // スクロール予約
         setScrollingID(id);

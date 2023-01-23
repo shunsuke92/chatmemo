@@ -8,7 +8,6 @@ import { ThemeProvider } from '@mui/material/styles';
 
 import { Auth } from '../components/Auth';
 import { DelayCompletedProvider } from '../components/DelayCompletedContext';
-import { EditingInfoProvider } from '../components/EditingInfoContext';
 import { ManageTentativeIDProvider } from '../components/ManageTentativeIDContext';
 import { SettingInfoProvider } from '../components/SettingInfoContext';
 import { SynchronizationProvider } from '../components/SynchronizationContext';
@@ -30,9 +29,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               <SynchronizationProvider>
                 <ManageTentativeIDProvider>
                   <DelayCompletedProvider>
-                    <EditingInfoProvider>
-                      <Component {...pageProps} />
-                    </EditingInfoProvider>
+                    <Component {...pageProps} />
                   </DelayCompletedProvider>
                 </ManageTentativeIDProvider>
               </SynchronizationProvider>

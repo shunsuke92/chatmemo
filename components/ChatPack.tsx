@@ -20,7 +20,6 @@ export const ChatPack = (props: ChatPackProps) => {
     isEditingContents,
     isTrash,
     isAllMemo,
-    editingInfo,
     delayCompleted,
     memoBackground,
     commentBackground,
@@ -31,6 +30,7 @@ export const ChatPack = (props: ChatPackProps) => {
     revertMemo,
     updateServerCompleted,
     isOutermost,
+    createEditingInfo,
     children,
   } = props;
 
@@ -70,7 +70,6 @@ export const ChatPack = (props: ChatPackProps) => {
                 data={data}
                 isAddingContents={isAddingContents}
                 isEditingContents={isEditingContents}
-                editingInfo={editingInfo}
                 memoBackground={memoBackground}
                 commentBackground={commentBackground}
                 isOutermost={isOutermost}
@@ -86,12 +85,12 @@ export const ChatPack = (props: ChatPackProps) => {
           data={data}
           isTrash={isTrash}
           isAllMemo={isAllMemo}
-          editingInfo={editingInfo}
           changeAddingContentID={changeAddingContentID}
           changeDisplayAlertDialog={changeDisplayAlertDialog}
           changeEditingContentID={changeEditingContentID}
           deleteMemo={deleteMemo}
           revertMemo={revertMemo}
+          createEditingInfo={createEditingInfo}
         />
       )}
     </Stack>

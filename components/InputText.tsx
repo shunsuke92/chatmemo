@@ -49,11 +49,15 @@ export const InputText = () => {
 
   const handleClickInputArea = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
+
+    // メモ投稿後も入力欄へのフォーカスを維持する
     document.getElementById('input')?.focus();
   };
 
   const handleClickClearCharacter = () => {
     setValue('');
+
+    // 入力文字クリア後も入力欄へのフォーカスを維持する
     document.getElementById('input')?.focus();
   };
 

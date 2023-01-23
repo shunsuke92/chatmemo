@@ -3,7 +3,6 @@ import Card from '@mui/material/Card';
 import { CommentText } from './CommentText';
 import { CommonTextField } from './CommonTextField';
 import { EditCompleteButton } from './EditCompleteButton';
-import { EditingInfo } from './EditingInfoContext';
 import { MemoText } from './MemoText';
 import { InternalData } from './Timeline';
 
@@ -12,7 +11,6 @@ interface ChatCardProps {
   children?: any;
   isAddingContents: boolean;
   isEditingContents: boolean;
-  editingInfo: EditingInfo | undefined;
   memoBackground: string;
   commentBackground: string;
   isOutermost: boolean;
@@ -23,7 +21,6 @@ export const ChatCard = (props: ChatCardProps) => {
     data,
     isAddingContents,
     isEditingContents,
-    editingInfo,
     children,
     memoBackground,
     commentBackground,
@@ -41,7 +38,7 @@ export const ChatCard = (props: ChatCardProps) => {
 
   const Texts = () => {
     return isEditingContents ? (
-      <CommonTextField data={data} editingInfo={editingInfo} />
+      <CommonTextField data={data} />
     ) : isOutermost ? (
       <MemoText data={data.text} memoBackground={memoBackground} />
     ) : (
@@ -71,7 +68,7 @@ export const ChatCard = (props: ChatCardProps) => {
         >
           <Texts />
           {children}
-          {isEditingContents && isOutermost && <EditCompleteButton editingInfo={editingInfo} />}
+          {isEditingContents && isOutermost && <EditCompleteButton />}
         </Card>
       )}
     </>

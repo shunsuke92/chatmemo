@@ -7,7 +7,6 @@ import { convertInternalDataToComment } from '../utils/convertInternalDataToComm
 import { ChatComment } from './ChatComment';
 import { ChatPack } from './ChatPack';
 import { DateChip } from './DateChip';
-import { EditingInfo } from './EditingInfoContext';
 import { InternalData } from './Timeline';
 
 export interface ChatMemoProps {
@@ -16,7 +15,6 @@ export interface ChatMemoProps {
   isEditingContents: boolean;
   isTrash: boolean;
   isAllMemo: boolean;
-  editingInfo: EditingInfo | undefined;
   delayCompleted: DelayCompleted | undefined;
   memoBackground: string;
   commentBackground: string;
@@ -26,6 +24,7 @@ export interface ChatMemoProps {
   deleteMemo: (id: string | undefined) => Promise<void>;
   revertMemo: (id: string | undefined) => Promise<void>;
   updateServerCompleted: (id: string, value: boolean, date?: string | undefined) => Promise<void>;
+  createEditingInfo: (data: InternalData) => void;
 }
 
 /**

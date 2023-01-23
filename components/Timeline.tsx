@@ -11,6 +11,7 @@ import { useChangeAddingContentID } from '../hooks/useChangeAddingContentID';
 import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
 import { useChangeEditingContentID } from '../hooks/useChangeEditingContentID';
 import { useMemoBackground, useCommentBackground } from '../hooks/useColor';
+import { useCreateEditingInfo } from '../hooks/useCreateEditingInfo';
 import { useOperateDeleteMemo } from '../hooks/useOperateDeleteMemo';
 import { useOperateRevertMemo } from '../hooks/useOperateRevertMemo';
 import { useOperateUpdateServerCompleted } from '../hooks/useOperateUpdateServerCompleted';
@@ -26,7 +27,6 @@ import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
 import { convertInternalDataToMemo } from '../utils/convertInternalDataToMemo';
 import { ChatMemo } from './ChatMemo';
 import { DateChip } from './DateChip';
-import { useEditingInfoContext } from './EditingInfoContext';
 import { TimelineWrapper } from './TimelineWrapper';
 
 export interface InternalData {
@@ -70,7 +70,6 @@ export const Timeline = (props: TimelineProps) => {
   const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
   const getIsTrash = selectedDisplayType.id === 3;
   const getIsAllMemo = selectedDisplayType.id === 1;
-  const editingInfo = useEditingInfoContext();
   const delayCompleted = useDelayCompletedContext();
   const openSideDrawer = useRecoilValue(openSideDrawerState);
   const openUserMenu = useRecoilValue(openUserMenuState);
@@ -84,6 +83,7 @@ export const Timeline = (props: TimelineProps) => {
   const deleteMemo = useOperateDeleteMemo();
   const revertMemo = useOperateRevertMemo();
   const updateServerCompleted = useOperateUpdateServerCompleted();
+  const createEditingInfo = useCreateEditingInfo();
 
   useEffect(() => {
     setIsLoggingout(false);
@@ -111,7 +111,6 @@ export const Timeline = (props: TimelineProps) => {
                 isEditingContents={getIsEditingContents(memo._id)}
                 isTrash={getIsTrash}
                 isAllMemo={getIsAllMemo}
-                editingInfo={editingInfo}
                 delayCompleted={delayCompleted}
                 memoBackground={memoBackground}
                 commentBackground={commentBackground}
@@ -121,6 +120,7 @@ export const Timeline = (props: TimelineProps) => {
                 deleteMemo={deleteMemo}
                 revertMemo={revertMemo}
                 updateServerCompleted={updateServerCompleted}
+                createEditingInfo={createEditingInfo}
               />
             )}
             {memo._type === 'date' && <DateChip date={memo._date} />}

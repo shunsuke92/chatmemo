@@ -1,10 +1,10 @@
 import { useRecoilValue } from 'recoil';
 import { useSetRecoilState } from 'recoil';
 
-import { EditingContent } from '../components/EditingInfoContext';
 import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
 import { editingContentIDState } from '../states/editingContentIDState';
 import { scrollingIDState } from '../states/scrollingIDState';
+import { EditingContent } from '../types/common';
 import { getNowDate } from '../utils/getNowDate';
 import {
   ChangeableMemo,
