@@ -1,9 +1,12 @@
 import { useState } from 'react';
 
+import { useSetRecoilState } from 'recoil';
+
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
 import { useUpdateEditingInfoAfter } from '../hooks/useUpdateEditingInfoAfter';
+import { scrollingIDState } from '../states/scrollingIDState';
 import { InternalData } from './Timeline';
 
 interface CommonTextFieldProps {
@@ -17,6 +20,8 @@ export const CommonTextField = (props: CommonTextFieldProps) => {
 
   const updateEditingInfoAfter = useUpdateEditingInfoAfter();
 
+  const setScrollingID = useSetRecoilState(scrollingIDState);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
 
@@ -24,6 +29,12 @@ export const CommonTextField = (props: CommonTextFieldProps) => {
       updateEditingInfoAfter(event.target.value);
     } else {
       updateEditingInfoAfter(event.target.value, data.id);
+    }
+
+    const id = data.type === 'memo' ? data.id : data.memoID;
+    if (id !== undefined) {
+      // スクロール予約
+      setScrollingID(id);
     }
   };
 

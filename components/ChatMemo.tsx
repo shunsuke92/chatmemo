@@ -75,7 +75,6 @@ const isEqual = (
     prevProps.isEditingContents === nextProps.isEditingContents &&
     prevProps.isTrash === nextProps.isTrash &&
     prevProps.isAllMemo === nextProps.isAllMemo &&
-    !nextProps.isEditingContents &&
     prevProps.memoBackground === nextProps.memoBackground &&
     prevProps.commentBackground === nextProps.commentBackground
   );
