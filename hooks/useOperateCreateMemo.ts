@@ -1,17 +1,17 @@
 import { useRecoilValue } from 'recoil';
 
 import { useChangeScheduledScrolling } from '../hooks/useChangeScheduledScrolling';
-import { createErrIDState } from '../states/createErrIDState';
 import { Memo } from '../states/memoState';
 import { getDate } from '../utils/getDate';
 import { getNowDate } from '../utils/getNowDate';
 import { getTime } from '../utils/getTime';
+import { useCreateErrID } from './useCreateErrID';
 import { useLocalCreateMemo } from './useLocalCreateMemo';
 import { useSaveServerVerCreateMemo } from './useSaveServerVerCreateMemo';
 import { useServerCreateMemoTable } from './useServerCreateMemoTable';
 
 export const useOperateCreateMemo = () => {
-  const createErrID = useRecoilValue(createErrIDState);
+  const createErrID = useCreateErrID();
   const saveServerVerCreateMemo = useSaveServerVerCreateMemo();
   const serverCreateMemoTable = useServerCreateMemoTable();
   const localAddMemo = useLocalCreateMemo();

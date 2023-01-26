@@ -3,13 +3,13 @@ import { useRecoilValue } from 'recoil';
 import axios from 'axios';
 
 import { authUserState } from '../states/authUserState';
-import { createDemoIDState } from '../states/createDemoIDState';
 import { Memo } from '../states/memoState';
 import { convertSendMemo } from '../utils/convertSendMemo';
+import { useCreateDemoID } from './useCreateDemoID';
 
 export const useServerCreateMemoTable = () => {
   const user = useRecoilValue(authUserState);
-  const createDemoID = useRecoilValue(createDemoIDState);
+  const createDemoID = useCreateDemoID();
 
   const serverCreateMemoTable = async (memo: Memo): Promise<number> => {
     let response = -1;

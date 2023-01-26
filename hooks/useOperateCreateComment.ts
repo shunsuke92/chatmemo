@@ -1,18 +1,18 @@
 import { useRecoilValue } from 'recoil';
 import { useSetRecoilState } from 'recoil';
 
-import { createErrIDState } from '../states/createErrIDState';
 import { Comment } from '../states/memoState';
 import { scrollingIDState } from '../states/scrollingIDState';
 import { getDate } from '../utils/getDate';
 import { getNowDate } from '../utils/getNowDate';
 import { getTime } from '../utils/getTime';
+import { useCreateErrID } from './useCreateErrID';
 import { useLocalCreateComment } from './useLocalCreateComment';
 import { useSaveServerVerCreateComment } from './useSaveServerVerCreateComment';
 import { useServerCreateCommentTable } from './useServerCreateCommentTable';
 
 export const useOperateCreateComment = () => {
-  const createErrID = useRecoilValue(createErrIDState);
+  const createErrID = useCreateErrID();
   const saveServerVerCreateComment = useSaveServerVerCreateComment();
   const serverCreateCommentTable = useServerCreateCommentTable();
   const localAddComment = useLocalCreateComment();
@@ -26,12 +26,12 @@ export const useOperateCreateComment = () => {
     comment._date = getDate(date);
     comment._time = getTime(date);
     comment._memoId = id;
-    const ErrID = createErrID();
+    const errID = createErrID();
 
     const result = await saveServerVerCreateComment(
       () => serverCreateCommentTable(id, comment),
       id,
-      ErrID,
+      errID,
     );
 
     if (result !== -1) {
@@ -39,7 +39,7 @@ export const useOperateCreateComment = () => {
       comment._id = result.toString();
     } else {
       comment._synchronized = false;
-      comment._id = ErrID;
+      comment._id = errID;
     }
 
     localAddComment(id, comment);
