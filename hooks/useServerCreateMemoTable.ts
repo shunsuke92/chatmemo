@@ -15,10 +15,7 @@ export const useServerCreateMemoTable = () => {
     let response = -1;
     if (user) {
       await axios
-        .post(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos`,
-          convertSendMemo(memo),
-        )
+        .post(`/api/users/${user.uid}/memos`, convertSendMemo(memo))
         .then((res) => {
           if (res.data.status === 200) {
             const serverRegisteredID = res.data.data.id;

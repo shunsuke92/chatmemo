@@ -25,7 +25,7 @@ export const Data = ({ children }: { children: any }) => {
       let serverData: Memo[] = [];
       if (user) {
         await axios
-          .get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos`, {
+          .get(`/api/users/${user.uid}/memos`, {
             // 未使用
             params: { limit: 100, offset: 0 },
           })

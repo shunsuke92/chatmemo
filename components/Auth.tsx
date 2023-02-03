@@ -28,15 +28,11 @@ export const Auth = ({ children }: { children: any }) => {
 
         (async () => {
           // ユーザー登録済みチェック
-          const res = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/`,
-          );
+          const res = await axios.get(`/api/users/${user.uid}`);
 
           // ユーザー登録（新規ユーザーの場合）
           if (!res.data) {
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/`, {
-              uid: user.uid,
-            });
+            const res = await axios.post(`/api/users/${user.uid}`);
           }
 
           setIsAuthChecking(false);

@@ -83,7 +83,7 @@ export const SynchronizationProvider = ({ children }: { children: any }) => {
     // 接続確認
     let result;
     if (user) {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/`);
+      const res = await axios.get(`/api/users/${user.uid}`);
       result = Boolean(res.data);
     }
 
