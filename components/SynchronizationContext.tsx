@@ -25,7 +25,7 @@ export const SynchronizationProvider = ({ children }: { children: any }) => {
   const changeSynchronizingProgress = useChangeSynchronizingProgress();
 
   const CONNECTION_CHECK_INTERVAL = 2000;
-  const SYNCHRONIZATION_INTERVAL = 2000;
+  const SYNCHRONIZATION_INTERVAL = 500;
 
   const unsynchronizedFunction = useRef<(() => () => Promise<boolean> | Promise<number>)[]>([]);
   const [standby, setStandby] = useState(false);
