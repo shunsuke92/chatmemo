@@ -20,13 +20,9 @@ export const useServerCreateMemoTable = () => {
           if (res.data.status === 200) {
             const serverRegisteredID = res.data.data.id;
             response = serverRegisteredID;
-          } else {
-            console.log('200以外', res);
           }
         })
-        .catch((err) => {
-          console.log('エラー', err);
-        });
+        .catch((err) => {});
     } else {
       response = createDemoID();
     }

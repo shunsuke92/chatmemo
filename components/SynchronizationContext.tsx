@@ -25,7 +25,7 @@ export const SynchronizationProvider = ({ children }: { children: any }) => {
   const changeSynchronizingProgress = useChangeSynchronizingProgress();
 
   const CONNECTION_CHECK_INTERVAL = 2000;
-  const SYNCHRONIZATION_INTERVAL = 300;
+  const SYNCHRONIZATION_INTERVAL = 500;
 
   const unsynchronizedFunction = useRef<(() => () => Promise<boolean> | Promise<number>)[]>([]);
   const [standby, setStandby] = useState(false);
@@ -47,17 +47,15 @@ export const SynchronizationProvider = ({ children }: { children: any }) => {
     changeSynchronizingProgress(0);
 
     for (let i = 0; unsynchronizedFunction.current.length > 0; i++) {
-      // 初回以外のときは、遅延実行する
-      if (i !== 0) {
+      // 初回以外のときは、遅延実行する（不要）
+      /* if (i !== 0) {
         await sleep(SYNCHRONIZATION_INTERVAL);
-      }
+      } */
 
       const func = unsynchronizedFunction.current[0];
 
       const executionFunction = func();
-      console.log(i + 1, '回目');
       const result = await executionFunction();
-      console.log('result', result);
 
       if (result || result !== -1) {
         unsynchronizedFunction.current.shift();
