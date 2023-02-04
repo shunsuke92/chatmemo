@@ -70,7 +70,11 @@ export const SettingInfoProvider = ({ children }: { children: any }) => {
     // サーバーのデータを取得する
     (async () => {
       if (user) {
-        const res = await axios.get(`/api/users/${user.uid}/settings`);
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/settings`,
+        );
+        // API Routes バージョン
+        /* const res = await axios.get(`/api/users/${user.uid}/settings`); */
         const serverData: ServerData = res.data?.contents;
         if (serverData) {
           setSetting({
@@ -137,7 +141,12 @@ export const SettingInfoProvider = ({ children }: { children: any }) => {
   const updateServer = async (data: SendSetting) => {
     if (user) {
       await axios
-        .patch(`/api/users/${user.uid}/settings/${setting.id}`, data)
+        .patch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/settings/${setting.id}`,
+          data,
+        )
+        // API Routes バージョン
+        /* .patch(`/api/users/${user.uid}/settings/${setting.id}`, data) */
         .then((res) => {})
         .catch((err) => {
           setSetting((prevState) => ({ ...prevState, _synchronized: false }));

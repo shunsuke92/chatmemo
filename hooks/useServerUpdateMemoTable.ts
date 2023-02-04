@@ -26,7 +26,12 @@ export const useServerUpdateMemoTable = () => {
     let response = false;
     if (user) {
       await axios
-        .patch(`/api/users/${user.uid}/memos/${sendID}`, specifiedData)
+        .patch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${sendID}`,
+          specifiedData,
+        )
+        // API Routes バージョン
+        /* .patch(`/api/users/${user.uid}/memos/${sendID}`, specifiedData) */
         .then((res) => {
           response = true;
         })

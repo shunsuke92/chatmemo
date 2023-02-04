@@ -11,7 +11,9 @@ export const useServerDeleteAccount = () => {
     let result = false;
     if (user) {
       await axios
-        .delete(`/api/users/${user.uid}`)
+        .delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}`)
+        // API Routes バージョン
+        /* .delete(`/api/users/${user.uid}`) */
         .then((res) => {
           result = true;
         })

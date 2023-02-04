@@ -30,7 +30,9 @@ export const useServerUpdateCommentTable = () => {
     if (user) {
       await axios
         .patch(
-          `/api/users/${user.uid}/memos/${sendMemoID}/comments/${sendCommentID}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${sendMemoID}/comments/${sendCommentID}`,
+          // API Routes バージョン
+          /* `/api/users/${user.uid}/memos/${sendMemoID}/comments/${sendCommentID}`, */
           specifiedData,
         )
         .then((res) => {

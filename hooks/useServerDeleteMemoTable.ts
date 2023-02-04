@@ -17,7 +17,9 @@ export const useServerDeleteMemoTable = () => {
     let response = false;
     if (user) {
       await axios
-        .delete(`/api/users/${user.uid}/memos/${sendID}`)
+        .delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos/${sendID}`)
+        // API Routes バージョン
+        /* .delete(`/api/users/${user.uid}/memos/${sendID}`) */
         .then((res) => {
           response = true;
         })
