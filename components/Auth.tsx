@@ -23,7 +23,6 @@ export const Auth = ({ children }: { children: any }) => {
     const auth = getAuth(app);
     const unsubscribed = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log('user', user);
         // サインインしている
         setUser(user);
 
@@ -47,7 +46,6 @@ export const Auth = ({ children }: { children: any }) => {
           setIsAuthChecking(false);
         })();
       } else {
-        console.log('userなし');
         // サインアウトしている
         setUser(undefined);
         initializationProcess();
