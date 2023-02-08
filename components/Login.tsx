@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
 
-import { getAuth, signInWithRedirect } from 'firebase/auth';
+import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 import { authUserState } from '../states/authUserState';
 import { app, provider } from '../utils/firebase';
@@ -171,7 +171,44 @@ export const Login = () => {
 
   const handleSignInWithGoogle = () => {
     const auth = getAuth(app);
-    signInWithRedirect(auth, provider);
+    const agent = window.navigator.userAgent.toLowerCase();
+
+    // EdgeとChromeはリダイレクト方式
+    if (
+      agent.indexOf('edg') != -1 ||
+      agent.indexOf('edge') != -1 ||
+      agent.indexOf('chrome') != -1
+    ) {
+      signInWithRedirect(auth, provider);
+    }
+    // SafariとFireFoxはポップアップ方式
+    else if (agent.indexOf('safari') != -1 || agent.indexOf('firefox') != -1) {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential?.accessToken;
+          // The signed-in user info.
+          const user = result.user;
+          // IdP data available using getAdditionalUserInfo(result)
+          // ...
+          setOpen(false);
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // The email of the user's account used.
+          const email = error.customData.email;
+          // The AuthCredential type that was used.
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          // ...
+        });
+    }
+    // その他はリダイレクト方式
+    else {
+      signInWithRedirect(auth, provider);
+    }
   };
 
   return (
