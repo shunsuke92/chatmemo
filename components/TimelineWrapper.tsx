@@ -11,7 +11,7 @@ export const TimelineWrapper = (props: TimelineWrapperProps) => {
   const { children } = props;
 
   const setFillHeight = () => {
-    const bottomBarHeight = window.innerWidth < 600 ? 72 : 80;
+    const bottomBarHeight = window.innerWidth < 600 ? 72 + 56 : 80 + 64;
     const vh = (window.innerHeight - bottomBarHeight) * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
   };
@@ -38,7 +38,8 @@ export const TimelineWrapper = (props: TimelineWrapperProps) => {
     <Box
       sx={{
         width: '100%',
-        height: 'calc(var(--vh, 1vh) * 100)',
+        height: '100%',
+        minHeight: 'calc(var(--vh, 1vh) * 100)',
         display: 'flex',
         alignItems: 'flex-start',
         justifyContent: 'center',
