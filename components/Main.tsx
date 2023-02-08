@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useRecoilValue } from 'recoil';
 
 import Stack from '@mui/material/Stack';
@@ -27,6 +29,29 @@ export const useGetIsEditing = () => {
 };
 
 export const Main = () => {
+  const setFillHeight = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  };
+
+  useEffect(() => {
+    let vw = window.innerWidth;
+
+    window.addEventListener('resize', () => {
+      if (vw === window.innerWidth) {
+        // 画面の横幅にサイズ変動がないので処理を終える
+        return;
+      }
+
+      // 画面の横幅のサイズ変動があった時のみ高さを再計算する
+      vw = window.innerWidth;
+      setFillHeight();
+    });
+
+    // 初期化
+    setFillHeight();
+  });
+
   return (
     <>
       <MenuBar />
@@ -40,7 +65,7 @@ export const Main = () => {
             justifyContent: 'flex-start',
             pt: '64px',
             pb: '80px',
-            minHeight: '100vh',
+            minHeight: 'calc(var(--vh, 1vh) * 100)',
             opacity: 0.999999 /* スタッキングコンテキストを生成するため */,
           }}
         >
