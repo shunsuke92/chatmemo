@@ -86,11 +86,15 @@ export const Contents = () => {
 
     const upperLimit = window.scrollY + (window.innerWidth >= 600 ? 64 : 56);
     const targetBottom = elementLocation.bottom + window.scrollY + 16;
-    const lowerLimit = window.innerHeight + window.scrollY - (window.innerWidth >= 600 ? 80 : 72);
+    const lowerLimit =
+      (visualViewport?.height ?? window.innerHeight) +
+      window.scrollY -
+      (window.innerWidth >= 600 ? 80 : 72);
 
     if (upperLimit >= targetBottom || lowerLimit <= targetBottom) {
       const targetPotision =
-        targetBottom - (window.innerHeight - (window.innerWidth >= 600 ? 80 : 72));
+        targetBottom -
+        ((visualViewport?.height ?? window.innerHeight) - (window.innerWidth >= 600 ? 80 : 72));
       window.scroll(0, targetPotision);
     }
   };
