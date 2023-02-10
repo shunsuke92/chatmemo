@@ -27,6 +27,7 @@ import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
 import { convertInternalDataToMemo } from '../utils/convertInternalDataToMemo';
 import { ChatMemo } from './ChatMemo';
 import { DateChip } from './DateChip';
+import { Loading } from './Loading';
 import { TimelineWrapper } from './TimelineWrapper';
 
 export interface InternalData {
@@ -90,43 +91,46 @@ export const Timeline = (props: TimelineProps) => {
   }, [user, setIsLoggingout]);
 
   return (
-    <TimelineWrapper>
-      <TransitionGroup
-        style={{
-          width: '100%',
-        }}
-      >
-        {data.map((memo) => (
-          <Collapse
-            key={memo._type === 'memo' ? memo._id : memo._date}
-            timeout={400}
-            enter={false}
-            exit={!openSideDrawer && !openUserMenu && !isLoggingout}
-          >
-            {memo._type === 'memo' && (
-              <ChatMemo
-                key={memo._id}
-                data={convertInternalDataToMemo(memo)}
-                isAddingContents={getIsAddingContents(memo._id)}
-                isEditingContents={getIsEditingContents(memo._id)}
-                isTrash={getIsTrash}
-                isAllMemo={getIsAllMemo}
-                delayCompleted={delayCompleted}
-                memoBackground={memoBackground}
-                commentBackground={commentBackground}
-                changeAddingContentID={changeAddingContentID}
-                changeDisplayAlertDialog={changeDisplayAlertDialog}
-                changeEditingContentID={changeEditingContentID}
-                deleteMemo={deleteMemo}
-                revertMemo={revertMemo}
-                updateServerCompleted={updateServerCompleted}
-                createEditingInfo={createEditingInfo}
-              />
-            )}
-            {memo._type === 'date' && <DateChip date={memo._date} />}
-          </Collapse>
-        ))}
-      </TransitionGroup>
-    </TimelineWrapper>
+    <>
+      <Loading />
+      <TimelineWrapper>
+        <TransitionGroup
+          style={{
+            width: '100%',
+          }}
+        >
+          {data.map((memo) => (
+            <Collapse
+              key={memo._type === 'memo' ? memo._id : memo._date}
+              timeout={400}
+              enter={false}
+              exit={!openSideDrawer && !openUserMenu && !isLoggingout}
+            >
+              {memo._type === 'memo' && (
+                <ChatMemo
+                  key={memo._id}
+                  data={convertInternalDataToMemo(memo)}
+                  isAddingContents={getIsAddingContents(memo._id)}
+                  isEditingContents={getIsEditingContents(memo._id)}
+                  isTrash={getIsTrash}
+                  isAllMemo={getIsAllMemo}
+                  delayCompleted={delayCompleted}
+                  memoBackground={memoBackground}
+                  commentBackground={commentBackground}
+                  changeAddingContentID={changeAddingContentID}
+                  changeDisplayAlertDialog={changeDisplayAlertDialog}
+                  changeEditingContentID={changeEditingContentID}
+                  deleteMemo={deleteMemo}
+                  revertMemo={revertMemo}
+                  updateServerCompleted={updateServerCompleted}
+                  createEditingInfo={createEditingInfo}
+                />
+              )}
+              {memo._type === 'date' && <DateChip date={memo._date} />}
+            </Collapse>
+          ))}
+        </TransitionGroup>
+      </TimelineWrapper>
+    </>
   );
 };

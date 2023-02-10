@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 
 import { useSetRecoilState } from 'recoil';
 
@@ -7,18 +7,16 @@ import { displayStepState } from '../states/displayStepState';
 export const useIncreaseDisplayContent = (displayedAll: boolean) => {
   const setDisplayStep = useSetRecoilState(displayStepState);
 
-  const scrollCount = useCallback(() => {
-    if (!displayedAll && window.scrollY < 100) {
-      setDisplayStep((prevState) => prevState + 1);
-    }
+  const timerId = useRef<NodeJS.Timeout | undefined>(undefined);
 
-    // 瞬時に画面上部まで遷移した場合（スクロールバーを掴んで素早く最上部までスライドさせた場合）に
-    // 次のメモが読み込まれなくなる事象の対応
-    if (!displayedAll && window.scrollY === 0) {
-      setTimeout(() => {
-        window.scroll(0, 1);
-      }, 10);
-    }
+  const scrollCount = useCallback(() => {
+    // 慣性スクロール対策で0.1秒間スクロールされない場合に処理を実行する
+    clearTimeout(timerId.current);
+    timerId.current = setTimeout(() => {
+      if (!displayedAll && window.scrollY < 1) {
+        setDisplayStep((prevState) => prevState + 1);
+      }
+    }, 100);
   }, [displayedAll, setDisplayStep]);
 
   useEffect(() => {

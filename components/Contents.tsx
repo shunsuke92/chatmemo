@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 
 import { useChangeScheduledScrolling } from '../hooks/useChangeScheduledScrolling';
 import { useCreateDisplayData } from '../hooks/useCreateDisplayData';
 import { authUserState } from '../states/authUserState';
+import { displayStepState } from '../states/displayStepState';
 import { isRenderingState } from '../states/isRenderingState';
 import { resetDisplayPositionState } from '../states/resetDisplayPositionState';
 import { scheduledScrollingState } from '../states/scheduledScrollingState';
@@ -21,6 +22,9 @@ export const Contents = () => {
 
   const displayData = useCreateDisplayData();
   const changeScheduledScrolling = useChangeScheduledScrolling();
+
+  const clientHeight = useRef<number[]>([]);
+  const displayStep = useRecoilValue(displayStepState);
 
   useEffect(() => {
     // 初回のスクロール
@@ -64,6 +68,21 @@ export const Contents = () => {
       setScrollingIDState('');
     }
   }, [scrollingID, setScrollingIDState]);
+
+  useEffect(() => {
+    // 表示コンテンツ追加
+    const element = document.getElementById('contents');
+    if (element !== null) {
+      const beforeClientHeight = clientHeight.current[clientHeight.current.length - 1];
+      const scrollPosition = element.clientHeight - beforeClientHeight;
+      if (beforeClientHeight !== undefined && scrollPosition !== 0) {
+        clearScrollBehavior();
+        window.scroll(0, element?.clientHeight - beforeClientHeight);
+        addScrollBehavior();
+      }
+      clientHeight.current.push(element.clientHeight);
+    }
+  }, [displayStep]);
 
   const scrollToTop = () => {
     // HACK: topは必ず0になるけど、タイミングを合わせるためにElementから位置を取得している
