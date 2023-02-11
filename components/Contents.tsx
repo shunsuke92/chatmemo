@@ -123,11 +123,15 @@ export const Contents = () => {
       window.scrollY -
       (window.innerWidth >= 600 ? 80 : 72);
 
+    console.log('visualViewport?.height', visualViewport?.height);
+    console.log('window.innerHeight', window.innerHeight);
+
     if (upperLimit >= targetBottom || lowerLimit <= targetBottom) {
       const targetPotision =
         targetBottom -
         ((visualViewport?.height ?? window.innerHeight) - (window.innerWidth >= 600 ? 80 : 72));
       window.scroll(0, targetPotision);
+      console.log('targetPotision', targetPotision);
     }
   };
 
