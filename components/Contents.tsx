@@ -34,6 +34,7 @@ export const Contents = () => {
 
   useEffect(() => {
     // 初回のスクロール
+    console.log('初回のスクロール');
     if (initialScrolling) {
       clearScrollBehavior();
       if (user) {
@@ -48,6 +49,7 @@ export const Contents = () => {
 
   useEffect(() => {
     // 新規メモ作成時のスクロール
+    console.log('新規メモ作成時のスクロール');
     if (scheduledScrolling) {
       scrollToBottom();
       changeScheduledScrolling(false);
@@ -56,6 +58,7 @@ export const Contents = () => {
 
   useEffect(() => {
     // ページ切り替え時のスクロール
+    console.log('ページ切り替え時のスクロール');
     if (resetDisplayPosition) {
       clearScrollBehavior();
       if (user) {
@@ -68,6 +71,7 @@ export const Contents = () => {
 
   useEffect(() => {
     // 新規コメント作成・メモ編集時のスクロール
+    console.log('新規コメント作成・メモ編集時のスクロール');
     if (scrollingID) {
       // HACK: 正しいオブジェクトサイズを取得するためにsetTimeoutで暫定対応
       setTimeout(() => {
@@ -79,6 +83,7 @@ export const Contents = () => {
 
   useEffect(() => {
     // 表示コンテンツ追加
+    console.log('表示コンテンツ追加');
     const element = document.getElementById('contents');
     if (element !== null) {
       const beforeClientHeight = clientHeight.current[clientHeight.current.length - 1];
