@@ -46,7 +46,7 @@ export const CommonTextField = (props: CommonTextFieldProps) => {
         size='small'
         fullWidth
         multiline
-        sx={{ width: '479px' }}
+        sx={{ width: '479px', maxWidth: '75vw' }}
         onChange={handleChange}
       />
     </Stack>
