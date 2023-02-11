@@ -107,6 +107,7 @@ export const Contents = () => {
   const scrollToBottom = () => {
     const element = document.documentElement;
     const bottom = element.scrollHeight - (visualViewport?.height ?? element.clientHeight);
+    console.log('element.scrollHeight', element.scrollHeight);
     console.log('visualViewport?.height', visualViewport?.height);
     console.log('window.innerHeight', window.innerHeight);
     console.log('bottom', bottom);
