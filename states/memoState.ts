@@ -44,5 +44,5 @@ export interface Comment {
 
 export const memoState = atom<Memo[]>({
   key: 'memoState',
-  default: undefined,
+  default: [],
 });

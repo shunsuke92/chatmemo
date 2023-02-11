@@ -7,6 +7,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import axios from 'axios';
 
 import { authUserState } from '../states/authUserState';
+import { initialScrollingState } from '../states/initialScrollingState';
 import { memoState } from '../states/memoState';
 import { Memo } from '../states/memoState';
 import { demoData } from '../utils/demoData';
@@ -14,8 +15,9 @@ import { getDate } from '../utils/getDate';
 import { getTime } from '../utils/getTime';
 
 export const Data = ({ children }: { children: any }) => {
-  const [isChecking, setIsAuthChecking] = useState(true);
+  const [isGettingData, setIsGettingData] = useState(true);
   const setMemo = useSetRecoilState(memoState);
+  const setInitialScrolling = useSetRecoilState(initialScrollingState);
 
   const user = useRecoilValue(authUserState);
 
@@ -59,15 +61,17 @@ export const Data = ({ children }: { children: any }) => {
             });
 
             setMemo(clientData);
-            setIsAuthChecking(false);
+            setInitialScrolling(true);
+            setIsGettingData(false);
           })
           .catch((err) => {});
       } else {
         setMemo(demoData);
-        setIsAuthChecking(false);
+        setInitialScrolling(true);
+        setIsGettingData(false);
       }
     })();
-  }, [user, setMemo]);
+  }, [user, setMemo, setInitialScrolling]);
 
-  return <>{isChecking ? <LinearProgress /> : children}</>;
+  return <>{isGettingData ? <LinearProgress /> : children}</>;
 };

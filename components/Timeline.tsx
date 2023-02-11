@@ -18,6 +18,7 @@ import { useOperateUpdateServerCompleted } from '../hooks/useOperateUpdateServer
 import { addingContentIDState } from '../states/addingContentIDState';
 import { authUserState } from '../states/authUserState';
 import { editingContentIDState } from '../states/editingContentIDState';
+import { isLogginginState } from '../states/isLogginginState';
 import { isLoggingoutState } from '../states/isLoggingoutState';
 import { Memo } from '../states/memoState';
 import { Comment } from '../states/memoState';
@@ -75,6 +76,7 @@ export const Timeline = (props: TimelineProps) => {
   const openSideDrawer = useRecoilValue(openSideDrawerState);
   const openUserMenu = useRecoilValue(openUserMenuState);
   const [isLoggingout, setIsLoggingout] = useRecoilState(isLoggingoutState);
+  const [isLoggingin, setIsLoggingin] = useRecoilState(isLogginginState);
   const user = useRecoilValue(authUserState);
   const memoBackground = useMemoBackground();
   const commentBackground = useCommentBackground();
@@ -88,7 +90,8 @@ export const Timeline = (props: TimelineProps) => {
 
   useEffect(() => {
     setIsLoggingout(false);
-  }, [user, setIsLoggingout]);
+    setIsLoggingin(false);
+  }, [user, setIsLoggingout, setIsLoggingin]);
 
   return (
     <>
@@ -104,7 +107,7 @@ export const Timeline = (props: TimelineProps) => {
               key={memo._type === 'memo' ? memo._id : memo._date}
               timeout={400}
               enter={false}
-              exit={!openSideDrawer && !openUserMenu && !isLoggingout}
+              exit={!openSideDrawer && !openUserMenu && !isLoggingout && !isLoggingin}
             >
               {memo._type === 'memo' && (
                 <ChatMemo

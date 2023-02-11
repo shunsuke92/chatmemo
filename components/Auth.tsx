@@ -48,7 +48,6 @@ export const Auth = ({ children }: { children: any }) => {
       } else {
         // サインアウトしている
         setUser(undefined);
-        initializationProcess();
         setIsAuthChecking(false);
       }
     });

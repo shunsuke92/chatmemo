@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import NextLink from 'next/link';
 
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
@@ -16,7 +16,9 @@ import { Box } from '@mui/system';
 
 import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
+import { useInitializationProcess } from '../hooks/useInitializationProcess';
 import { authUserState } from '../states/authUserState';
+import { isLogginginState } from '../states/isLogginginState';
 import { app, provider } from '../utils/firebase';
 import { Logo } from './Logo';
 
@@ -160,6 +162,8 @@ const LoginDialog = (props: LoginDialogProps) => {
 export const Login = () => {
   const [open, setOpen] = useState(false);
   const user = useRecoilValue(authUserState);
+  const setIsLoggingin = useSetRecoilState(isLogginginState);
+  const initializationProcess = useInitializationProcess();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -193,6 +197,8 @@ export const Login = () => {
           // IdP data available using getAdditionalUserInfo(result)
           // ...
           setOpen(false);
+          setIsLoggingin(true);
+          initializationProcess();
         })
         .catch((error) => {
           // Handle Errors here.

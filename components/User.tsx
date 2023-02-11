@@ -19,6 +19,7 @@ import Typography from '@mui/material/Typography';
 
 import { DarkMode, useSettingInfoContext } from '../components/SettingInfoContext';
 import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
+import { useInitializationProcess } from '../hooks/useInitializationProcess';
 import { authUserState } from '../states/authUserState';
 import { isLoggingoutState } from '../states/isLoggingoutState';
 import { openUserMenuState } from '../states/openUserMenuState';
@@ -34,6 +35,7 @@ export const User = () => {
   const setIsLoggingout = useSetRecoilState(isLoggingoutState);
 
   const changeDisplayAlertDialog = useChangeDisplayAlertDialog();
+  const initializationProcess = useInitializationProcess();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -53,6 +55,7 @@ export const User = () => {
   const handleClickLogout = () => {
     signout();
     setIsLoggingout(true);
+    initializationProcess();
     handleClose();
   };
 

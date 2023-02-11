@@ -6,6 +6,7 @@ import { useChangeScheduledScrolling } from '../hooks/useChangeScheduledScrollin
 import { useCreateDisplayData } from '../hooks/useCreateDisplayData';
 import { authUserState } from '../states/authUserState';
 import { displayStepState } from '../states/displayStepState';
+import { initialScrollingState } from '../states/initialScrollingState';
 import { isRenderingState } from '../states/isRenderingState';
 import { resetDisplayPositionState } from '../states/resetDisplayPositionState';
 import { scheduledScrollingState } from '../states/scheduledScrollingState';
@@ -19,6 +20,7 @@ export const Contents = () => {
   const scheduledScrolling = useRecoilValue(scheduledScrollingState);
   const [resetDisplayPosition, setResetDisplayPosition] = useRecoilState(resetDisplayPositionState);
   const [scrollingID, setScrollingIDState] = useRecoilState(scrollingIDState);
+  const [initialScrolling, setInitialScrolling] = useRecoilState(initialScrollingState);
 
   const displayData = useCreateDisplayData();
   const changeScheduledScrolling = useChangeScheduledScrolling();
@@ -27,16 +29,22 @@ export const Contents = () => {
   const displayStep = useRecoilValue(displayStepState);
 
   useEffect(() => {
-    // 初回のスクロール
-    clearScrollBehavior();
-    if (user) {
-      scrollToBottom();
-    } else {
-      scrollToTop();
-    }
-    addScrollBehavior();
     setIsRendering(false);
-  }, [user, setIsRendering]);
+  }, [setIsRendering]);
+
+  useEffect(() => {
+    // 初回のスクロール
+    if (initialScrolling) {
+      clearScrollBehavior();
+      if (user) {
+        scrollToBottom();
+      } else {
+        scrollToTop();
+      }
+      addScrollBehavior();
+      setInitialScrolling(false);
+    }
+  }, [user, initialScrolling, setInitialScrolling]);
 
   useEffect(() => {
     // 新規メモ作成時のスクロール
