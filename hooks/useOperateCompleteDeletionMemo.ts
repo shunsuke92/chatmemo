@@ -1,4 +1,4 @@
-import { useLocalDeleteMemo } from './useLocalUpdateData';
+import { useLocalDeleteMemo } from './useLocalDeleteMemo';
 import { useSaveServer } from './useSaveServer';
 import { useServerDeleteMemoTable } from './useServerDeleteMemoTable';
 

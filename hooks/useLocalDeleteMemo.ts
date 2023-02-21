@@ -1,19 +1,19 @@
 import { useSetRecoilState } from 'recoil';
 
 import { displayingMemoState } from '../states/displayingMemoState';
-import { Memo, memoState } from '../states/memoState';
+import { memoState } from '../states/memoState';
 
-export const useLocalCreateMemo = () => {
+export const useLocalDeleteMemo = () => {
   const setMemo = useSetRecoilState(memoState);
   const setFilteredMemo = useSetRecoilState(displayingMemoState);
 
   // 重要：setMemoとsetFilteredMemoには同じ処理を適応すること
-  const localAddMemo = (memo: Memo) => {
+  const localDeleteMemo = (memoId: string) => {
     // オリジナルデータを更新
-    setMemo((prevState) => [...prevState, memo]);
+    setMemo((prevState) => prevState.filter((value) => value._id !== memoId));
 
     // 表示中のデータを更新
-    setFilteredMemo((prevState) => [...prevState, memo]);
+    setFilteredMemo((prevState) => prevState.filter((value) => value._id !== memoId));
   };
-  return localAddMemo;
+  return localDeleteMemo;
 };

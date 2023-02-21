@@ -1,30 +1,21 @@
-import { useEffect } from 'react';
+import { useMemo } from 'react';
 
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 
 import { useSettingInfoContext } from '../components/SettingInfoContext';
-import { useAddDateForDisplay } from '../hooks/useAddDateForDisplay';
-import { useIncreaseDisplayContent } from '../hooks/useIncreaseDisplayContent';
-import { isLoadingState } from '../states/isLoadingState';
+import { changeMemoState } from '../states/changeMemoState';
 import { memoFilterAllHideCompletedState } from '../states/memoFilterAllHideCompletedState';
 import { memoFilterAllState } from '../states/memoFilterAllState';
 import { memoFilterCompletedState } from '../states/memoFilterCompletedState';
 import { memoFilterTrashState } from '../states/memoFilterTrashState';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
 
-export const useCreateDisplayData = () => {
+export const useGetNowAllTabData = () => {
   const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
   const settingInfo = useSettingInfoContext();
   const setting = settingInfo?.setting;
-  const addDateForDisplay = useAddDateForDisplay();
-  const setIsLoading = useSetRecoilState(isLoadingState);
 
-  useEffect(() => {
-    // 最後まで表示したらローディング表示を止める
-    if (displayedAll) {
-      setIsLoading(false);
-    }
-  });
+  const changeMemo = useRecoilValue(changeMemoState);
 
   let state;
   if (selectedDisplayType.id === 1 && !setting?.hide_completed_memo) {
@@ -45,8 +36,13 @@ export const useCreateDisplayData = () => {
   }
 
   const memo = useRecoilValue(state);
-  const { data, displayedAll } = addDateForDisplay(memo);
-  useIncreaseDisplayContent(displayedAll);
 
-  return data;
+  const nowAllTabData = useMemo(
+    () => memo,
+    // オリジナルデータ（memo）は依存関係に含めない
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [changeMemo, selectedDisplayType.id, setting?.hide_completed_memo],
+  );
+
+  return nowAllTabData;
 };

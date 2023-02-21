@@ -7,7 +7,6 @@ import Stack from '@mui/material/Stack';
 import { BottomBar } from '../components/BottomBar';
 import { CompleteDeletionMemoAlertDialog } from '../components/CompleteDeletionMemoAlertDialog';
 import { Contents } from '../components/Contents';
-import { Data } from '../components/Data';
 import { DeleteAccountAlertDialog } from '../components/DeleteAccountAlertDialog';
 import { DeleteMemoAlertDialog } from '../components/DeleteMemoAlertDialog';
 import { Mask } from '../components/Mask';
@@ -15,6 +14,8 @@ import { MenuBar } from '../components/MenuBar';
 import { Synchronizing } from '../components/Synchronizing';
 import { addingContentIDState } from '../states/addingContentIDState';
 import { editingContentIDState } from '../states/editingContentIDState';
+import { DataController } from './DataController';
+import { DataManager } from './DataManager';
 
 export const useGetIsAdding = () => {
   const addingContentID = useRecoilValue(addingContentIDState);
@@ -55,7 +56,7 @@ export const Main = () => {
   return (
     <>
       <MenuBar />
-      <Data>
+      <DataManager>
         <Stack
           sx={{
             display: 'flex',
@@ -75,9 +76,11 @@ export const Main = () => {
           <DeleteAccountAlertDialog />
           <CompleteDeletionMemoAlertDialog />
 
-          <Contents />
+          <DataController>
+            <Contents />
+          </DataController>
         </Stack>
-      </Data>
+      </DataManager>
       <BottomBar />
     </>
   );

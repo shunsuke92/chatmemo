@@ -7,6 +7,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import axios from 'axios';
 
 import { authUserState } from '../states/authUserState';
+import { changeMemoState } from '../states/changeMemoState';
 import { initialScrollingState } from '../states/initialScrollingState';
 import { memoState } from '../states/memoState';
 import { Memo } from '../states/memoState';
@@ -14,10 +15,11 @@ import { demoData } from '../utils/demoData';
 import { getDate } from '../utils/getDate';
 import { getTime } from '../utils/getTime';
 
-export const Data = ({ children }: { children: any }) => {
+export const DataManager = ({ children }: { children: any }) => {
   const [isGettingData, setIsGettingData] = useState(true);
   const setMemo = useSetRecoilState(memoState);
   const setInitialScrolling = useSetRecoilState(initialScrollingState);
+  const setChangeMemo = useSetRecoilState(changeMemoState);
 
   const user = useRecoilValue(authUserState);
 
@@ -25,6 +27,7 @@ export const Data = ({ children }: { children: any }) => {
     // サーバーのデータを取得する
     (async () => {
       let serverData: Memo[] = [];
+
       if (user) {
         await axios
           .get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/memos`, {
@@ -62,16 +65,18 @@ export const Data = ({ children }: { children: any }) => {
 
             setMemo(clientData);
             setInitialScrolling(true);
+            setChangeMemo(true);
             setIsGettingData(false);
           })
           .catch((err) => {});
       } else {
         setMemo(demoData);
         setInitialScrolling(true);
+        setChangeMemo(true);
         setIsGettingData(false);
       }
     })();
-  }, [user, setMemo, setInitialScrolling]);
+  }, [user, setMemo, setInitialScrolling, setChangeMemo]);
 
   return <>{isGettingData ? <LinearProgress /> : children}</>;
 };

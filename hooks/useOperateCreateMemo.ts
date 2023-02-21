@@ -1,7 +1,7 @@
-import { useRecoilValue } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
-import { useChangeScheduledScrolling } from '../hooks/useChangeScheduledScrolling';
 import { Memo } from '../states/memoState';
+import { scheduledScrollingState } from '../states/scheduledScrollingState';
 import { getDate } from '../utils/getDate';
 import { getNowDate } from '../utils/getNowDate';
 import { getTime } from '../utils/getTime';
@@ -16,7 +16,7 @@ export const useOperateCreateMemo = () => {
   const serverCreateMemoTable = useServerCreateMemoTable();
   const localAddMemo = useLocalCreateMemo();
 
-  const changeScheduledScrolling = useChangeScheduledScrolling();
+  const setScheduledScrolling = useSetRecoilState(scheduledScrollingState);
 
   const createMemo = async (memo: Memo) => {
     const date = getNowDate();
@@ -41,7 +41,7 @@ export const useOperateCreateMemo = () => {
     localAddMemo(memo);
 
     // スクロール予約
-    changeScheduledScrolling(true);
+    setScheduledScrolling(true);
   };
 
   return createMemo;

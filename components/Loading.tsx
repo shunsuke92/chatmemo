@@ -3,15 +3,15 @@ import { useRecoilValue } from 'recoil';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 
-import { isLoadingState } from '../states/isLoadingState';
+import { isAllDisplayedState } from '../states/isAllDisplayedState';
 
 export const Loading = () => {
-  const isLoading = useRecoilValue(isLoadingState);
+  const isAllDisplayed = useRecoilValue(isAllDisplayedState);
 
   return (
     <>
-      {isLoading && (
-        <Stack sx={{ width: '100%', display: 'flex', alignItems: 'center', mt: 1 }}>
+      {!isAllDisplayed && (
+        <Stack sx={{ width: '100%', display: 'flex', alignItems: 'center', mt: 0 }}>
           <CircularProgress
             variant='indeterminate'
             disableShrink

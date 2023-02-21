@@ -1,5 +1,6 @@
 import { useSetRecoilState } from 'recoil';
 
+import { displayingMemoState } from '../states/displayingMemoState';
 import { memoState } from '../states/memoState';
 
 export interface ChangeableMemo {
@@ -26,7 +27,9 @@ export interface ChangeableComment {
 
 export const useLocalUpdateMemo = () => {
   const setMemo = useSetRecoilState(memoState);
+  const setFilteredMemo = useSetRecoilState(displayingMemoState);
 
+  // 重要：setMemoとsetFilteredMemoには同じ処理を適応すること
   const localUpdateMemo = (
     memoId: string,
     {
@@ -42,7 +45,31 @@ export const useLocalUpdateMemo = () => {
       _tmpCompletedAt,
     }: ChangeableMemo,
   ) => {
+    // オリジナルデータを更新
     setMemo((prevState) =>
+      prevState.map((value) => {
+        if (value._id === memoId) {
+          const setData = {
+            ...value,
+            body: body ?? value.body,
+            updatedAt: updatedAt ?? value.updatedAt,
+            completed: completed ?? value.completed,
+            completedAt: completedAt ?? value.completedAt,
+            deleted: deleted ?? value.deleted,
+            deletedAt: deletedAt ?? value.deletedAt,
+            _text: _text ?? value._text,
+            _synchronized: _synchronized ?? value._synchronized,
+            _tmpCompleted: _tmpCompleted ?? value._tmpCompleted,
+            _tmpCompletedAt: _tmpCompletedAt ?? value._tmpCompletedAt,
+          };
+          return setData;
+        }
+        return value;
+      }),
+    );
+
+    // 表示中のデータを更新
+    setFilteredMemo((prevState) =>
       prevState.map((value) => {
         if (value._id === memoId) {
           const setData = {
@@ -74,9 +101,29 @@ export interface LocalUpdateMemoProps {
 
 export const useLocalUpdateMemoMulti = () => {
   const setMemo = useSetRecoilState(memoState);
+  const setFilteredMemo = useSetRecoilState(displayingMemoState);
 
+  // 重要：setMemoとsetFilteredMemoには同じ処理を適応すること
   const localUpdateMemo = (props: LocalUpdateMemoProps[]) => {
+    // オリジナルデータを更新
     setMemo((prevState) =>
+      prevState.map((value) => {
+        const targetData = props.filter((d) => d.memoId === value._id);
+        if (targetData.length > 0) {
+          let setData = {
+            ...value,
+          };
+          for (const data of targetData) {
+            setData = { ...setData, ...data.data };
+          }
+          return setData;
+        }
+        return value;
+      }),
+    );
+
+    // 表示中のデータを更新
+    setFilteredMemo((prevState) =>
       prevState.map((value) => {
         const targetData = props.filter((d) => d.memoId === value._id);
         if (targetData.length > 0) {
@@ -97,13 +144,44 @@ export const useLocalUpdateMemoMulti = () => {
 
 export const useLocalUpdateComment = () => {
   const setMemo = useSetRecoilState(memoState);
+  const setFilteredMemo = useSetRecoilState(displayingMemoState);
 
+  // 重要：setMemoとsetFilteredMemoには同じ処理を適応すること
   const localUpdateComment = (
     memoId: string,
     commentID: string,
     { body, updatedAt, deleted, deletedAt, _text, _synchronized }: ChangeableComment,
   ) => {
+    // オリジナルデータを更新
     setMemo((prevState) =>
+      prevState.map((value) => {
+        if (value._id === memoId) {
+          const setData = {
+            ...value,
+            comments: value.comments.map((c) => {
+              if (c._id === commentID) {
+                return {
+                  ...c,
+                  body: body ?? c.body,
+                  updatedAt: updatedAt ?? c.updatedAt,
+                  deleted: deleted ?? c.deleted,
+                  deletedAt: deletedAt ?? c.deletedAt,
+                  _text: _text ?? c._text,
+                  _synchronized: _synchronized ?? c._synchronized,
+                };
+              } else {
+                return c;
+              }
+            }),
+          };
+          return setData;
+        }
+        return value;
+      }),
+    );
+
+    // 表示中のデータを更新
+    setFilteredMemo((prevState) =>
       prevState.map((value) => {
         if (value._id === memoId) {
           const setData = {
@@ -141,9 +219,38 @@ export interface LocalUpdateCommentProps {
 
 export const useLocalUpdateCommentMulti = () => {
   const setMemo = useSetRecoilState(memoState);
+  const setFilteredMemo = useSetRecoilState(displayingMemoState);
 
+  // 重要：setMemoとsetFilteredMemoには同じ処理を適応すること
   const localUpdateComment = (props: LocalUpdateCommentProps[]) => {
+    // オリジナルデータを更新
     setMemo((prevState) =>
+      prevState.map((value) => {
+        const targetData = props.filter((d) => d.memoId === value._id);
+        if (targetData.length > 0) {
+          let setData = {
+            ...value,
+          };
+          for (const data of targetData) {
+            setData = {
+              ...setData,
+              comments: setData.comments.map((c) => {
+                if (c._id === data.commentId) {
+                  return { ...c, ...data.data };
+                } else {
+                  return c;
+                }
+              }),
+            };
+          }
+          return setData;
+        }
+        return value;
+      }),
+    );
+
+    // 表示中のデータを更新
+    setFilteredMemo((prevState) =>
       prevState.map((value) => {
         const targetData = props.filter((d) => d.memoId === value._id);
         if (targetData.length > 0) {
@@ -179,9 +286,42 @@ export interface LocalUpdateDataProps {
 
 export const useLocalUpdateData = () => {
   const setMemo = useSetRecoilState(memoState);
+  const setFilteredMemo = useSetRecoilState(displayingMemoState);
 
+  // 重要：setMemoとsetFilteredMemoには同じ処理を適応すること
   const localUpdateData = (props: LocalUpdateDataProps[]) => {
+    // オリジナルデータを更新
     setMemo((prevState) =>
+      prevState.map((value) => {
+        const targetData = props.filter((d) => d.memoId === value._id);
+        if (targetData.length > 0) {
+          let setData = {
+            ...value,
+          };
+          for (const data of targetData) {
+            if (data.commentId === undefined) {
+              setData = { ...setData, ...data.data };
+            } else {
+              setData = {
+                ...setData,
+                comments: setData.comments.map((c) => {
+                  if (c._id === data.commentId) {
+                    return { ...c, ...data.data };
+                  } else {
+                    return c;
+                  }
+                }),
+              };
+            }
+          }
+          return setData;
+        }
+        return value;
+      }),
+    );
+
+    // 表示中のデータを更新
+    setFilteredMemo((prevState) =>
       prevState.map((value) => {
         const targetData = props.filter((d) => d.memoId === value._id);
         if (targetData.length > 0) {
@@ -211,13 +351,4 @@ export const useLocalUpdateData = () => {
     );
   };
   return localUpdateData;
-};
-
-export const useLocalDeleteMemo = () => {
-  const setMemo = useSetRecoilState(memoState);
-
-  const localDeleteMemo = (memoId: string) => {
-    setMemo((prevState) => prevState.filter((value) => value._id !== memoId));
-  };
-  return localDeleteMemo;
 };

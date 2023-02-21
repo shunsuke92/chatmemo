@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useRecoilValue, useRecoilState } from 'recoil';
 
@@ -6,26 +6,15 @@ import Collapse from '@mui/material/Collapse';
 
 import { TransitionGroup } from 'react-transition-group';
 
-import { useDelayCompletedContext } from '../components/DelayCompletedContext';
-import { useChangeAddingContentID } from '../hooks/useChangeAddingContentID';
-import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
-import { useChangeEditingContentID } from '../hooks/useChangeEditingContentID';
-import { useMemoBackground, useCommentBackground } from '../hooks/useColor';
-import { useCreateEditingInfo } from '../hooks/useCreateEditingInfo';
-import { useOperateDeleteMemo } from '../hooks/useOperateDeleteMemo';
-import { useOperateRevertMemo } from '../hooks/useOperateRevertMemo';
-import { useOperateUpdateServerCompleted } from '../hooks/useOperateUpdateServerCompleted';
-import { addingContentIDState } from '../states/addingContentIDState';
-import { authUserState } from '../states/authUserState';
-import { editingContentIDState } from '../states/editingContentIDState';
+import { useCreateTimelineProps } from '../hooks/useCreateTimelineProps';
+import { useScrollManager } from '../hooks/useScrollManager';
+import { changeMemoState } from '../states/changeMemoState';
 import { isLogginginState } from '../states/isLogginginState';
 import { isLoggingoutState } from '../states/isLoggingoutState';
 import { Memo } from '../states/memoState';
 import { Comment } from '../states/memoState';
 import { openSideDrawerState } from '../states/openSideDrawerState';
 import { openUserMenuState } from '../states/openUserMenuState';
-import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
-import { convertInternalDataToMemo } from '../utils/convertInternalDataToMemo';
 import { ChatMemo } from './ChatMemo';
 import { DateChip } from './DateChip';
 import { Loading } from './Loading';
@@ -50,53 +39,36 @@ interface TimelineProps {
   data: Memo[];
 }
 
-const useGetIsAddingContents = () => {
-  const addingContentID = useRecoilValue(addingContentIDState);
-
-  return (id: string): boolean => {
-    return id === addingContentID;
-  };
-};
-
-const useGetIsEditingContents = () => {
-  const editingContentID = useRecoilValue(editingContentIDState);
-  return (id: string) => {
-    return id === editingContentID;
-  };
-};
-
 export const Timeline = (props: TimelineProps) => {
   const { data } = props;
-  const getIsAddingContents = useGetIsAddingContents();
-  const getIsEditingContents = useGetIsEditingContents();
-  const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
-  const getIsTrash = selectedDisplayType.id === 3;
-  const getIsAllMemo = selectedDisplayType.id === 1;
-  const delayCompleted = useDelayCompletedContext();
+
   const openSideDrawer = useRecoilValue(openSideDrawerState);
+  const [_openSideDrawer, _setOpenSideDrawer] = useState(false);
   const openUserMenu = useRecoilValue(openUserMenuState);
   const [isLoggingout, setIsLoggingout] = useRecoilState(isLoggingoutState);
   const [isLoggingin, setIsLoggingin] = useRecoilState(isLogginginState);
-  const user = useRecoilValue(authUserState);
-  const memoBackground = useMemoBackground();
-  const commentBackground = useCommentBackground();
-  const changeAddingContentID = useChangeAddingContentID();
-  const changeDisplayAlertDialog = useChangeDisplayAlertDialog();
-  const changeEditingContentID = useChangeEditingContentID();
-  const deleteMemo = useOperateDeleteMemo();
-  const revertMemo = useOperateRevertMemo();
-  const updateServerCompleted = useOperateUpdateServerCompleted();
-  const createEditingInfo = useCreateEditingInfo();
+
+  const changeMemo = useRecoilValue(changeMemoState);
+
+  const createProps = useCreateTimelineProps();
+
+  useScrollManager(data);
 
   useEffect(() => {
     setIsLoggingout(false);
     setIsLoggingin(false);
-  }, [user, setIsLoggingout, setIsLoggingin]);
+  }, [changeMemo, setIsLoggingout, setIsLoggingin]);
+
+  useEffect(() => {
+    // openSideDrawerをfalseにするのをTimelineコンポーネントレンダリング後にするため
+    // これがないと、useScrollManagerのinitializeClientHeightで正しい高さが取得できない
+    _setOpenSideDrawer(openSideDrawer);
+  }, [openSideDrawer]);
 
   return (
     <>
-      <Loading />
       <TimelineWrapper>
+        <Loading />
         <TransitionGroup
           style={{
             width: '100%',
@@ -107,28 +79,9 @@ export const Timeline = (props: TimelineProps) => {
               key={memo._type === 'memo' ? memo._id : memo._date}
               timeout={400}
               enter={false}
-              exit={!openSideDrawer && !openUserMenu && !isLoggingout && !isLoggingin}
+              exit={!_openSideDrawer && !openUserMenu && !isLoggingout && !isLoggingin}
             >
-              {memo._type === 'memo' && (
-                <ChatMemo
-                  key={memo._id}
-                  data={convertInternalDataToMemo(memo)}
-                  isAddingContents={getIsAddingContents(memo._id)}
-                  isEditingContents={getIsEditingContents(memo._id)}
-                  isTrash={getIsTrash}
-                  isAllMemo={getIsAllMemo}
-                  delayCompleted={delayCompleted}
-                  memoBackground={memoBackground}
-                  commentBackground={commentBackground}
-                  changeAddingContentID={changeAddingContentID}
-                  changeDisplayAlertDialog={changeDisplayAlertDialog}
-                  changeEditingContentID={changeEditingContentID}
-                  deleteMemo={deleteMemo}
-                  revertMemo={revertMemo}
-                  updateServerCompleted={updateServerCompleted}
-                  createEditingInfo={createEditingInfo}
-                />
-              )}
+              {memo._type === 'memo' && <ChatMemo key={memo._id} {...createProps(memo)} />}
               {memo._type === 'date' && <DateChip date={memo._date} />}
             </Collapse>
           ))}

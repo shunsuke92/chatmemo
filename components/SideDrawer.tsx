@@ -51,10 +51,6 @@ export const SideDrawer = () => {
   const handleClick = (data: DisplayType) => () => {
     if (selectedDisplayType.id !== data.id) {
       changeSelectedDisplayType(data);
-
-      // ページ切り替え時は表示数と表示位置をリセットする
-      setResetDisplayPosition(true);
-      setDisplayStep(1);
     }
   };
 

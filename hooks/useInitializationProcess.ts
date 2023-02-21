@@ -9,7 +9,7 @@ import { displayStepState } from '../states/displayStepState';
 import { editingContentIDState } from '../states/editingContentIDState';
 import { editingInfoState } from '../states/editingInfoState';
 import { errIDState } from '../states/errIDState';
-import { isLoadingState } from '../states/isLoadingState';
+import { isAllDisplayedState } from '../states/isAllDisplayedState';
 import { isLoggingoutState } from '../states/isLoggingoutState';
 import { isRenderingState } from '../states/isRenderingState';
 import { isSynchronizingState } from '../states/isSynchronizingState';
@@ -32,7 +32,7 @@ export const useInitializationProcess = () => {
   const setEditingContentID = useSetRecoilState(editingContentIDState);
   const setEditingInfo = useSetRecoilState(editingInfoState);
   const setErrID = useSetRecoilState(errIDState);
-  const setIsLoading = useSetRecoilState(isLoadingState);
+  const setIsAllDisplayed = useSetRecoilState(isAllDisplayedState);
   const setIsLoggingout = useSetRecoilState(isLoggingoutState);
   const setIsRendering = useSetRecoilState(isRenderingState);
   const setIsSynchronizing = useSetRecoilState(isSynchronizingState);
@@ -55,7 +55,7 @@ export const useInitializationProcess = () => {
     setEditingContentID('');
     setEditingInfo(undefined);
     setErrID(0);
-    setIsLoading(true);
+    setIsAllDisplayed(true);
     /* setIsLoggingout(false); */
     setIsRendering(true);
     setIsSynchronizing(false);
