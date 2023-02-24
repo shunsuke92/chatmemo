@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { useRecoilValue, useRecoilState } from 'recoil';
 
@@ -25,13 +25,11 @@ export const useScrollManager = (displayData: Memo[]) => {
   useEffect(() => {
     // 初回のスクロール
     if (initialScrolling) {
-      clearScrollBehavior();
       if (user) {
         scrollToBottom();
       } else {
         scrollToTop();
       }
-      addScrollBehavior();
       setInitialScrolling(false);
     }
   }, [user, initialScrolling, setInitialScrolling]);
@@ -39,7 +37,7 @@ export const useScrollManager = (displayData: Memo[]) => {
   useEffect(() => {
     // 新規メモ作成時のスクロール
     if (scheduledScrolling) {
-      scrollToBottom();
+      scrollToBottom('smooth');
       setScheduledScrolling(false);
     }
   }, [scheduledScrolling, setScheduledScrolling]);
@@ -47,11 +45,9 @@ export const useScrollManager = (displayData: Memo[]) => {
   useEffect(() => {
     // ページ切り替え時のスクロール
     if (resetDisplayPosition) {
-      clearScrollBehavior();
       if (user) {
         scrollToBottom();
       }
-      addScrollBehavior();
       setResetDisplayPosition(false);
     }
   }, [user, resetDisplayPosition, setResetDisplayPosition]);
@@ -61,7 +57,7 @@ export const useScrollManager = (displayData: Memo[]) => {
     if (scrollingID) {
       // HACK: 正しいオブジェクトサイズを取得するためにsetTimeoutで暫定対応
       setTimeout(() => {
-        scrollToTargetMemo(scrollingID);
+        scrollToTargetMemo(scrollingID, 'smooth');
       }, 1);
       setScrollingIDState('');
     }
@@ -70,21 +66,7 @@ export const useScrollManager = (displayData: Memo[]) => {
   useEffect(() => {
     // 表示コンテンツ追加時のスクロール
     if (changeDisplayStep) {
-      const element = document.getElementById('contents');
-      if (element !== null) {
-        const beforeClientHeight = clientHeight.current[clientHeight.current.length - 1];
-        if (beforeClientHeight !== undefined) {
-          const scrollPosition = element.clientHeight - beforeClientHeight;
-          if (scrollPosition !== 0) {
-            clearScrollBehavior();
-            window.scroll(0, scrollPosition);
-            addScrollBehavior();
-          }
-        }
-        if (!clientHeight.current.includes(element.clientHeight)) {
-          clientHeight.current.push(element.clientHeight);
-        }
-      }
+      scrollToOriginalPosition();
       setChangeDisplayStep(false);
     }
   }, [changeDisplayStep, setChangeDisplayStep]);
@@ -109,20 +91,20 @@ export const useScrollManager = (displayData: Memo[]) => {
     }
   };
 
-  const scrollToTop = () => {
+  const scrollToTop = (behavior: 'smooth' | 'auto' = 'auto') => {
     // HACK: topは必ず0になるけど、タイミングを合わせるためにElementから位置を取得している
     const element = document.documentElement;
     const top = element.offsetTop;
-    window.scroll(0, top);
+    window.scroll({ top: top, behavior: behavior });
   };
 
-  const scrollToBottom = () => {
+  const scrollToBottom = (behavior: 'smooth' | 'auto' = 'auto') => {
     const element = document.documentElement;
     const bottom = element.scrollHeight - (visualViewport?.height ?? element.clientHeight);
-    window.scroll(0, bottom);
+    window.scroll({ top: bottom, behavior: behavior });
   };
 
-  const scrollToTargetMemo = (id: string) => {
+  const scrollToTargetMemo = (id: string, behavior: 'smooth' | 'auto' = 'auto') => {
     const element = document.getElementsByClassName(`content${id}`);
     if (element.length === 0) return;
 
@@ -139,21 +121,23 @@ export const useScrollManager = (displayData: Memo[]) => {
       const targetPotision =
         targetBottom -
         ((visualViewport?.height ?? window.innerHeight) - (window.innerWidth >= 600 ? 80 : 72));
-      window.scroll(0, targetPotision);
+      window.scroll({ top: targetPotision, behavior: behavior });
     }
   };
 
-  const addScrollBehavior = () => {
-    const html = document.getElementById('html');
-    if (html !== null) {
-      html.style.scrollBehavior = 'smooth';
-    }
-  };
-
-  const clearScrollBehavior = () => {
-    const html = document.getElementById('html');
-    if (html !== null) {
-      html.style.scrollBehavior = 'auto';
+  const scrollToOriginalPosition = (behavior: 'smooth' | 'auto' = 'auto') => {
+    const element = document.getElementById('contents');
+    if (element !== null) {
+      const beforeClientHeight = clientHeight.current[clientHeight.current.length - 1];
+      if (beforeClientHeight !== undefined) {
+        const scrollPosition = element.clientHeight - beforeClientHeight;
+        if (scrollPosition !== 0) {
+          window.scroll({ top: scrollPosition, behavior: behavior });
+        }
+      }
+      if (!clientHeight.current.includes(element.clientHeight)) {
+        clientHeight.current.push(element.clientHeight);
+      }
     }
   };
 };
