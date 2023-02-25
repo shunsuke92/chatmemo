@@ -36,7 +36,14 @@ const isEqual = (
 ): boolean => {
   // 表示する値に変更がないときは、再レンダリングしない
 
-  const arrayCompare = (array1: Comment[] | undefined, array2: Comment[] | undefined) => {
+  const arrayCompare = (array1: string[], array2: string[]) => {
+    if (array1.length !== array2.length) {
+      return false;
+    }
+    return array1.every((value, index) => value === array2[index]);
+  };
+
+  const commentCompare = (array1: Comment[] | undefined, array2: Comment[] | undefined) => {
     if (array1 === undefined && array2 === undefined) {
       return true;
     } else if (array1 === undefined || array2 === undefined) {
@@ -51,7 +58,7 @@ const isEqual = (
       (value, index) =>
         value._id === array2[index]._id &&
         value.body === array2[index].body &&
-        value._text === array2[index]._text &&
+        arrayCompare(value._text, array2[index]._text) &&
         value.createdAt === array2[index].createdAt &&
         value.updatedAt === array2[index].updatedAt &&
         value._date === array2[index]._date &&
@@ -63,14 +70,14 @@ const isEqual = (
   return (
     prevProps.data.id === nextProps.data.id &&
     prevProps.data.body === nextProps.data.body &&
-    prevProps.data.text === nextProps.data.text &&
+    arrayCompare(prevProps.data.text, nextProps.data.text) &&
     prevProps.data.createdAt === nextProps.data.createdAt &&
     prevProps.data.updatedAt === nextProps.data.updatedAt &&
     prevProps.data.completed === nextProps.data.completed &&
     prevProps.data.date === nextProps.data.date &&
     prevProps.data.time === nextProps.data.time &&
     prevProps.data.synchronized === nextProps.data.synchronized &&
-    arrayCompare(prevProps.data.comments, nextProps.data.comments) &&
+    commentCompare(prevProps.data.comments, nextProps.data.comments) &&
     prevProps.isAddingContents === nextProps.isAddingContents &&
     prevProps.isEditingContents === nextProps.isEditingContents &&
     prevProps.isTrash === nextProps.isTrash &&
