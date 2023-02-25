@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useRecoilValue } from 'recoil';
 
 import { useSettingInfoContext } from '../components/SettingInfoContext';
@@ -6,14 +8,12 @@ import { displayingMemoFilterAllState } from '../states/displayingMemoFilterAllS
 import { displayingMemoFilterCompletedState } from '../states/displayingMemoFilterCompletedState';
 import { displayingMemoFilterTrashState } from '../states/displayingMemoFilterTrashState';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
-import { useAddDateForDisplay } from './useAddDateForDisplay';
+import { addDateForDisplay } from '../utils/addDateForDisplay';
 
 export const useGetNowDisplayTabData = () => {
   const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
   const settingInfo = useSettingInfoContext();
   const setting = settingInfo?.setting;
-
-  const addDateForDisplay = useAddDateForDisplay();
 
   let state;
   if (selectedDisplayType.id === 1 && !setting?.hide_completed_memo) {
