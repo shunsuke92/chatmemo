@@ -78,5 +78,5 @@ export const DataManager = ({ children }: { children: any }) => {
     })();
   }, [user, setMemo, setInitialScrolling, setChangeMemo]);
 
-  return <>{isGettingData ? <LinearProgress /> : children}</>;
+  return <>{isGettingData ? <LinearProgress /> : <main>{children}</main>}</>;
 };

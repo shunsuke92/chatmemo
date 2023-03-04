@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
@@ -16,6 +16,7 @@ import { addingContentIDState } from '../states/addingContentIDState';
 import { editingContentIDState } from '../states/editingContentIDState';
 import { DataController } from './DataController';
 import { DataManager } from './DataManager';
+import { SideDrawer } from './SideDrawer';
 
 export const useGetIsAdding = () => {
   const addingContentID = useRecoilValue(addingContentIDState);
@@ -30,27 +31,31 @@ export const useGetIsEditing = () => {
 };
 
 export const Main = () => {
+  const vw = useRef(0);
+  const handleResize = () => {
+    if (vw.current === window.innerWidth) {
+      // 画面の横幅にサイズ変動がないので処理を終える
+      return;
+    }
+
+    // 画面の横幅のサイズ変動があった時のみ高さを再計算する
+    vw.current = window.innerWidth;
+    setFillHeight();
+  };
   const setFillHeight = () => {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
   };
 
   useEffect(() => {
-    let vw = window.innerWidth;
-
-    window.addEventListener('resize', () => {
-      if (vw === window.innerWidth) {
-        // 画面の横幅にサイズ変動がないので処理を終える
-        return;
-      }
-
-      // 画面の横幅のサイズ変動があった時のみ高さを再計算する
-      vw = window.innerWidth;
-      setFillHeight();
-    });
+    window.addEventListener('resize', handleResize);
 
     // 初期化
     setFillHeight();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   });
 
   return (
@@ -67,14 +72,17 @@ export const Main = () => {
             pt: '64px',
             pb: '80px',
             minHeight: 'calc(var(--vh, 1vh) * 100)',
-            opacity: 0.999999 /* スタッキングコンテキストを生成するため */,
           }}
         >
-          <Mask height='100%' top={0} />
+          <Mask
+            height={{ xs: 'calc(100% - 56px - 72px)', sm: 'calc(100% - 64px - 80px)' }}
+            top={{ xs: '56px', sm: '64px' }}
+          />
           <Synchronizing progress={false} />
           <DeleteMemoAlertDialog />
           <DeleteAccountAlertDialog />
           <CompleteDeletionMemoAlertDialog />
+          <SideDrawer />
 
           <DataController>
             <Contents />

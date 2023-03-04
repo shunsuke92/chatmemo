@@ -13,6 +13,7 @@ import { Mask } from '../components/Mask';
 import { useSettingInfoContext } from '../components/SettingInfoContext';
 import { useOperateCreateData } from '../hooks/useOperateCreateData';
 import { hasValidString } from '../utils/hasValidString';
+import { MyTypography } from './MyTypography';
 
 export const InputText = () => {
   const [value, setValue] = useState('');
@@ -33,7 +34,7 @@ export const InputText = () => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     // Shiftが押されていないEnterでメモの作成を行う
     if (setting?.push_with_enter) {
-      if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
+      if (event.key === 'Enter' && !event.shiftKey && event.keyCode === 13) {
         event.preventDefault();
         if (hasValidString(value)) {
           createMemo();
@@ -84,7 +85,7 @@ export const InputText = () => {
           multiline
           maxRows={5}
           value={value}
-          placeholder='メモを入力…'
+          /* placeholder='メモを入力…' */
           size='small'
           onChange={handleChange}
           onKeyDown={handleKeyDown}
@@ -95,6 +96,16 @@ export const InputText = () => {
           }}
           disabled={isEditing}
           InputProps={{
+            // 擬似placeholder（Safariの速度低下対応）
+            startAdornment: (
+              <InputAdornment position='start' sx={{ mr: 0, mt: 0.3 }}>
+                {!Boolean(value) && (
+                  <MyTypography color='text.disabled' sx={{ position: 'fixed' }}>
+                    メモを入力…
+                  </MyTypography>
+                )}
+              </InputAdornment>
+            ),
             endAdornment: (
               <InputAdornment position='end'>
                 {Boolean(value) && (

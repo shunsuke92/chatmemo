@@ -15,7 +15,6 @@ import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import Typography from '@mui/material/Typography';
 
 import { DarkMode, useSettingInfoContext } from '../components/SettingInfoContext';
 import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
@@ -24,6 +23,7 @@ import { authUserState } from '../states/authUserState';
 import { isLoggingoutState } from '../states/isLoggingoutState';
 import { openUserMenuState } from '../states/openUserMenuState';
 import { signout } from '../utils/signout';
+import { MyTypography } from './MyTypography';
 
 export const User = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -201,7 +201,6 @@ export const User = () => {
           />
         </IconButton>
       )}
-
       <Menu anchorEl={anchorEl} open={openUserMenu} onClose={handleClose} sx={{ mt: 1 }}>
         {setting ? (
           <div>
@@ -210,39 +209,31 @@ export const User = () => {
                 <IconButton aria-label='back' onClick={handleClickBack}>
                   <ArrowBackIcon />
                 </IconButton>
-                <Typography fontWeight={600} fontSize={'1.1rem'}>
+                <MyTypography fontWeight={600} fontSize={'1.1rem'}>
                   設定
-                </Typography>
+                </MyTypography>
               </Stack>
             </MyMenuItem>
             <Divider sx={{ mt: 1, mb: 1 }} />
             <MyMenuItem>
-              <Typography variant='body1' component='h3'>
-                実行済みを非表示
-              </Typography>
+              <MyTypography variant='body1'>実行済みを非表示</MyTypography>
               <HideCompletedSwitch />
             </MyMenuItem>
             <MyMenuItem>
-              <Typography variant='body1' component='h3'>
-                コメントに日付を表示する
-              </Typography>
+              <MyTypography variant='body1'>コメントに日付を表示する</MyTypography>
               <DisplayCommentDateSwitch />
             </MyMenuItem>
             <MyMenuItem>
-              <Typography variant='body1' component='h3'>
-                Enterで入力する
-              </Typography>
+              <MyTypography variant='body1'>Enterで入力する</MyTypography>
               <PushWithEnterSwitch />
             </MyMenuItem>
             <MyMenuItemSub>
-              <Typography variant='caption' component='h4' sx={{ color: 'text.secondary' }}>
+              <MyTypography variant='caption' sx={{ color: 'text.secondary' }}>
                 改行は Shift + Enter になります。
-              </Typography>
+              </MyTypography>
             </MyMenuItemSub>
             <MyMenuItem>
-              <Typography variant='body1' component='h3'>
-                ダークモード
-              </Typography>
+              <MyTypography variant='body1'>ダークモード</MyTypography>
               <DarkModeToggleButton />
             </MyMenuItem>
           </div>
@@ -251,30 +242,30 @@ export const User = () => {
             <MenuItem sx={{ pointerEvents: 'none' }}>
               <Stack direction='row' spacing={2} sx={{ alignItems: 'center' }}>
                 <Avatar alt='user' src={userPhotoURL} sx={{ width: 40, height: 40 }} />
-                <Typography fontWeight={600} fontSize={'1.1rem'}>
-                  {user?.displayName}
-                </Typography>
+                <MyTypography fontWeight={600} fontSize={'1.1rem'}>
+                  {user?.displayName ?? ''}
+                </MyTypography>
               </Stack>
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleClickSetting}>
               <Stack direction='row' spacing={1.5}>
                 <SettingsIcon />
-                <Typography>設定</Typography>
+                <MyTypography>設定</MyTypography>
               </Stack>
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleClickLogout}>
               <Stack direction='row' spacing={1.5}>
                 <LogoutIcon />
-                <Typography>ログアウト</Typography>
+                <MyTypography>ログアウト</MyTypography>
               </Stack>
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleClickDeleteAccount}>
               <Stack direction='row' spacing={1.5}>
                 <DangerousIcon color='error' />
-                <Typography color='error'>アカウント削除</Typography>
+                <MyTypography color='error'>アカウント削除</MyTypography>
               </Stack>
             </MenuItem>
           </div>

@@ -10,7 +10,6 @@ import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import MuiLink from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
 
@@ -21,6 +20,7 @@ import { authUserState } from '../states/authUserState';
 import { isLogginginState } from '../states/isLogginginState';
 import { app, provider } from '../utils/firebase';
 import { Logo } from './Logo';
+import { MyTypography } from './MyTypography';
 
 interface LoginDialogProps {
   open: boolean;
@@ -81,7 +81,7 @@ const LoginDialog = (props: LoginDialogProps) => {
         </IconButton>
         <Stack spacing={4} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Logo type={isDarkMode ? 'dark' : 'light'} />
-          <Typography variant='subtitle2' component='div' gutterBottom color='text.secondary'>
+          <MyTypography variant='subtitle2' color='text.secondary'>
             ChatMemoはチャット形式のメモアプリです。気軽にどんどんメモしていきましょう。
             <NextLink href='/about' passHref>
               <MuiLink
@@ -95,7 +95,7 @@ const LoginDialog = (props: LoginDialogProps) => {
                 ChatMemoについて
               </MuiLink>
             </NextLink>
-          </Typography>
+          </MyTypography>
           <Button
             sx={{
               p: 0,
@@ -125,7 +125,7 @@ const LoginDialog = (props: LoginDialogProps) => {
               }
             />
           </Button>
-          <Typography variant='subtitle2' component='div' gutterBottom color='text.secondary'>
+          <MyTypography variant='subtitle2' color='text.secondary'>
             <NextLink href='/about#terms' passHref>
               <MuiLink
                 color='inherit'
@@ -152,7 +152,7 @@ const LoginDialog = (props: LoginDialogProps) => {
               </MuiLink>
             </NextLink>
             に同意の上、ご使用ください。
-          </Typography>
+          </MyTypography>
         </Stack>
       </Box>
     </Dialog>

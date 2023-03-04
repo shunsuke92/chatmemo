@@ -1,4 +1,4 @@
-import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,30 +10,24 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 
 import { useChangeSelectedDisplayType } from '../hooks/useChangeSelectedDisplayType';
-import { useLightModeColor } from '../hooks/useColor';
-import { displayStepState } from '../states/displayStepState';
 import { openSideDrawerState } from '../states/openSideDrawerState';
-import { resetDisplayPositionState } from '../states/resetDisplayPositionState';
 import {
   selectedDisplayTypeState,
   DisplayType,
   DISPLAY_TYPE,
 } from '../states/selectedDisplayTypeState';
+import { MyTypography } from './MyTypography';
 
 export const SideDrawer = () => {
   const [openSideDrawer, setOpenSideDrawer] = useRecoilState(openSideDrawerState);
 
-  const lightModeColor = useLightModeColor();
   const list1 = DISPLAY_TYPE.slice(0, 2);
   const list2 = DISPLAY_TYPE.slice(2, 3);
 
   const changeSelectedDisplayType = useChangeSelectedDisplayType();
 
-  const setResetDisplayPosition = useSetRecoilState(resetDisplayPositionState);
-  const setDisplayStep = useSetRecoilState(displayStepState);
   const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -56,7 +50,14 @@ export const SideDrawer = () => {
 
   return (
     <div>
-      <Drawer anchor='left' open={openSideDrawer} onClose={toggleDrawer(false)}>
+      <Drawer
+        anchor='left'
+        open={openSideDrawer}
+        onClose={toggleDrawer(false)}
+        ModalProps={{
+          keepMounted: true,
+        }}
+      >
         <Box
           sx={{ width: 250 }}
           role='presentation'
@@ -67,14 +68,16 @@ export const SideDrawer = () => {
             {list1.map((list, index) => (
               <ListItem key={list.id} disablePadding>
                 <ListItemButton onClick={handleClick(list)}>
-                  <ListItemIcon>
+                  <ListItemIcon sx={{ minWidth: '42px' }}>
                     {index === 0 ? (
                       <FolderIcon sx={{ color: 'text.secondary' }} />
                     ) : (
                       <CheckCircleIcon sx={{ color: 'text.secondary' }} />
                     )}
                   </ListItemIcon>
-                  <ListItemText primary={list.name} />
+                  <MyTypography mt={0.5} mb={0.5}>
+                    {list.name}
+                  </MyTypography>
                 </ListItemButton>
               </ListItem>
             ))}
@@ -84,10 +87,12 @@ export const SideDrawer = () => {
             {list2.map((list) => (
               <ListItem key={list.id} disablePadding>
                 <ListItemButton onClick={handleClick(list)}>
-                  <ListItemIcon>
+                  <ListItemIcon sx={{ minWidth: '42px' }}>
                     <DeleteIcon sx={{ color: 'text.secondary' }} />
                   </ListItemIcon>
-                  <ListItemText primary={list.name} />
+                  <MyTypography mt={0.5} mb={0.5}>
+                    {list.name}
+                  </MyTypography>
                 </ListItemButton>
               </ListItem>
             ))}

@@ -1,5 +1,4 @@
-import Typography from '@mui/material/Typography';
-
+import { MyTypography } from './MyTypography';
 import { useSettingInfoContext } from './SettingInfoContext';
 import { InternalData } from './Timeline';
 
@@ -18,9 +17,9 @@ export const HoursChip = (props: HoursChipProps) => {
   return (
     <>
       {isDisplay && (
-        <Typography variant='caption' color='text.disabled' sx={{ whiteSpace: 'nowrap' }}>
+        <MyTypography variant='caption' color='text.disabled' sx={{ whiteSpace: 'nowrap' }}>
           {data.time}
-        </Typography>
+        </MyTypography>
       )}
     </>
   );

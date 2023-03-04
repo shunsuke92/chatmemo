@@ -4,7 +4,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 
 import { Mask } from '../components/Mask';
 import { Synchronizing } from '../components/Synchronizing';
@@ -12,7 +11,7 @@ import { useBarBackground, useLightModeColor } from '../hooks/useColor';
 import { openSideDrawerState } from '../states/openSideDrawerState';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
 import { Login } from './Login';
-import { SideDrawer } from './SideDrawer';
+import { MyTypography } from './MyTypography';
 import { User } from './User';
 
 export const MenuBar = () => {
@@ -50,18 +49,11 @@ export const MenuBar = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant='subtitle1'
-            component='h2'
-            sx={{ flexGrow: 1, color: 'text.primary' }}
-          >
-            {title}
-          </Typography>
+          <MyTypography variant='subtitle1'>{title}</MyTypography>
           <Login />
           <User />
         </Toolbar>
       </AppBar>
-      <SideDrawer />
     </>
   );
 };

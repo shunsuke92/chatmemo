@@ -1,4 +1,4 @@
-import Typography from '@mui/material/Typography';
+import { MyTypography } from './MyTypography';
 
 interface CommonTextProps {
   data: string[];
@@ -11,7 +11,7 @@ export const CommonText = (props: CommonTextProps) => {
     <>
       {data.map((text, index) => {
         if (text) {
-          return <Typography key={index}>{text}</Typography>;
+          return <MyTypography key={index}>{text}</MyTypography>;
         } else {
           return <br key={index}></br>;
         }

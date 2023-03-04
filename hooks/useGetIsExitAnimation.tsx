@@ -9,6 +9,7 @@ import { openSideDrawerState } from '../states/openSideDrawerState';
 import { openUserMenuState } from '../states/openUserMenuState';
 
 export const useGetIsExitAnimation = () => {
+  // 画面切り替えの時は、CollapseコンポーネントのExitアニメーションを無効にする
   const openSideDrawer = useRecoilValue(openSideDrawerState);
   const [_openSideDrawer, _setOpenSideDrawer] = useState(false);
   const openUserMenu = useRecoilValue(openUserMenuState);
