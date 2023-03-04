@@ -45,7 +45,7 @@ export const MyTypography = (props: MyTypography) => {
       variant={variant}
       component='button'
       role='article'
-      color={color}
+      color={color ?? 'text.primary'}
       fontWeight={fontWeight}
       fontSize={fontSize}
       mt={mt}
