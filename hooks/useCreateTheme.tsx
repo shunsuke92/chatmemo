@@ -26,7 +26,6 @@ export const useCreateTheme = () => {
   );
 
   useLayoutEffect(() => {
-    console.log('useLayoutEffect');
     const html = document.getElementById('html');
     if (html !== null) {
       html.style.colorScheme = mode;
