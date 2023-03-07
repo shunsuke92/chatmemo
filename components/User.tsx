@@ -26,6 +26,125 @@ import { openUserMenuState } from '../states/openUserMenuState';
 import { signout } from '../utils/signout';
 import { MyTypography } from './MyTypography';
 
+const MyMenuItem = (props: any) => {
+  const { children } = props;
+  return (
+    <Stack
+      direction='row'
+      spacing={1.5}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        mt: '12px',
+        mb: '12px',
+        ml: '16px',
+        mr: '16px',
+        userSelect: 'none',
+        whiteSpace: 'nowrap',
+      }}
+    >
+      {children}
+    </Stack>
+  );
+};
+
+const MyMenuItemSub = (props: any) => {
+  const { children } = props;
+  return (
+    <Stack
+      direction='row'
+      spacing={1.5}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        mt: '-12px',
+        mb: '20px',
+        ml: '16px',
+        mr: '16px',
+        userSelect: 'none',
+        whiteSpace: 'nowrap',
+      }}
+    >
+      {children}
+    </Stack>
+  );
+};
+
+const MySwitch = (props: {
+  checked: boolean | undefined;
+  onChange: ((value: boolean) => void) | undefined;
+}) => {
+  const { checked, onChange } = props;
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (onChange === undefined) return;
+    onChange(event.target.checked);
+  };
+
+  return (
+    <Switch checked={checked} onChange={handleChange} inputProps={{ 'aria-label': 'switch' }} />
+  );
+};
+
+const HideCompletedSwitch = () => {
+  const settingInfo = useSettingInfoContext();
+  const setting = settingInfo?.setting;
+
+  return (
+    <MySwitch checked={setting?.hide_completed_memo} onChange={settingInfo?.changeHideCompleted} />
+  );
+};
+
+const DisplayCommentDateSwitch = () => {
+  const settingInfo = useSettingInfoContext();
+  const setting = settingInfo?.setting;
+
+  return (
+    <MySwitch
+      checked={setting?.display_comment_date}
+      onChange={settingInfo?.changeDisplayCommentDate}
+    />
+  );
+};
+
+const PushWithEnterSwitch = () => {
+  const settingInfo = useSettingInfoContext();
+  const setting = settingInfo?.setting;
+
+  return (
+    <MySwitch checked={setting?.push_with_enter} onChange={settingInfo?.changePushWithEnter} />
+  );
+};
+
+const DarkModeToggleButton = () => {
+  const settingInfo = useSettingInfoContext();
+  const setting = settingInfo?.setting;
+  const darkMode = setting?.dark_mode ?? 'os';
+
+  const handleChange = (event: React.MouseEvent<HTMLElement>, newValue: DarkMode) => {
+    if (newValue !== null) {
+      settingInfo?.changeDarkMode(newValue);
+    }
+  };
+
+  return (
+    <ToggleButtonGroup
+      color='primary'
+      value={darkMode}
+      exclusive
+      onChange={handleChange}
+      size='small'
+      aria-label='dark mode'
+    >
+      <ToggleButton value='os'>デバイスの設定</ToggleButton>
+      <ToggleButton value='dark'>DARK</ToggleButton>
+      <ToggleButton value='light'>LIGHT</ToggleButton>
+    </ToggleButtonGroup>
+  );
+};
+
 export const User = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [setting, setSetting] = useState(false);
@@ -71,128 +190,6 @@ export const User = () => {
 
   const handleClickBack = () => {
     setSetting(false);
-  };
-
-  const MyMenuItem = (props: any) => {
-    const { children } = props;
-    return (
-      <Stack
-        direction='row'
-        spacing={1.5}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          mt: '12px',
-          mb: '12px',
-          ml: '16px',
-          mr: '16px',
-          userSelect: 'none',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        {children}
-      </Stack>
-    );
-  };
-
-  const MyMenuItemSub = (props: any) => {
-    const { children } = props;
-    return (
-      <Stack
-        direction='row'
-        spacing={1.5}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          mt: '-12px',
-          mb: '20px',
-          ml: '16px',
-          mr: '16px',
-          userSelect: 'none',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        {children}
-      </Stack>
-    );
-  };
-
-  const MySwitch = (props: {
-    checked: boolean | undefined;
-    onChange: ((value: boolean) => void) | undefined;
-  }) => {
-    const { checked, onChange } = props;
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (onChange === undefined) return;
-      onChange(event.target.checked);
-    };
-
-    return (
-      <Switch checked={checked} onChange={handleChange} inputProps={{ 'aria-label': 'switch' }} />
-    );
-  };
-
-  const HideCompletedSwitch = () => {
-    const settingInfo = useSettingInfoContext();
-    const setting = settingInfo?.setting;
-
-    return (
-      <MySwitch
-        checked={setting?.hide_completed_memo}
-        onChange={settingInfo?.changeHideCompleted}
-      />
-    );
-  };
-
-  const DisplayCommentDateSwitch = () => {
-    const settingInfo = useSettingInfoContext();
-    const setting = settingInfo?.setting;
-
-    return (
-      <MySwitch
-        checked={setting?.display_comment_date}
-        onChange={settingInfo?.changeDisplayCommentDate}
-      />
-    );
-  };
-
-  const PushWithEnterSwitch = () => {
-    const settingInfo = useSettingInfoContext();
-    const setting = settingInfo?.setting;
-
-    return (
-      <MySwitch checked={setting?.push_with_enter} onChange={settingInfo?.changePushWithEnter} />
-    );
-  };
-
-  const DarkModeToggleButton = () => {
-    const settingInfo = useSettingInfoContext();
-    const setting = settingInfo?.setting;
-    const darkMode = setting?.dark_mode ?? 'os';
-
-    const handleChange = (event: React.MouseEvent<HTMLElement>, newValue: DarkMode) => {
-      if (newValue !== null) {
-        settingInfo?.changeDarkMode(newValue);
-      }
-    };
-
-    return (
-      <ToggleButtonGroup
-        color='primary'
-        value={darkMode}
-        exclusive
-        onChange={handleChange}
-        size='small'
-        aria-label='dark mode'
-      >
-        <ToggleButton value='os'>デバイスの設定</ToggleButton>
-        <ToggleButton value='dark'>DARK</ToggleButton>
-        <ToggleButton value='light'>LIGHT</ToggleButton>
-      </ToggleButtonGroup>
-    );
   };
 
   return (
