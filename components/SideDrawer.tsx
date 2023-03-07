@@ -11,6 +11,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
+import { useChangeOpenMenuDelay } from '../hooks/useChangeOpenMenuDelay';
 import { useChangeSelectedDisplayType } from '../hooks/useChangeSelectedDisplayType';
 import { openSideDrawerState } from '../states/openSideDrawerState';
 import {
@@ -30,6 +31,8 @@ export const SideDrawer = () => {
 
   const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
 
+  const changeOpenMenuDelay = useChangeOpenMenuDelay();
+
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
       event.type === 'keydown' &&
@@ -40,6 +43,7 @@ export const SideDrawer = () => {
     }
 
     setOpenSideDrawer(open);
+    changeOpenMenuDelay(open);
   };
 
   const handleClick = (data: DisplayType) => () => {

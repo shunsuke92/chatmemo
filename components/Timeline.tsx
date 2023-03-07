@@ -54,7 +54,7 @@ export const Timeline = (props: TimelineProps) => {
               enter={false}
               exit={isExitAnimation}
             >
-              {memo._type === 'memo' && <ChatMemo key={memo._id} {...createProps(memo)} />}
+              {memo._type === 'memo' && <ChatMemo {...createProps(memo)} />}
               {memo._type === 'date' && <DateChip date={memo._date} />}
             </Collapse>
           ))}

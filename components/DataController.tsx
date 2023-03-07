@@ -17,8 +17,8 @@ import { splitByDisplayStep } from '../utils/splitByDisplayStep';
 export const DataController = ({ children }: { children: any }) => {
   const [isGettingData, setIsGettingData] = useState(true);
 
-  const setFilteredMemo = useSetRecoilState(displayingMemoState);
-  const filteredMemoAll = useRef<Memo[][]>([]);
+  const setDisplayingMemo = useSetRecoilState(displayingMemoState);
+  const filteredMemo = useRef<Memo[][]>([]);
 
   const displayStep = useRecoilValue(displayStepState);
   const beforeDisplayedStep = useRef(1);
@@ -38,13 +38,13 @@ export const DataController = ({ children }: { children: any }) => {
   // タイミング：初回、タブ切り替え、実行済み表示切り替え、ログイン、ログアウト
   useEffect(() => {
     // 表示データを表示ステップごとに分けて格納する
-    filteredMemoAll.current = splitByDisplayStep(nowAllTabData);
+    filteredMemo.current = splitByDisplayStep(nowAllTabData);
 
     // 表示ステップ１のデータを表示する
-    setFilteredMemo(filteredMemoAll.current[0] ?? []);
+    setDisplayingMemo(filteredMemo.current[0] ?? []);
 
     // すべてのデータを表示済みか？（「表示データがなし」または「表示ステップが１つ」）
-    if (filteredMemoAll.current.length === 0 || filteredMemoAll.current.length === 1) {
+    if (filteredMemo.current.length === 0 || filteredMemo.current.length === 1) {
       setIsAllDisplayed(true);
     } else {
       setIsAllDisplayed(false);
@@ -66,14 +66,14 @@ export const DataController = ({ children }: { children: any }) => {
     nowAllTabData,
     setResetDisplayPosition,
     setDisplayStep,
-    setFilteredMemo,
+    setDisplayingMemo,
     setIsAllDisplayed,
     changeMemo,
     setChangeMemo,
   ]);
 
   const isExistContents = useCallback(() => {
-    return filteredMemoAll.current.length >= displayStep;
+    return filteredMemo.current.length >= displayStep;
   }, [displayStep]);
 
   const isIncreasedDisplayStep = useCallback(() => {
@@ -93,11 +93,11 @@ export const DataController = ({ children }: { children: any }) => {
   useEffect(() => {
     // 「まだ表示するコンテンツがある」かつ「表示数が増えている」かつ「初回でない」とき
     if (isExistContents() && isIncreasedDisplayStep() && isNotFirstTime()) {
-      setFilteredMemo((prevState) => [...filteredMemoAll.current[displayStep - 1], ...prevState]);
+      setDisplayingMemo((prevState) => [...filteredMemo.current[displayStep - 1], ...prevState]);
       setBeforeDisplayedStep(displayStep);
 
       // 最後まで表示したら
-      if (filteredMemoAll.current.length === displayStep) {
+      if (filteredMemo.current.length === displayStep) {
         setIsAllDisplayed(true);
       }
 
@@ -106,7 +106,7 @@ export const DataController = ({ children }: { children: any }) => {
     }
   }, [
     displayStep,
-    setFilteredMemo,
+    setDisplayingMemo,
     setChangeDisplayStep,
     setIsAllDisplayed,
     isExistContents,

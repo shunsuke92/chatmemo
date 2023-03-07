@@ -18,6 +18,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import { DarkMode, useSettingInfoContext } from '../components/SettingInfoContext';
 import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
+import { useChangeOpenMenuDelay } from '../hooks/useChangeOpenMenuDelay';
 import { useInitializationProcess } from '../hooks/useInitializationProcess';
 import { authUserState } from '../states/authUserState';
 import { isLoggingoutState } from '../states/isLoggingoutState';
@@ -37,14 +38,18 @@ export const User = () => {
   const changeDisplayAlertDialog = useChangeDisplayAlertDialog();
   const initializationProcess = useInitializationProcess();
 
+  const changeOpenMenuDelay = useChangeOpenMenuDelay();
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     setopenUserMenu(true);
+    changeOpenMenuDelay(true);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
     setopenUserMenu(false);
+    changeOpenMenuDelay(false);
     setTimeout(() => setSetting(false), 500);
   };
 
