@@ -101,7 +101,7 @@ export const InputText = () => {
               <InputAdornment position='start' sx={{ mr: 0, mt: 0.3 }}>
                 {!Boolean(value) && (
                   <MyTypography color='text.disabled' sx={{ position: 'fixed' }}>
-                    メモを入力…
+                    {!isAdding ? 'メモを入力…' : 'コメントを入力…'}
                   </MyTypography>
                 )}
               </InputAdornment>
