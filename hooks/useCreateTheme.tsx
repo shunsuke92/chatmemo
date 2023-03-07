@@ -5,14 +5,6 @@ import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { useGetDarkMode } from './useGetDarkMode';
 
 export const useCreateTheme = () => {
-  useLayoutEffect(() => {
-    const html = document.getElementById('html');
-    if (html !== null) {
-      html.style.colorScheme = mode;
-      html.style.backgroundColor = theme.palette.background.paper;
-    }
-  });
-
   const mode = useGetDarkMode();
 
   const theme = responsiveFontSizes(
@@ -32,6 +24,15 @@ export const useCreateTheme = () => {
       },
     }),
   );
+
+  useLayoutEffect(() => {
+    console.log('useLayoutEffect');
+    const html = document.getElementById('html');
+    if (html !== null) {
+      html.style.colorScheme = mode;
+      html.style.backgroundColor = theme.palette.background.paper;
+    }
+  }, [mode, theme.palette.background.paper]);
 
   return theme;
 };
