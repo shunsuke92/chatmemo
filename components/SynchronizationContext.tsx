@@ -1,12 +1,10 @@
 import { createContext, useState, useContext, useEffect, useCallback, useRef } from 'react';
 
-import { useRecoilValue } from 'recoil';
-
-import axios from 'axios';
+import { useSetRecoilState } from 'recoil';
 
 import { useChangeIsSynchronizing } from '../hooks/useChangeIsSynchronizing';
 import { useChangeSynchronizingProgress } from '../hooks/useChangeSynchronizingProgress';
-import { authUserState } from '../states/authUserState';
+import { isOnlineState } from '../states/isOnlineState';
 
 export interface Synchronization {
   setUnsynchronizedFunction: (func: () => () => Promise<boolean> | Promise<number>) => void;
@@ -19,17 +17,14 @@ export const useSynchronizationContext = () => {
 };
 
 export const SynchronizationProvider = ({ children }: { children: any }) => {
-  const user = useRecoilValue(authUserState);
-
   const changeIsSynchronizing = useChangeIsSynchronizing();
   const changeSynchronizingProgress = useChangeSynchronizingProgress();
-
-  const CONNECTION_CHECK_INTERVAL = 2000;
-  const SYNCHRONIZATION_INTERVAL = 500;
 
   const unsynchronizedFunction = useRef<(() => () => Promise<boolean> | Promise<number>)[]>([]);
   const [standby, setStandby] = useState(false);
   const synchronizing = useRef(false);
+
+  const setIsOnline = useSetRecoilState(isOnlineState);
 
   const setUnsynchronizedFunction = async (
     func: () => () => Promise<boolean> | Promise<number>,
@@ -47,17 +42,12 @@ export const SynchronizationProvider = ({ children }: { children: any }) => {
     changeSynchronizingProgress(0);
 
     for (let i = 0; unsynchronizedFunction.current.length > 0; i++) {
-      // 初回以外のときは、遅延実行する（不要）
-      /* if (i !== 0) {
-        await sleep(SYNCHRONIZATION_INTERVAL);
-      } */
-
       const func = unsynchronizedFunction.current[0];
 
       const executionFunction = func();
       const result = await executionFunction();
 
-      if (result || result !== -1) {
+      if (result === true || result !== -1) {
         unsynchronizedFunction.current.shift();
         changeSynchronizingProgress(((i + 2) / total) * 100);
       } else {
@@ -76,36 +66,24 @@ export const SynchronizationProvider = ({ children }: { children: any }) => {
     synchronizing.current = false;
   }, [changeIsSynchronizing, changeSynchronizingProgress]);
 
-  const checkConnection = useCallback(async () => {
-    // 同期中は接続確認しない
-    if (synchronizing.current) return;
-
-    // 接続確認
-    let result;
-    if (user) {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.uid}/`);
-      // API Routes バージョン
-      /* const res = await axios.get(`/api/users/${user.uid}`); */
-      result = Boolean(res.data);
-    }
-
-    // 接続できたとき
-    if (result) {
-      synchronizationProcess();
-    }
-  }, [user, synchronizationProcess]);
-
   useEffect(() => {
-    if (standby) {
-      // 未同期の処理が発生したら接続確認開始
-      const id: NodeJS.Timer = setInterval(() => checkConnection(), CONNECTION_CHECK_INTERVAL);
-      return () => clearInterval(id);
-    }
-  }, [checkConnection, standby]);
+    window.addEventListener('online', checkOnline);
+    window.addEventListener('offline', checkOnline);
+    return () => {
+      window.removeEventListener('online', checkOnline);
+      window.removeEventListener('offline', checkOnline);
+    };
+  });
 
-  const sleep = (second: number) => {
-    // 同期的に処理を止める
-    return new Promise((resolve) => setTimeout(resolve, second));
+  const checkOnline = () => {
+    if (navigator.onLine) {
+      if (standby) {
+        synchronizationProcess();
+      }
+      setIsOnline(true);
+    } else {
+      setIsOnline(false);
+    }
   };
 
   const value: Synchronization = {

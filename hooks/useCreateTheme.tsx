@@ -22,6 +22,9 @@ export const useCreateTheme = () => {
       typography: {
         fontFamily: ['Roboto', 'Noto Sans JP', 'Helvetica', 'Arial', 'sans-serif'].join(','),
       },
+      zIndex: {
+        tooltip: 3000,
+      },
     }),
   );
 

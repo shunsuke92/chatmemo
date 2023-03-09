@@ -13,6 +13,7 @@ import { openSideDrawerState } from '../states/openSideDrawerState';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
 import { Login } from './Login';
 import { MyTypography } from './MyTypography';
+import { OfflineChip } from './OfflineChip';
 import { User } from './User';
 
 export const MenuBar = () => {
@@ -54,6 +55,7 @@ export const MenuBar = () => {
             <MenuIcon />
           </IconButton>
           <MyTypography variant='subtitle1'>{title}</MyTypography>
+          <OfflineChip />
           <Login />
           <User />
         </Toolbar>

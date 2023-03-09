@@ -16,6 +16,7 @@ import { addingContentIDState } from '../states/addingContentIDState';
 import { editingContentIDState } from '../states/editingContentIDState';
 import { DataController } from './DataController';
 import { DataManager } from './DataManager';
+import { OfflineNotification } from './OfflineNotification';
 import { SideDrawer } from './SideDrawer';
 
 export const useGetIsAdding = () => {
@@ -83,6 +84,7 @@ export const Main = () => {
           <DeleteAccountAlertDialog />
           <CompleteDeletionMemoAlertDialog />
           <SideDrawer />
+          <OfflineNotification />
 
           <DataController>
             <Contents />

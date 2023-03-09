@@ -15,7 +15,7 @@ export const SynchronizedMark = (props: SynchronizedMarkProps) => {
   return (
     <>
       {isSynchronized && (
-        <Tooltip title='通信エラー'>
+        <Tooltip title='保存されていません' placement='bottom-start'>
           <ErrorOutlineIcon color='error' sx={{ fontSize: 18 }} />
         </Tooltip>
       )}
