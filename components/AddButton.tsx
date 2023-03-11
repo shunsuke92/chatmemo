@@ -16,21 +16,13 @@ export const AddButton = (props: AddButtonProps) => {
 
   const { hasValidString, createMemo } = props;
 
-  useEffect(() => {
-    if (isAdding) {
-      document.getElementById('input')?.focus();
-    } else {
-      document.getElementById('input')?.blur();
-    }
-  }, [isAdding]);
-
   return (
     <Stack sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       {hasValidString ? (
         <IconButton
           aria-label='add memo'
           color='primary'
-          onClick={() => createMemo()}
+          onClick={createMemo}
           sx={{
             zIndex: isAdding ? 2500 : null,
           }}

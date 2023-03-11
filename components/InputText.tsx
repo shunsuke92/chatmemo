@@ -11,6 +11,8 @@ import { useGetIsAdding } from '../components/Main';
 import { useGetIsEditing } from '../components/Main';
 import { Mask } from '../components/Mask';
 import { useSettingInfoContext } from '../components/SettingInfoContext';
+import { useClearAddingContentID } from '../hooks/useClearAddingContentID';
+import { useMobileKeyboardOpen } from '../hooks/useMobileKeyboardOpen';
 import { useOperateCreateData } from '../hooks/useOperateCreateData';
 import { hasValidString } from '../utils/hasValidString';
 import { MyTypography } from './MyTypography';
@@ -26,6 +28,10 @@ export const InputText = () => {
 
   const settingInfo = useSettingInfoContext();
   const setting = settingInfo?.setting;
+
+  const [mobileKeyboardOpen, isMobile] = useMobileKeyboardOpen();
+
+  const clearAddingContentID = useClearAddingContentID();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -48,18 +54,31 @@ export const InputText = () => {
     setValue('');
   };
 
+  useEffect(() => {
+    // コメント追加モードになったら入力欄にフォーカスする
+    if (isAdding) {
+      document.getElementById('input')?.focus();
+    } else {
+      document.getElementById('input')?.blur();
+    }
+  }, [isAdding]);
+
   const handleClickInputArea = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
 
-    // メモ投稿後も入力欄へのフォーカスを維持する
-    document.getElementById('input')?.focus();
+    if (!(isMobile && !mobileKeyboardOpen)) {
+      // メモ投稿後も入力欄へのフォーカスを維持する
+      document.getElementById('input')?.focus();
+    }
   };
 
   const handleClickClearCharacter = () => {
     setValue('');
 
     // 入力文字クリア後も入力欄へのフォーカスを維持する
-    document.getElementById('input')?.focus();
+    if (!(isMobile && !mobileKeyboardOpen)) {
+      document.getElementById('input')?.focus();
+    }
   };
 
   useEffect(() => {
@@ -71,6 +90,14 @@ export const InputText = () => {
       setHeight(element[0].clientHeight);
     }, 1);
   });
+
+  useEffect(() => {
+    if (!mobileKeyboardOpen) {
+      clearAddingContentID();
+    }
+    // clearAddingContentIDは依存関係に入れない
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mobileKeyboardOpen]);
 
   return (
     <>
