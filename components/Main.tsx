@@ -12,6 +12,7 @@ import { DeleteMemoAlertDialog } from '../components/DeleteMemoAlertDialog';
 import { Mask } from '../components/Mask';
 import { MenuBar } from '../components/MenuBar';
 import { Synchronizing } from '../components/Synchronizing';
+import { useSetIsMobile } from '../hooks/useSetIsMobile';
 import { addingContentIDState } from '../states/addingContentIDState';
 import { editingContentIDState } from '../states/editingContentIDState';
 import { DataController } from './DataController';
@@ -32,6 +33,8 @@ export const useGetIsEditing = () => {
 };
 
 export const Main = () => {
+  useSetIsMobile();
+
   const vw = useRef(0);
   const handleResize = () => {
     if (vw.current === window.innerWidth) {

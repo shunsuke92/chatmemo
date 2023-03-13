@@ -22,6 +22,7 @@ import { useChangeOpenMenuDelay } from '../hooks/useChangeOpenMenuDelay';
 import { useInitializationProcess } from '../hooks/useInitializationProcess';
 import { authUserState } from '../states/authUserState';
 import { isLoggingoutState } from '../states/isLoggingoutState';
+import { isMobileState } from '../states/isMobileState';
 import { openUserMenuState } from '../states/openUserMenuState';
 import { signout } from '../utils/signout';
 import { MyTypography } from './MyTypography';
@@ -75,8 +76,9 @@ const MyMenuItemSub = (props: any) => {
 const MySwitch = (props: {
   checked: boolean | undefined;
   onChange: ((value: boolean) => void) | undefined;
+  disabled?: boolean;
 }) => {
-  const { checked, onChange } = props;
+  const { checked, onChange, disabled } = props;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange === undefined) return;
@@ -84,7 +86,12 @@ const MySwitch = (props: {
   };
 
   return (
-    <Switch checked={checked} onChange={handleChange} inputProps={{ 'aria-label': 'switch' }} />
+    <Switch
+      checked={checked}
+      onChange={handleChange}
+      disabled={disabled}
+      inputProps={{ 'aria-label': 'switch' }}
+    />
   );
 };
 
@@ -112,9 +119,14 @@ const DisplayCommentDateSwitch = () => {
 const PushWithEnterSwitch = () => {
   const settingInfo = useSettingInfoContext();
   const setting = settingInfo?.setting;
+  const isMobile = useRecoilValue(isMobileState);
 
   return (
-    <MySwitch checked={setting?.push_with_enter} onChange={settingInfo?.changePushWithEnter} />
+    <MySwitch
+      checked={setting?.push_with_enter}
+      onChange={settingInfo?.changePushWithEnter}
+      disabled={isMobile}
+    />
   );
 };
 
@@ -158,6 +170,8 @@ export const User = () => {
   const initializationProcess = useInitializationProcess();
 
   const changeOpenMenuDelay = useChangeOpenMenuDelay();
+
+  const isMobile = useRecoilValue(isMobileState);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -226,12 +240,19 @@ export const User = () => {
               <DisplayCommentDateSwitch />
             </MyMenuItem>
             <MyMenuItem>
-              <MyTypography variant='body1'>Enterで入力する</MyTypography>
+              <MyTypography variant='body1' color={isMobile ? 'text.disabled' : 'inherit'}>
+                Enterで入力する
+              </MyTypography>
               <PushWithEnterSwitch />
             </MyMenuItem>
             <MyMenuItemSub>
-              <MyTypography variant='caption' sx={{ color: 'text.secondary' }}>
-                改行は Shift + Enter になります。
+              <MyTypography
+                variant='caption'
+                sx={{ color: isMobile ? 'text.disabled' : 'text.secondary' }}
+              >
+                {isMobile
+                  ? 'モバイル端末では利用できません。'
+                  : '改行は Shift + Enter になります。'}
               </MyTypography>
             </MyMenuItemSub>
             <MyMenuItem>

@@ -68,7 +68,7 @@ export const MyTypography = (props: MyTypography) => {
         appearance: 'none',
         flexGrow: 1,
         textAlign: 'left',
-        display: 'inline',
+        display: 'block',
         ...sx,
       }}
     >

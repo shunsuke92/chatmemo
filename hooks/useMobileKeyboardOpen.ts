@@ -1,14 +1,14 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
+
+import { useRecoilValue } from 'recoil';
+
+import { isMobileState } from '../states/isMobileState';
 
 export const useMobileKeyboardOpen = () => {
   const [open, setOpen] = useState(false);
   const baseHeight = useRef(0);
-  const touch_event = useMemo(() => window.ontouchstart, []);
-  const touch_points = useMemo(() => navigator.maxTouchPoints, []);
-  const isMobile = useMemo(
-    () => touch_event !== undefined && 0 < touch_points,
-    [touch_event, touch_points],
-  );
+
+  const isMobile = useRecoilValue(isMobileState);
 
   // キーボードが閉じている状態の高さを取得
   useEffect(() => {
@@ -39,5 +39,5 @@ export const useMobileKeyboardOpen = () => {
     };
   });
 
-  return [open, isMobile];
+  return open;
 };

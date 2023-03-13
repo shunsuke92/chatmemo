@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+import { useRecoilValue } from 'recoil';
+
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -14,6 +16,7 @@ import { useSettingInfoContext } from '../components/SettingInfoContext';
 import { useClearAddingContentID } from '../hooks/useClearAddingContentID';
 import { useMobileKeyboardOpen } from '../hooks/useMobileKeyboardOpen';
 import { useOperateCreateData } from '../hooks/useOperateCreateData';
+import { isMobileState } from '../states/isMobileState';
 import { hasValidString } from '../utils/hasValidString';
 import { MyTypography } from './MyTypography';
 
@@ -29,7 +32,8 @@ export const InputText = () => {
   const settingInfo = useSettingInfoContext();
   const setting = settingInfo?.setting;
 
-  const [mobileKeyboardOpen, isMobile] = useMobileKeyboardOpen();
+  const isMobile = useRecoilValue(isMobileState);
+  const mobileKeyboardOpen = useMobileKeyboardOpen();
 
   const clearAddingContentID = useClearAddingContentID();
 
@@ -39,7 +43,7 @@ export const InputText = () => {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     // Shiftが押されていないEnterでメモの作成を行う
-    if (setting?.push_with_enter) {
+    if (setting?.push_with_enter && !isMobile) {
       if (event.key === 'Enter' && !event.shiftKey && event.keyCode === 13) {
         event.preventDefault();
         if (hasValidString(value)) {
