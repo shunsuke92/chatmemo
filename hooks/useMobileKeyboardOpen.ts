@@ -1,9 +1,14 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 
 export const useMobileKeyboardOpen = () => {
-  const baseHeight = useRef(0);
-  const isMobile = useMemo(() => navigator.userAgent.match(/iPhone|Android.+Mobile/), []);
   const [open, setOpen] = useState(false);
+  const baseHeight = useRef(0);
+  const touch_event = useMemo(() => window.ontouchstart, []);
+  const touch_points = useMemo(() => navigator.maxTouchPoints, []);
+  const isMobile = useMemo(
+    () => touch_event !== undefined && 0 < touch_points,
+    [touch_event, touch_points],
+  );
 
   // キーボードが閉じている状態の高さを取得
   useEffect(() => {
