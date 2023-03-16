@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import SendIcon from '@mui/icons-material/Send';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';

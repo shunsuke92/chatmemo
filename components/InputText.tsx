@@ -107,7 +107,7 @@ export const InputText = () => {
     <>
       <Stack
         direction='row'
-        spacing={2}
+        spacing={1}
         sx={{ maxWidth: '100vw', pr: 2, pl: 2 }}
         onClick={handleClickInputArea}
       >
@@ -124,6 +124,7 @@ export const InputText = () => {
             width: 500,
             zIndex: isAdding ? 2500 : null,
             position: isAdding ? 'relative' : null,
+            '& > div': { borderRadius: '20px', pl: 2.4 },
           }}
           disabled={isEditing}
           InputProps={{

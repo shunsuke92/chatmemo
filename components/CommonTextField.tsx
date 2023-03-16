@@ -5,6 +5,7 @@ import { useSetRecoilState } from 'recoil';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
+import { useDarkMode } from '../hooks/useDarkMode';
 import { useUpdateEditingInfoAfter } from '../hooks/useUpdateEditingInfoAfter';
 import { scrollingIDState } from '../states/scrollingIDState';
 import { InternalData } from './Timeline';
@@ -21,6 +22,8 @@ export const CommonTextField = (props: CommonTextFieldProps) => {
   const updateEditingInfoAfter = useUpdateEditingInfoAfter();
 
   const setScrollingID = useSetRecoilState(scrollingIDState);
+
+  const darkMode = useDarkMode();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -46,7 +49,11 @@ export const CommonTextField = (props: CommonTextFieldProps) => {
         size='small'
         fullWidth
         multiline
-        sx={{ width: '479px', maxWidth: '65vw' }}
+        sx={{
+          width: '479px',
+          maxWidth: '65vw',
+          '& > div': { backgroundColor: darkMode ? null : 'grey.50' },
+        }}
         onChange={handleChange}
       />
     </Stack>

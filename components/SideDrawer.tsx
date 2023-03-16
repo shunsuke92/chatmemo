@@ -13,6 +13,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 
 import { useChangeOpenMenuDelay } from '../hooks/useChangeOpenMenuDelay';
 import { useChangeSelectedDisplayType } from '../hooks/useChangeSelectedDisplayType';
+import { useIconColor } from '../hooks/useColor';
 import { openSideDrawerState } from '../states/openSideDrawerState';
 import {
   selectedDisplayTypeState,
@@ -32,6 +33,8 @@ export const SideDrawer = () => {
   const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
 
   const changeOpenMenuDelay = useChangeOpenMenuDelay();
+
+  const iconColor = useIconColor();
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -74,9 +77,9 @@ export const SideDrawer = () => {
                 <ListItemButton onClick={handleClick(list)}>
                   <ListItemIcon sx={{ minWidth: '42px' }}>
                     {index === 0 ? (
-                      <FolderIcon sx={{ color: 'text.secondary' }} />
+                      <FolderIcon sx={{ color: iconColor }} />
                     ) : (
-                      <CheckCircleIcon sx={{ color: 'text.secondary' }} />
+                      <CheckCircleIcon sx={{ color: iconColor }} />
                     )}
                   </ListItemIcon>
                   <MyTypography mt={0.5} mb={0.5}>
@@ -92,7 +95,7 @@ export const SideDrawer = () => {
               <ListItem key={list.id} disablePadding>
                 <ListItemButton onClick={handleClick(list)}>
                   <ListItemIcon sx={{ minWidth: '42px' }}>
-                    <DeleteIcon sx={{ color: 'text.secondary' }} />
+                    <DeleteIcon sx={{ color: iconColor }} />
                   </ListItemIcon>
                   <MyTypography mt={0.5} mb={0.5}>
                     {list.name}

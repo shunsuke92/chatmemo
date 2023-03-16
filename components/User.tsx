@@ -19,6 +19,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DarkMode, useSettingInfoContext } from '../components/SettingInfoContext';
 import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
 import { useChangeOpenMenuDelay } from '../hooks/useChangeOpenMenuDelay';
+import { useIconColor } from '../hooks/useColor';
 import { useInitializationProcess } from '../hooks/useInitializationProcess';
 import { authUserState } from '../states/authUserState';
 import { isLoggingoutState } from '../states/isLoggingoutState';
@@ -173,6 +174,8 @@ export const User = () => {
 
   const isMobile = useRecoilValue(isMobileState);
 
+  const iconColor = useIconColor();
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     setopenUserMenu(true);
@@ -223,9 +226,9 @@ export const User = () => {
             <MyMenuItem>
               <Stack direction='row' spacing={2} sx={{ alignItems: 'center' }}>
                 <IconButton aria-label='back' onClick={handleClickBack}>
-                  <ArrowBackIcon />
+                  <ArrowBackIcon sx={{ color: iconColor }} />
                 </IconButton>
-                <MyTypography fontWeight={600} fontSize={'1.1rem'}>
+                <MyTypography fontWeight={500} fontSize={'1.1rem'}>
                   設定
                 </MyTypography>
               </Stack>
@@ -273,14 +276,14 @@ export const User = () => {
             <Divider />
             <MenuItem onClick={handleClickSetting}>
               <Stack direction='row' spacing={1.5}>
-                <SettingsIcon />
+                <SettingsIcon sx={{ color: iconColor }} />
                 <MyTypography>設定</MyTypography>
               </Stack>
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleClickLogout}>
               <Stack direction='row' spacing={1.5}>
-                <LogoutIcon />
+                <LogoutIcon sx={{ color: iconColor }} />
                 <MyTypography>ログアウト</MyTypography>
               </Stack>
             </MenuItem>
