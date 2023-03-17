@@ -78,5 +78,7 @@ export const DataManager = ({ children }: { children: any }) => {
     })();
   }, [user, setMemo, setInitialScrolling, setChangeMemo]);
 
-  return <>{isGettingData ? <LinearProgress /> : <main>{children}</main>}</>;
+  return (
+    <>{isGettingData ? <LinearProgress aria-label='Progress Bar' /> : <main>{children}</main>}</>
+  );
 };

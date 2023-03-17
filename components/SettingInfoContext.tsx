@@ -164,7 +164,7 @@ export const SettingInfoProvider = ({ children }: { children: any }) => {
 
   return (
     <SettingInfoContext.Provider value={info}>
-      {isLoading ? <LinearProgress /> : children}
+      {isLoading ? <LinearProgress aria-label='Progress Bar' /> : children}
     </SettingInfoContext.Provider>
   );
 };

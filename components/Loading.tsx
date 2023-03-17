@@ -20,6 +20,7 @@ export const Loading = () => {
             }}
             size={25}
             thickness={5}
+            aria-label='Progress Bar'
           />
         </Stack>
       )}

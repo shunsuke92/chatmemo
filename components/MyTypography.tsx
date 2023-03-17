@@ -45,6 +45,7 @@ export const MyTypography = (props: MyTypography) => {
       variant={variant}
       component='button'
       role='article'
+      aria-label={children}
       color={color ?? 'text.primary'}
       fontWeight={fontWeight}
       fontSize={fontSize}

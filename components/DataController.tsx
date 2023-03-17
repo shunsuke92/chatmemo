@@ -114,5 +114,5 @@ export const DataController = ({ children }: { children: any }) => {
     isNotFirstTime,
   ]);
 
-  return <>{isGettingData ? <LinearProgress /> : children}</>;
+  return <>{isGettingData ? <LinearProgress aria-label='Progress Bar' /> : children}</>;
 };

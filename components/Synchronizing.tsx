@@ -33,7 +33,13 @@ export const Synchronizing = (props: SynchronizingProps) => {
             ...maskBackground,
           }}
         >
-          {progress && <LinearProgress variant='determinate' value={synchronizingProgress} />}
+          {progress && (
+            <LinearProgress
+              variant='determinate'
+              value={synchronizingProgress}
+              aria-label='Progress Bar'
+            />
+          )}
         </Box>
       )}
     </>

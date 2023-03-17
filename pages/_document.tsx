@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from 'next/document';
 
 export default function Document() {
   return (
-    <Html id='html'>
+    <Html id='html' lang='ja'>
       <Head>
         <meta charSet='UTF-8' />
         <link

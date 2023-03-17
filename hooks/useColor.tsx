@@ -33,7 +33,13 @@ export const useCommentBackground = () => {
 export const useDateColor = () => {
   const darkMode = useDarkMode();
 
-  return darkMode ? 'text.disabled' : 'grey.700';
+  return darkMode ? 'grey.400' : 'grey.800';
+};
+
+export const useHoursColor = () => {
+  const darkMode = useDarkMode();
+
+  return darkMode ? 'grey.500' : 'grey.700';
 };
 
 export const useIconColor = () => {

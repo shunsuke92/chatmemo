@@ -57,5 +57,5 @@ export const Auth = ({ children }: { children: any }) => {
     };
   }, [setUser, initializationProcess]);
 
-  return <>{isAuthChecking ? <LinearProgress /> : children}</>;
+  return <>{isAuthChecking ? <LinearProgress aria-label='Progress Bar' /> : children}</>;
 };

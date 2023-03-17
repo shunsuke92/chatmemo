@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
@@ -132,9 +133,12 @@ export const InputText = () => {
             startAdornment: (
               <InputAdornment position='start' sx={{ mr: 0, mt: 0.3 }}>
                 {!Boolean(value) && (
-                  <MyTypography color='text.disabled' sx={{ position: 'fixed' }}>
+                  <InputLabel
+                    htmlFor='input'
+                    sx={{ position: 'fixed', color: 'text.disabled', mb: 0.3 }}
+                  >
                     {!isAdding ? 'メモを入力…' : 'コメントを入力…'}
-                  </MyTypography>
+                  </InputLabel>
                 )}
               </InputAdornment>
             ),
