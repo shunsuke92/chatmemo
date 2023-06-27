@@ -141,7 +141,7 @@ const About: NextPage = () => {
             ChatMemoは管理者が学習を目的として作成・運営しているサイトです。
           </Description>
           <Description>
-            サービス内容についてのご意見はもちろん、機能追加のご要望なども大歓迎です。何かございましたら、下記お問い合わせ先までご連絡お待ちしております。
+            サービス内容についてのご意見、ご要望、ご不明な点等ありましたら、下記お問い合わせ先までご連絡お願いいたします。
           </Description>
 
           <Title id='terms'>利用規約</Title>
@@ -225,17 +225,7 @@ const About: NextPage = () => {
           </List>
 
           <Title id='contact'>お問い合わせ</Title>
-          <Description>
-            ご意見、ご要望、ご不明な点などございましたら、以下のお問い合わせ先までご連絡お願いいたします。
-          </Description>
-          <Group spacing={0}>
-            <Description>（メール）</Description>
-            <Description>shunsuke92x@gmail.com</Description>
-          </Group>
-          <Group spacing={0}>
-            <Description>（お問い合わせフォーム）</Description>
-            <Description>https://shuuu.jp/contact</Description>
-          </Group>
+          <Description>shunsuk92@gmail.com</Description>
         </ContentStack>
       </Wrapper>
     </ThemeProvider>

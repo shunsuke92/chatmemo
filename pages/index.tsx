@@ -15,7 +15,7 @@ const Home: NextPage = () => {
       <CssBaseline />
       <Head>
         <title>chatmemo</title>
-        <meta name='description' content='チャットのようにメモする新感覚のメモアプリ' />
+        <meta name='description' content='チャットのようなメモアプリ' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Main />

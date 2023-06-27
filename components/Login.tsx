@@ -82,7 +82,7 @@ const LoginDialog = (props: LoginDialogProps) => {
         <Stack spacing={4} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Logo type={isDarkMode ? 'dark' : 'light'} />
           <MyTypography variant='subtitle2' color='text.secondary'>
-            ChatMemoはチャット形式のメモアプリです。気軽にどんどんメモしていきましょう。
+            ChatMemoはチャット形式のメモアプリです。
             <NextLink href='/about' passHref>
               <MuiLink
                 color='inherit'
