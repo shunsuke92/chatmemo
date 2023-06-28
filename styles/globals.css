@@ -1,6 +1,6 @@
 body {
-  color: #444444;
-  background-color: #f9f9f9;
+  color: #444444 !important;
+  background-color: #f9f9f9 !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -8,7 +8,7 @@ body {
     color-scheme: dark;
   }
   body {
-    color: #ffffff;
-    background-color: #161616;
+    color: #ffffff !important;
+    background-color: #161616 !important;
   }
 }
