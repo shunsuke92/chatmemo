@@ -1,25 +1,29 @@
-import Head from 'next/head';
+import { RecoilRoot } from 'recoil';
 
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material/styles';
-
+import { Auth } from '../components/Auth';
+import { DelayCompletedProvider } from '../components/DelayCompletedContext';
 import { Main } from '../components/Main';
-import { useCreateTheme } from '../hooks/useCreateTheme';
+import { ManageTentativeIDProvider } from '../components/ManageTentativeIDContext';
+import { SettingInfoProvider } from '../components/SettingInfoContext';
+import { SynchronizationProvider } from '../components/SynchronizationContext';
 
 import type { NextPage } from 'next';
 
 const Home: NextPage = () => {
-  const theme = useCreateTheme();
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Head>
-        <title>chatmemo</title>
-        <meta name='description' content='チャットのようなメモアプリ' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
-      <Main />
-    </ThemeProvider>
+    <RecoilRoot>
+      <Auth>
+        <SettingInfoProvider>
+          <SynchronizationProvider>
+            <ManageTentativeIDProvider>
+              <DelayCompletedProvider>
+                <Main />
+              </DelayCompletedProvider>
+            </ManageTentativeIDProvider>
+          </SynchronizationProvider>
+        </SettingInfoProvider>
+      </Auth>
+    </RecoilRoot>
   );
 };
 

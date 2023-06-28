@@ -1,0 +1,14 @@
+body {
+  color: #444444 !important;
+  background-color: #f9f9f9 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: #ffffff !important;
+    background-color: #161616 !important;
+  }
+}

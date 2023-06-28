@@ -1,41 +1,54 @@
+import { useEffect, useState } from 'react';
+
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-
-import { RecoilRoot } from 'recoil';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 
-import { Auth } from '../components/Auth';
-import { DelayCompletedProvider } from '../components/DelayCompletedContext';
-import { ManageTentativeIDProvider } from '../components/ManageTentativeIDContext';
-import { SettingInfoProvider } from '../components/SettingInfoContext';
-import { SynchronizationProvider } from '../components/SynchronizationContext';
 import { useCreateTheme } from '../hooks/useCreateTheme';
+
+import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const theme = useCreateTheme();
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
   return (
     <>
-      <CssBaseline />
       <Head>
         <meta name='viewport' content='initial-scale=1, width=device-width' />
+        <title>chatmemo</title>
+        <meta name='description' content='チャットのようなメモアプリ' />
+        <link rel='icon' href='/favicon.ico' />
       </Head>
+      {loading && (
+        <>
+          <div
+            id='blockFOUC'
+            style={{ width: '100vw', height: '100vh', position: 'fixed', top: '0', left: '0' }}
+          ></div>
+          <style jsx>{`
+            #blockFOUC {
+              background-color: #f9f9f9;
+            }
+            @media (prefers-color-scheme: dark) {
+              #blockFOUC {
+                background-color: #161616;
+              }
+            }
+          `}</style>
+        </>
+      )}
+
+      <CssBaseline />
       <ThemeProvider theme={theme}>
-        <RecoilRoot>
-          <Auth>
-            <SettingInfoProvider>
-              <SynchronizationProvider>
-                <ManageTentativeIDProvider>
-                  <DelayCompletedProvider>
-                    <Component {...pageProps} />
-                  </DelayCompletedProvider>
-                </ManageTentativeIDProvider>
-              </SynchronizationProvider>
-            </SettingInfoProvider>
-          </Auth>
-        </RecoilRoot>
+        <Component {...pageProps} />
       </ThemeProvider>
     </>
   );
