@@ -1,13 +1,12 @@
 import Head from 'next/head';
-import NextLink from 'next/link';
 
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiLink from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ThemeProvider } from '@mui/material/styles';
 
 import { Logo } from '../../components/Logo';
+import { MyLink } from '../../components/MyLink';
 import { useCreateTheme } from '../../hooks/useCreateTheme';
 import { useGetDarkMode } from '../../hooks/useGetDarkMode';
 
@@ -128,11 +127,9 @@ const About: NextPage = () => {
 
       <Wrapper>
         <Stack justifyContent='center' alignItems='center' width='100%' mb={8}>
-          <NextLink href='/' passHref>
-            <MuiLink>
-              <Logo type={mode} />
-            </MuiLink>
-          </NextLink>
+          <MyLink href='/'>
+            <Logo type={mode} />
+          </MyLink>
         </Stack>
         <ContentStack>
           <Title id='about'>当サイトについて</Title>

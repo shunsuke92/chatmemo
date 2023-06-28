@@ -1,14 +1,11 @@
 import { useState } from 'react';
 
-import NextLink from 'next/link';
-
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
-import MuiLink from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
@@ -20,6 +17,7 @@ import { authUserState } from '../states/authUserState';
 import { isLogginginState } from '../states/isLogginginState';
 import { app, provider } from '../utils/firebase';
 import { Logo } from './Logo';
+import { MyLink } from './MyLink';
 import { MyTypography } from './MyTypography';
 
 interface LoginDialogProps {
@@ -81,21 +79,12 @@ const LoginDialog = (props: LoginDialogProps) => {
         </IconButton>
         <Stack spacing={4} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Logo type={isDarkMode ? 'dark' : 'light'} />
-          <MyTypography variant='subtitle2' color='text.secondary'>
-            ChatMemoはチャット形式のメモアプリです。
-            <NextLink href='/about' passHref>
-              <MuiLink
-                color='inherit'
-                variant='inherit'
-                gutterBottom
-                sx={{
-                  '&:hover': { color: 'primary.main' },
-                }}
-              >
-                ChatMemoについて
-              </MuiLink>
-            </NextLink>
-          </MyTypography>
+          <Stack sx={{ flexDirection: 'row' }}>
+            <MyTypography variant='subtitle2' color='text.secondary'>
+              ChatMemoはチャット形式のメモアプリです。
+            </MyTypography>
+            <MyLink href='/about'>ChatMemoについて</MyLink>
+          </Stack>
           <Button
             sx={{
               p: 0,
@@ -125,34 +114,13 @@ const LoginDialog = (props: LoginDialogProps) => {
               }
             />
           </Button>
-          <MyTypography variant='subtitle2' color='text.secondary'>
-            <NextLink href='/about#terms' passHref>
-              <MuiLink
-                color='inherit'
-                variant='inherit'
-                gutterBottom
-                sx={{
-                  '&:hover': { color: 'primary.main' },
-                }}
-              >
-                利用規約
-              </MuiLink>
-            </NextLink>
-            、
-            <NextLink href='/about#policy' passHref>
-              <MuiLink
-                color='inherit'
-                variant='inherit'
-                gutterBottom
-                sx={{
-                  '&:hover': { color: 'primary.main' },
-                }}
-              >
-                プライバシーポリシー
-              </MuiLink>
-            </NextLink>
-            に同意の上、ご使用ください。
-          </MyTypography>
+          <Stack sx={{ flexDirection: 'row' }}>
+            <MyLink href='/about#terms'>利用規約</MyLink>、
+            <MyLink href='/about#policy'>プライバシーポリシー</MyLink>
+            <MyTypography variant='subtitle2' color='text.secondary'>
+              に同意の上、ご使用ください。
+            </MyTypography>
+          </Stack>
         </Stack>
       </Box>
     </Dialog>
