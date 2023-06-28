@@ -16,6 +16,7 @@ import Switch from '@mui/material/Switch';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
+import { MyTypography } from './MyTypography';
 import { DarkMode, useSettingInfoContext } from '../components/SettingInfoContext';
 import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
 import { useChangeOpenMenuDelay } from '../hooks/useChangeOpenMenuDelay';
@@ -26,7 +27,6 @@ import { isLoggingoutState } from '../states/isLoggingoutState';
 import { isMobileState } from '../states/isMobileState';
 import { openUserMenuState } from '../states/openUserMenuState';
 import { signout } from '../utils/signout';
-import { MyTypography } from './MyTypography';
 
 const MyMenuItem = (props: any) => {
   const { children } = props;

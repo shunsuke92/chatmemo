@@ -1,6 +1,6 @@
-import { useGetNowDisplayTabData } from '../hooks/useGetNowDisplayTabData';
 import { NoContent } from './NoContent';
 import { Timeline } from './Timeline';
+import { useGetNowDisplayTabData } from '../hooks/useGetNowDisplayTabData';
 
 export const Contents = () => {
   const displayData = useGetNowDisplayTabData();

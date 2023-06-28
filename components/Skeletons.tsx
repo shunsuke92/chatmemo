@@ -3,10 +3,10 @@ import { useRecoilValue } from 'recoil';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
-import { isRenderingState } from '../states/isRenderingState';
-import styles from '../styles/Home.module.css';
 import { DateChipWrapper } from './DateChipWrapper';
 import { TimelineWrapper } from './TimelineWrapper';
+import { isRenderingState } from '../states/isRenderingState';
+import styles from '../styles/Home.module.css';
 
 const ContentsSkeleton = () => {
   return (

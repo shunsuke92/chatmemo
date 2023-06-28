@@ -1,9 +1,9 @@
 import Stack from '@mui/material/Stack';
 
-import { AlertDialog } from '../states/displayAlertDialogState';
 import { AddCommentButton } from './AddCommentButton';
 import { MoreButton } from './MoreButton';
 import { InternalData } from './Timeline';
+import { AlertDialog } from '../states/displayAlertDialogState';
 
 interface LowerButtonsProps {
   data: InternalData;

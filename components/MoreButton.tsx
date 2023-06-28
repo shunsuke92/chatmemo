@@ -7,9 +7,9 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
+import { InternalData } from './Timeline';
 import { AlertDialog } from '../states/displayAlertDialogState';
 import { scrollingIDState } from '../states/scrollingIDState';
-import { InternalData } from './Timeline';
 
 interface MoreButtonProps {
   data: InternalData;

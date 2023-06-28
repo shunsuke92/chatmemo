@@ -5,16 +5,16 @@ import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 
+import { Login } from './Login';
+import { MyTypography } from './MyTypography';
+import { OfflineChip } from './OfflineChip';
+import { User } from './User';
 import { Mask } from '../components/Mask';
 import { Synchronizing } from '../components/Synchronizing';
 import { useChangeOpenMenuDelay } from '../hooks/useChangeOpenMenuDelay';
 import { useBarBackground, useLightModeColor } from '../hooks/useColor';
 import { openSideDrawerState } from '../states/openSideDrawerState';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
-import { Login } from './Login';
-import { MyTypography } from './MyTypography';
-import { OfflineChip } from './OfflineChip';
-import { User } from './User';
 
 export const MenuBar = () => {
   const barBackground = useBarBackground();

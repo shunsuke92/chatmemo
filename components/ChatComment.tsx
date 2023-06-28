@@ -1,6 +1,6 @@
 import Stack from '@mui/material/Stack';
 
-import { ChatMemoProps } from '../components/ChatMemo';
+import { ChatMemoProps } from './ChatMemo';
 import { ChatPack } from './ChatPack';
 
 export const ChatComment = (props: ChatMemoProps) => {

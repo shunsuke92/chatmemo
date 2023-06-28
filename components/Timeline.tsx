@@ -2,15 +2,15 @@ import Collapse from '@mui/material/Collapse';
 
 import { TransitionGroup } from 'react-transition-group';
 
+import { ChatMemo } from './ChatMemo';
+import { DateChip } from './DateChip';
+import { Loading } from './Loading';
+import { TimelineWrapper } from './TimelineWrapper';
 import { useCreateTimelineProps } from '../hooks/useCreateTimelineProps';
 import { useGetIsExitAnimation } from '../hooks/useGetIsExitAnimation';
 import { useScrollManager } from '../hooks/useScrollManager';
 import { Memo } from '../states/memoState';
 import { Comment } from '../states/memoState';
-import { ChatMemo } from './ChatMemo';
-import { DateChip } from './DateChip';
-import { Loading } from './Loading';
-import { TimelineWrapper } from './TimelineWrapper';
 
 export interface InternalData {
   type: 'memo' | 'comment';

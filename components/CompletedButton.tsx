@@ -2,9 +2,9 @@ import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import IconButton from '@mui/material/IconButton';
 
+import { InternalData } from './Timeline';
 import { DelayCompleted } from '../components/DelayCompletedContext';
 import { getNowDate } from '../utils/getNowDate';
-import { InternalData } from './Timeline';
 
 interface CompletedButtonProps {
   data: InternalData;

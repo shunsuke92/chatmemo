@@ -12,13 +12,13 @@ import { Box } from '@mui/system';
 
 import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
+import { Logo } from './Logo';
+import { MyLink } from './MyLink';
+import { MyTypography } from './MyTypography';
 import { useInitializationProcess } from '../hooks/useInitializationProcess';
 import { authUserState } from '../states/authUserState';
 import { isLogginginState } from '../states/isLogginginState';
 import { app, provider } from '../utils/firebase';
-import { Logo } from './Logo';
-import { MyLink } from './MyLink';
-import { MyTypography } from './MyTypography';
 
 interface LoginDialogProps {
   open: boolean;

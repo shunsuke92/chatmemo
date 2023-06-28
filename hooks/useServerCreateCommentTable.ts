@@ -2,11 +2,11 @@ import { useRecoilValue } from 'recoil';
 
 import axios from 'axios';
 
+import { useCreateDemoID } from './useCreateDemoID';
 import { useManageTentativeIDContext } from '../components/ManageTentativeIDContext';
 import { authUserState } from '../states/authUserState';
 import { Comment } from '../states/memoState';
 import { convertSendComment } from '../utils/convertSendComment';
-import { useCreateDemoID } from './useCreateDemoID';
 
 export const useServerCreateCommentTable = () => {
   const user = useRecoilValue(authUserState);
