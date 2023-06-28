@@ -1,11 +1,8 @@
-import { useLayoutEffect } from 'react';
-
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
-
-import { useGetDarkMode } from './useGetDarkMode';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export const useCreateTheme = () => {
-  const mode = useGetDarkMode();
+  const mode = useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light';
 
   const theme = responsiveFontSizes(
     createTheme({
@@ -27,14 +24,6 @@ export const useCreateTheme = () => {
       },
     }),
   );
-
-  useLayoutEffect(() => {
-    const html = document.getElementById('html');
-    if (html !== null) {
-      html.style.colorScheme = mode;
-      html.style.backgroundColor = theme.palette.background.paper;
-    }
-  }, [mode, theme.palette.background.paper]);
 
   return theme;
 };

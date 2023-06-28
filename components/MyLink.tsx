@@ -17,6 +17,7 @@ export const MyLink = (props: MyLinkProps) => {
         color='text.secondary'
         sx={{
           textDecoration: 'underline',
+          cursor: 'pointer',
           '&:hover': { color: 'primary.main' },
         }}
       >

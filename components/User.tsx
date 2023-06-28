@@ -131,7 +131,7 @@ const PushWithEnterSwitch = () => {
   );
 };
 
-const DarkModeToggleButton = () => {
+/* const DarkModeToggleButton = () => {
   const settingInfo = useSettingInfoContext();
   const setting = settingInfo?.setting;
   const darkMode = setting?.dark_mode ?? 'os';
@@ -156,7 +156,7 @@ const DarkModeToggleButton = () => {
       <ToggleButton value='light'>LIGHT</ToggleButton>
     </ToggleButtonGroup>
   );
-};
+}; */
 
 export const User = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -258,10 +258,10 @@ export const User = () => {
                   : '改行は Shift + Enter になります。'}
               </MyTypography>
             </MyMenuItemSub>
-            <MyMenuItem>
+            {/* <MyMenuItem>
               <MyTypography variant='body1'>ダークモード</MyTypography>
               <DarkModeToggleButton />
-            </MyMenuItem>
+            </MyMenuItem> */}
           </div>
         ) : (
           <div>
