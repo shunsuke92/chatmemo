@@ -1,7 +1,7 @@
 import { selector } from 'recoil';
 
-import { processForFilterAll } from '../utils/processForFilterAll';
 import { displayingMemoState } from './displayingMemoState';
+import { processForFilterAll } from '../utils/processForFilterAll';
 
 export const displayingMemoFilterAllState = selector({
   key: 'displayingMemoFilterAllState',

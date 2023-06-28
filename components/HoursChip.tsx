@@ -1,7 +1,7 @@
-import { useHoursColor } from '../hooks/useColor';
 import { MyTypography } from './MyTypography';
 import { useSettingInfoContext } from './SettingInfoContext';
 import { InternalData } from './Timeline';
+import { useHoursColor } from '../hooks/useColor';
 
 interface HoursChipProps {
   data: InternalData;

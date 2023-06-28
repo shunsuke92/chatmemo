@@ -1,7 +1,7 @@
 import { selector } from 'recoil';
 
-import { processForTrash } from '../utils/processForTrash';
 import { displayingMemoState } from './displayingMemoState';
+import { processForTrash } from '../utils/processForTrash';
 
 export const displayingMemoFilterTrashState = selector({
   key: 'displayingMemoFilterTrashState',

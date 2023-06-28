@@ -5,10 +5,10 @@ import { useSetRecoilState } from 'recoil';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
+import { InternalData } from './Timeline';
 import { useDarkMode } from '../hooks/useDarkMode';
 import { useUpdateEditingInfoAfter } from '../hooks/useUpdateEditingInfoAfter';
 import { scrollingIDState } from '../states/scrollingIDState';
-import { InternalData } from './Timeline';
 
 interface CommonTextFieldProps {
   data: InternalData;

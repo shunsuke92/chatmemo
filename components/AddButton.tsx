@@ -2,7 +2,7 @@ import SendIcon from '@mui/icons-material/Send';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 
-import { useGetIsAdding } from '../components/Main';
+import { useGetIsAdding } from './Main';
 
 interface AddButtonProps {
   hasValidString: boolean;

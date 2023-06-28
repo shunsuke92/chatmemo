@@ -1,7 +1,7 @@
 import { selector } from 'recoil';
 
-import { processForAllHideCompleted } from '../utils/processForAllHideCompleted';
 import { memoState } from './memoState';
+import { processForAllHideCompleted } from '../utils/processForAllHideCompleted';
 
 export const memoFilterAllHideCompletedState = selector({
   key: 'memoFilterAllHideCompletedState',

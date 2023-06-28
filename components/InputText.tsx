@@ -19,7 +19,6 @@ import { useMobileKeyboardOpen } from '../hooks/useMobileKeyboardOpen';
 import { useOperateCreateData } from '../hooks/useOperateCreateData';
 import { isMobileState } from '../states/isMobileState';
 import { hasValidString } from '../utils/hasValidString';
-import { MyTypography } from './MyTypography';
 
 export const InputText = () => {
   const [value, setValue] = useState('');

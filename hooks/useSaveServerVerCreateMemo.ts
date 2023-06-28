@@ -1,6 +1,6 @@
+import { useOperateUpdateSynchronizedFlag } from './useOperateUpdateSynchronizedFlag';
 import { useManageTentativeIDContext } from '../components/ManageTentativeIDContext';
 import { useSynchronizationContext } from '../components/SynchronizationContext';
-import { useOperateUpdateSynchronizedFlag } from './useOperateUpdateSynchronizedFlag';
 
 export const useSaveServerVerCreateMemo = () => {
   const synchronization = useSynchronizationContext();

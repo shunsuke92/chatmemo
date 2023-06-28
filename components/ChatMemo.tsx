@@ -1,13 +1,13 @@
 import { memo } from 'react';
 
-import { DelayCompleted } from '../components/DelayCompletedContext';
-import { AlertDialog } from '../states/displayAlertDialogState';
-import { Comment } from '../states/memoState';
-import { convertInternalDataToComment } from '../utils/convertInternalDataToComment';
 import { ChatComment } from './ChatComment';
 import { ChatPack } from './ChatPack';
 import { DateChip } from './DateChip';
 import { InternalData } from './Timeline';
+import { DelayCompleted } from '../components/DelayCompletedContext';
+import { AlertDialog } from '../states/displayAlertDialogState';
+import { Comment } from '../states/memoState';
+import { convertInternalDataToComment } from '../utils/convertInternalDataToComment';
 
 export interface ChatMemoProps {
   data: InternalData;

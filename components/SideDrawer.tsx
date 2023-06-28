@@ -11,6 +11,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
+import { MyTypography } from './MyTypography';
 import { useChangeOpenMenuDelay } from '../hooks/useChangeOpenMenuDelay';
 import { useChangeSelectedDisplayType } from '../hooks/useChangeSelectedDisplayType';
 import { useIconColor } from '../hooks/useColor';
@@ -20,7 +21,6 @@ import {
   DisplayType,
   DISPLAY_TYPE,
 } from '../states/selectedDisplayTypeState';
-import { MyTypography } from './MyTypography';
 
 export const SideDrawer = () => {
   const [openSideDrawer, setOpenSideDrawer] = useRecoilState(openSideDrawerState);

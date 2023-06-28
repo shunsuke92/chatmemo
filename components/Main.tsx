@@ -4,6 +4,10 @@ import { useRecoilValue } from 'recoil';
 
 import Stack from '@mui/material/Stack';
 
+import { DataController } from './DataController';
+import { DataManager } from './DataManager';
+import { OfflineNotification } from './OfflineNotification';
+import { SideDrawer } from './SideDrawer';
 import { BottomBar } from '../components/BottomBar';
 import { CompleteDeletionMemoAlertDialog } from '../components/CompleteDeletionMemoAlertDialog';
 import { Contents } from '../components/Contents';
@@ -15,10 +19,6 @@ import { Synchronizing } from '../components/Synchronizing';
 import { useSetIsMobile } from '../hooks/useSetIsMobile';
 import { addingContentIDState } from '../states/addingContentIDState';
 import { editingContentIDState } from '../states/editingContentIDState';
-import { DataController } from './DataController';
-import { DataManager } from './DataManager';
-import { OfflineNotification } from './OfflineNotification';
-import { SideDrawer } from './SideDrawer';
 
 export const useGetIsAdding = () => {
   const addingContentID = useRecoilValue(addingContentIDState);
