@@ -8,7 +8,7 @@ body {
 }
 
 .fouc-text-color {
-  color: #1976d2 !important;
+  color: #000000dd !important;
 }
 
 @media (prefers-color-scheme: dark) {
