@@ -7,9 +7,8 @@ import { isMobileState } from '../states/isMobileState';
 export const useSetIsMobile = () => {
   const setIsMobile = useSetRecoilState(isMobileState);
 
-  const isMobile = window.ontouchstart !== undefined && 0 < navigator.maxTouchPoints;
-
   useEffect(() => {
+    const isMobile = window.ontouchstart !== undefined && 0 < navigator.maxTouchPoints;
     setIsMobile(isMobile);
   });
 };

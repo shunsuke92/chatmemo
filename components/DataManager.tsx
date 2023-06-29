@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 
-import LinearProgress from '@mui/material/LinearProgress';
-
 import axios from 'axios';
 
 import { authUserState } from '../states/authUserState';
@@ -65,20 +63,18 @@ export const DataManager = ({ children }: { children: any }) => {
 
             setMemo(clientData);
             setInitialScrolling(true);
-            setChangeMemo(true);
+            setChangeMemo((prevState) => prevState + 1);
             setIsGettingData(false);
           })
           .catch((err) => {});
       } else {
         setMemo(demoData);
         setInitialScrolling(true);
-        setChangeMemo(true);
+        setChangeMemo((prevState) => prevState + 1);
         setIsGettingData(false);
       }
     })();
   }, [user, setMemo, setInitialScrolling, setChangeMemo]);
 
-  return (
-    <>{isGettingData ? <LinearProgress aria-label='Progress Bar' /> : <main>{children}</main>}</>
-  );
+  return <>{isGettingData ? <></> : <main>{children}</main>}</>;
 };

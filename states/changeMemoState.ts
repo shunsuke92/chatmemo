@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export const changeMemoState = atom<boolean>({
+export const changeMemoState = atom<number>({
   key: 'changeMemoState',
-  default: false,
+  default: 0,
 });

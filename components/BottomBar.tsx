@@ -4,14 +4,14 @@ import { Box } from '@mui/system';
 
 import { InputText } from '../components/InputText';
 import { Synchronizing } from '../components/Synchronizing';
-import { useBarBackground } from '../hooks/useColor';
+import { initialLoadingState } from '../states/initialLoadingState';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
 
 export const BottomBar = () => {
   const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
   const idDisplay = selectedDisplayType.id === 1;
 
-  const barBackground = useBarBackground();
+  const initialLoading = useRecoilValue(initialLoadingState);
 
   return (
     <>
@@ -27,12 +27,11 @@ export const BottomBar = () => {
             minHeight: { xs: 72, sm: 80 },
             pt: { xs: 2, sm: 2.5 },
             pb: { xs: 2, sm: 2.5 },
-            ...barBackground,
           }}
-          className='bottom-bar'
+          className='bottom-bar fouc-bar-color'
         >
           <Synchronizing progress={false} />
-          <InputText />
+          {initialLoading >= 1 && <InputText />}
         </Box>
       )}
     </>

@@ -2,19 +2,16 @@ import { useEffect, useRef } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import Stack from '@mui/material/Stack';
-
+import { ContentsWrapper } from './ContentsWrapper';
 import { DataController } from './DataController';
 import { DataManager } from './DataManager';
 import { OfflineNotification } from './OfflineNotification';
 import { SideDrawer } from './SideDrawer';
-import { BottomBar } from '../components/BottomBar';
 import { CompleteDeletionMemoAlertDialog } from '../components/CompleteDeletionMemoAlertDialog';
 import { Contents } from '../components/Contents';
 import { DeleteAccountAlertDialog } from '../components/DeleteAccountAlertDialog';
 import { DeleteMemoAlertDialog } from '../components/DeleteMemoAlertDialog';
 import { Mask } from '../components/Mask';
-import { MenuBar } from '../components/MenuBar';
 import { Synchronizing } from '../components/Synchronizing';
 import { useSetIsMobile } from '../hooks/useSetIsMobile';
 import { addingContentIDState } from '../states/addingContentIDState';
@@ -64,20 +61,8 @@ export const Main = () => {
 
   return (
     <>
-      <MenuBar />
       <DataManager>
-        <Stack
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            flex: 1,
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            pt: '64px',
-            pb: '80px',
-            minHeight: 'calc(var(--vh, 1vh) * 100)',
-          }}
-        >
+        <ContentsWrapper>
           <Mask
             height={{ xs: 'calc(100% - 56px - 72px)', sm: 'calc(100% - 64px - 80px)' }}
             top={{ xs: '56px', sm: '64px' }}
@@ -88,13 +73,11 @@ export const Main = () => {
           <CompleteDeletionMemoAlertDialog />
           <SideDrawer />
           <OfflineNotification />
-
           <DataController>
             <Contents />
           </DataController>
-        </Stack>
+        </ContentsWrapper>
       </DataManager>
-      <BottomBar />
     </>
   );
 };
