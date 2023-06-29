@@ -1,14 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
-
-import LinearProgress from '@mui/material/LinearProgress';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { useGetNowAllTabData } from '../hooks/useGetNowAllTabData';
 import { changeDisplayStepState } from '../states/changeDisplayStepState';
-import { changeMemoState } from '../states/changeMemoState';
 import { displayStepState } from '../states/displayStepState';
 import { displayingMemoState } from '../states/displayingMemoState';
+import { initialLoadingState } from '../states/initialLoadingState';
 import { isAllDisplayedState } from '../states/isAllDisplayedState';
 import { Memo } from '../states/memoState';
 import { resetDisplayPositionState } from '../states/resetDisplayPositionState';
@@ -27,12 +25,13 @@ export const DataController = ({ children }: { children: any }) => {
 
   const setChangeDisplayStep = useSetRecoilState(changeDisplayStepState);
 
-  const [changeMemo, setChangeMemo] = useRecoilState(changeMemoState);
   const nowAllTabData = useGetNowAllTabData();
 
   const setIsAllDisplayed = useSetRecoilState(isAllDisplayedState);
 
   const setDisplayStep = useSetRecoilState(displayStepState);
+
+  const setinitialLoading = useSetRecoilState(initialLoadingState);
 
   // 表示用のデータを退避
   // タイミング：初回、タブ切り替え、実行済み表示切り替え、ログイン、ログアウト
@@ -57,19 +56,15 @@ export const DataController = ({ children }: { children: any }) => {
     // 表示済みステップ（ローカル変数）を初期化
     setBeforeDisplayedStep(1);
 
-    if (changeMemo) {
-      setChangeMemo(false);
-    }
-
     setIsGettingData(false);
+    setinitialLoading(2);
   }, [
     nowAllTabData,
     setResetDisplayPosition,
     setDisplayStep,
     setDisplayingMemo,
     setIsAllDisplayed,
-    changeMemo,
-    setChangeMemo,
+    setinitialLoading,
   ]);
 
   const isExistContents = useCallback(() => {
@@ -114,5 +109,5 @@ export const DataController = ({ children }: { children: any }) => {
     isNotFirstTime,
   ]);
 
-  return <>{isGettingData ? <LinearProgress aria-label='Progress Bar' /> : children}</>;
+  return <>{isGettingData ? <></> : children}</>;
 };

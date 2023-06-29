@@ -2,20 +2,15 @@ import { useState, useEffect } from 'react';
 
 import { useSetRecoilState } from 'recoil';
 
-import LinearProgress from '@mui/material/LinearProgress';
-
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 import axios from 'axios';
 
-import { useInitializationProcess } from '../hooks/useInitializationProcess';
 import { authUserState } from '../states/authUserState';
 import { app } from '../utils/firebase';
 
 export const Auth = ({ children }: { children: any }) => {
   const setUser = useSetRecoilState(authUserState);
-
-  const initializationProcess = useInitializationProcess();
 
   const [isAuthChecking, setIsAuthChecking] = useState(true);
 
@@ -55,7 +50,7 @@ export const Auth = ({ children }: { children: any }) => {
     return () => {
       unsubscribed();
     };
-  }, [setUser, initializationProcess]);
+  }, [setUser]);
 
-  return <>{isAuthChecking ? <LinearProgress aria-label='Progress Bar' /> : children}</>;
+  return <>{isAuthChecking ? <></> : children}</>;
 };

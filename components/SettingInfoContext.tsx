@@ -2,8 +2,6 @@ import { createContext, useState, useContext, useEffect } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import LinearProgress from '@mui/material/LinearProgress';
-
 import axios from 'axios';
 
 import { authUserState } from '../states/authUserState';
@@ -164,7 +162,7 @@ export const SettingInfoProvider = ({ children }: { children: any }) => {
 
   return (
     <SettingInfoContext.Provider value={info}>
-      {isLoading ? <LinearProgress aria-label='Progress Bar' /> : children}
+      {isLoading ? <></> : children}
     </SettingInfoContext.Provider>
   );
 };

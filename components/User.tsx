@@ -20,8 +20,8 @@ import { MyTypography } from './MyTypography';
 import { DarkMode, useSettingInfoContext } from '../components/SettingInfoContext';
 import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
 import { useChangeOpenMenuDelay } from '../hooks/useChangeOpenMenuDelay';
+import { useClearRecoilState } from '../hooks/useClearRecoilState';
 import { useIconColor } from '../hooks/useColor';
-import { useInitializationProcess } from '../hooks/useInitializationProcess';
 import { authUserState } from '../states/authUserState';
 import { isLoggingoutState } from '../states/isLoggingoutState';
 import { isMobileState } from '../states/isMobileState';
@@ -168,7 +168,7 @@ export const User = () => {
   const setIsLoggingout = useSetRecoilState(isLoggingoutState);
 
   const changeDisplayAlertDialog = useChangeDisplayAlertDialog();
-  const initializationProcess = useInitializationProcess();
+  const clearRecoilState = useClearRecoilState();
 
   const changeOpenMenuDelay = useChangeOpenMenuDelay();
 
@@ -196,7 +196,7 @@ export const User = () => {
   const handleClickLogout = () => {
     signout();
     setIsLoggingout(true);
-    initializationProcess();
+    clearRecoilState();
     handleClose();
   };
 

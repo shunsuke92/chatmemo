@@ -11,7 +11,6 @@ import { editingInfoState } from '../states/editingInfoState';
 import { errIDState } from '../states/errIDState';
 import { isAllDisplayedState } from '../states/isAllDisplayedState';
 import { isLoggingoutState } from '../states/isLoggingoutState';
-import { isRenderingState } from '../states/isRenderingState';
 import { isSynchronizingState } from '../states/isSynchronizingState';
 import { memoState } from '../states/memoState';
 import { openSideDrawerState } from '../states/openSideDrawerState';
@@ -22,7 +21,7 @@ import { scrollingIDState } from '../states/scrollingIDState';
 import { selectedDisplayTypeState, DISPLAY_TYPE } from '../states/selectedDisplayTypeState';
 import { synchronizingProgressState } from '../states/synchronizingProgressState';
 
-export const useInitializationProcess = () => {
+export const useClearRecoilState = () => {
   const setAddingContentID = useSetRecoilState(addingContentIDState);
   const setAuthUser = useSetRecoilState(authUserState);
   const setDeleteID = useSetRecoilState(deleteIDState);
@@ -34,7 +33,6 @@ export const useInitializationProcess = () => {
   const setErrID = useSetRecoilState(errIDState);
   const setIsAllDisplayed = useSetRecoilState(isAllDisplayedState);
   const setIsLoggingout = useSetRecoilState(isLoggingoutState);
-  const setIsRendering = useSetRecoilState(isRenderingState);
   const setIsSynchronizing = useSetRecoilState(isSynchronizingState);
   const setMemo = useSetRecoilState(memoState);
   const setOpenSideDrawer = useSetRecoilState(openSideDrawerState);
@@ -45,7 +43,7 @@ export const useInitializationProcess = () => {
   const setSelectedDisplayType = useSetRecoilState(selectedDisplayTypeState);
   const setSynchronizingProgress = useSetRecoilState(synchronizingProgressState);
 
-  const initializationProcess = () => {
+  const clearRecoilState = () => {
     setAddingContentID('');
     /* setAuthUser(undefined); */
     setDeleteID('');
@@ -57,7 +55,6 @@ export const useInitializationProcess = () => {
     setErrID(0);
     setIsAllDisplayed(true);
     /* setIsLoggingout(false); */
-    setIsRendering(true);
     setIsSynchronizing(false);
     setMemo([]);
     setOpenSideDrawer(false);
@@ -69,5 +66,5 @@ export const useInitializationProcess = () => {
     setSynchronizingProgress(0);
   };
 
-  return initializationProcess;
+  return clearRecoilState;
 };

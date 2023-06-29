@@ -32,13 +32,29 @@ interface MyTypography {
   pb?: number;
   pr?: number;
   pl?: number;
+  className?: string;
   children: any;
 }
 
 export const MyTypography = (props: MyTypography) => {
   // Safariでテキストを表示すると動作が遅くなる事象の対応として、button要素でテキストを表示する
-  const { children, variant, color, sx, fontWeight, fontSize, mt, mb, mr, ml, pt, pb, pr, pl } =
-    props;
+  const {
+    children,
+    variant,
+    color,
+    sx,
+    fontWeight,
+    fontSize,
+    mt,
+    mb,
+    mr,
+    ml,
+    pt,
+    pb,
+    pr,
+    pl,
+    className,
+  } = props;
 
   return (
     <Typography
@@ -57,6 +73,7 @@ export const MyTypography = (props: MyTypography) => {
       pb={pb}
       pr={pr}
       pl={pl}
+      className={className}
       sx={{
         backgroundColor: 'transparent',
         border: 'none',

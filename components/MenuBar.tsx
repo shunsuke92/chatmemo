@@ -3,6 +3,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
+import Skeleton from '@mui/material/Skeleton';
 import Toolbar from '@mui/material/Toolbar';
 
 import { Login } from './Login';
@@ -12,20 +13,19 @@ import { User } from './User';
 import { Mask } from '../components/Mask';
 import { Synchronizing } from '../components/Synchronizing';
 import { useChangeOpenMenuDelay } from '../hooks/useChangeOpenMenuDelay';
-import { useBarBackground, useLightModeColor } from '../hooks/useColor';
+import { initialLoadingState } from '../states/initialLoadingState';
 import { openSideDrawerState } from '../states/openSideDrawerState';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
 
 export const MenuBar = () => {
-  const barBackground = useBarBackground();
-  const lightModeColor = useLightModeColor();
-
   const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
   const setOpenSideDrawer = useSetRecoilState(openSideDrawerState);
 
   const title = selectedDisplayType.name;
 
   const changeOpenMenuDelay = useChangeOpenMenuDelay();
+
+  const initialLoading = useRecoilValue(initialLoadingState);
 
   const handleClickOpenMenu = () => {
     setOpenSideDrawer(true);
@@ -35,10 +35,10 @@ export const MenuBar = () => {
   return (
     <>
       <AppBar
+        className='fouc-bar-color'
         position='fixed'
         sx={{
           backgroundImage: 'none',
-          ...barBackground,
           boxShadow: 'none',
         }}
       >
@@ -49,15 +49,27 @@ export const MenuBar = () => {
             size='large'
             edge='start'
             aria-label='open menu'
-            sx={{ mr: 2, color: lightModeColor }}
+            sx={{ mr: 2 }}
             onClick={handleClickOpenMenu}
+            className='fouc-text-color'
           >
             <MenuIcon />
           </IconButton>
-          <MyTypography variant='subtitle1'>{title}</MyTypography>
+          <MyTypography className='fouc-text-color' variant='subtitle1'>
+            {title}
+          </MyTypography>
           <OfflineChip />
-          <Login />
-          <User />
+          {initialLoading < 1 ? (
+            <Skeleton
+              variant='circular'
+              sx={{ width: { xs: 24, sm: 32 }, height: { xs: 24, sm: 32 } }}
+            />
+          ) : (
+            <>
+              <Login />
+              <User />
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </>
