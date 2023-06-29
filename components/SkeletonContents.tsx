@@ -6,10 +6,14 @@ import Stack from '@mui/material/Stack';
 
 import { ContentsWrapper } from './ContentsWrapper';
 import { TimelineWrapper } from './TimelineWrapper';
+import { authUserState } from '../states/authUserState';
 import { initialLoadingState } from '../states/initialLoadingState';
+import { isLogginginState } from '../states/isLogginginState';
 
 export const SkeletonContents = () => {
   const initialLoading = useRecoilValue(initialLoadingState);
+  const user = useRecoilValue(authUserState);
+  const isLoggingin = useRecoilValue(isLogginginState);
 
   const ContentsSkeleton = () => {
     return (
@@ -39,7 +43,7 @@ export const SkeletonContents = () => {
 
   return (
     <>
-      {initialLoading < 2 && (
+      {user && initialLoading < 2 && !isLoggingin && (
         <Box
           sx={{
             position: 'fixed',

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import { ContentsWrapper } from './ContentsWrapper';
 import { DataController } from './DataController';
@@ -16,7 +16,6 @@ import { Synchronizing } from '../components/Synchronizing';
 import { useSetIsMobile } from '../hooks/useSetIsMobile';
 import { addingContentIDState } from '../states/addingContentIDState';
 import { editingContentIDState } from '../states/editingContentIDState';
-import { initialLoadingState } from '../states/initialLoadingState';
 
 export const useGetIsAdding = () => {
   const addingContentID = useRecoilValue(addingContentIDState);
@@ -32,8 +31,6 @@ export const useGetIsEditing = () => {
 
 export const Main = () => {
   useSetIsMobile();
-
-  const setinitialLoading = useSetRecoilState(initialLoadingState);
 
   const vw = useRef(0);
   const handleResize = () => {
@@ -61,10 +58,6 @@ export const Main = () => {
       window.removeEventListener('resize', handleResize);
     };
   });
-
-  useEffect(() => {
-    setinitialLoading(1);
-  }, [setinitialLoading]);
 
   return (
     <>

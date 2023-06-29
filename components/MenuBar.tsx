@@ -3,7 +3,6 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
-import Skeleton from '@mui/material/Skeleton';
 import Toolbar from '@mui/material/Toolbar';
 
 import { Login } from './Login';
@@ -59,12 +58,7 @@ export const MenuBar = () => {
             {title}
           </MyTypography>
           <OfflineChip />
-          {initialLoading < 1 ? (
-            <Skeleton
-              variant='circular'
-              sx={{ width: { xs: 24, sm: 32 }, height: { xs: 24, sm: 32 } }}
-            />
-          ) : (
+          {initialLoading >= 1 && (
             <>
               <Login />
               <User />

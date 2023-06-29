@@ -14,22 +14,24 @@ import type { NextPage } from 'next';
 
 const Home: NextPage = () => {
   return (
-    <RecoilRoot>
-      <Auth>
-        <SettingInfoProvider>
-          <SynchronizationProvider>
-            <ManageTentativeIDProvider>
-              <DelayCompletedProvider>
-                <Main />
-              </DelayCompletedProvider>
-            </ManageTentativeIDProvider>
-          </SynchronizationProvider>
-        </SettingInfoProvider>
-      </Auth>
-      <SkeletonContents />
-      <MenuBar />
-      <BottomBar />
-    </RecoilRoot>
+    <>
+      <RecoilRoot>
+        <Auth>
+          <SettingInfoProvider>
+            <SynchronizationProvider>
+              <ManageTentativeIDProvider>
+                <DelayCompletedProvider>
+                  <Main />
+                </DelayCompletedProvider>
+              </ManageTentativeIDProvider>
+            </SynchronizationProvider>
+          </SettingInfoProvider>
+          <SkeletonContents />
+        </Auth>
+        <MenuBar />
+        <BottomBar />
+      </RecoilRoot>
+    </>
   );
 };
 
