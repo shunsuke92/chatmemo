@@ -4,11 +4,11 @@ body {
 }
 
 .fouc-bar-color {
-  background-color: #f1f1f1dd;
+  background-color: #f1f1f1dd !important;
 }
 
 .fouc-text-color {
-  color: #1976d2;
+  color: #1976d2 !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,10 +21,10 @@ body {
   }
 
   .fouc-bar-color {
-    background-color: #222222dd;
+    background-color: #222222dd !important;
   }
 
   .fouc-text-color {
-    color: #ffffff;
+    color: #ffffff !important;
   }
 }
