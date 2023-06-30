@@ -19,8 +19,8 @@ export const OfflineNotification = () => {
   const synchronizingProgress = useRecoilValue(synchronizingProgressState);
 
   useEffect(() => {
-    setOpenOnline(!isOnline);
-    setOpenOffline(isOnline);
+    setOpenOnline(isOnline);
+    setOpenOffline(!isOnline);
     if (!isOnline) {
       setIsAlreadyOffline(true);
     }
@@ -61,7 +61,7 @@ export const OfflineNotification = () => {
   return (
     <>
       <Snackbar
-        open={openOnline}
+        open={openOffline}
         sx={{
           maxWidth: { xs: 'calc(100% - 16px)', sm: 'calc(100% - 48px)' },
           zIndex: 3000,
@@ -76,7 +76,7 @@ export const OfflineNotification = () => {
         </Alert>
       </Snackbar>
       <Snackbar
-        open={openOffline && isAlreadyOffline}
+        open={openOnline && isAlreadyOffline}
         autoHideDuration={12000}
         onClose={handleClose}
         sx={{ maxWidth: '97%', zIndex: 3000 }}
