@@ -61,7 +61,6 @@ export const SynchronizationProvider = ({ children }: { children: any }) => {
 
     // 同期画面を非表示
     changeIsSynchronizing(false);
-    changeSynchronizingProgress(0);
 
     synchronizing.current = false;
   }, [changeIsSynchronizing, changeSynchronizingProgress]);

@@ -69,25 +69,23 @@ export const OfflineNotification = () => {
       >
         <Alert severity='error'>
           <AlertTitle>インターネットに接続されていません。</AlertTitle>
+          <div>オフライン中の操作はインターネット接続後にサーバーと同期されます。</div>
           <div>
-            オフライン中の操作はブラウザ内に保存され、インターネット接続後にサーバーと同期されます。
-          </div>
-          <div>
-            （インターネット接続前にブラウザを閉じたり、ページを再読み込みした場合、それまでの操作は保存されません。）
+            ※インターネット接続前にブラウザを閉じたり、ページを再読み込みした場合、同期は行われません。
           </div>
         </Alert>
       </Snackbar>
       <Snackbar
         open={openOffline && isAlreadyOffline}
-        autoHideDuration={8000}
+        autoHideDuration={12000}
         onClose={handleClose}
         sx={{ maxWidth: '97%', zIndex: 3000 }}
       >
         <Alert severity='info'>
           <AlertTitle>インターネットに接続されました。</AlertTitle>
-          {synchronizingProgress === 0
-            ? 'サーバー同期：完了'
-            : `サーバー同期：${progress(synchronizingProgress)}%`}
+          {synchronizingProgress >= 100
+            ? 'ステータス：同期完了'
+            : `ステータス：同期中　${progress(synchronizingProgress)}%`}
         </Alert>
       </Snackbar>
     </>

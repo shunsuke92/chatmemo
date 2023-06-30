@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import LinearProgress from '@mui/material/LinearProgress';
 import { Box } from '@mui/system';
 
-import { useMaskBackground } from '../hooks/useColor';
+import { useDarkMode } from '../hooks/useDarkMode';
 import { isSynchronizingState } from '../states/isSynchronizingState';
 import { synchronizingProgressState } from '../states/synchronizingProgressState';
 
@@ -13,7 +13,7 @@ interface SynchronizingProps {
 
 export const Synchronizing = (props: SynchronizingProps) => {
   const { progress } = props;
-  const maskBackground = useMaskBackground();
+  const darkMode = useDarkMode();
 
   const isSynchronizing = useRecoilValue(isSynchronizingState);
   const synchronizingProgress = useRecoilValue(synchronizingProgressState);
@@ -30,7 +30,7 @@ export const Synchronizing = (props: SynchronizingProps) => {
             position: 'fixed',
             top: 0,
             zIndex: 2000,
-            ...maskBackground,
+            backgroundColor: darkMode ? '#00000022' : '#ffffff22',
           }}
         >
           {progress && (
