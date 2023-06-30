@@ -7,7 +7,7 @@ import { Main } from '../components/Main';
 import { ManageTentativeIDProvider } from '../components/ManageTentativeIDContext';
 import { MenuBar } from '../components/MenuBar';
 import { SettingInfoProvider } from '../components/SettingInfoContext';
-import { SkeletonContents } from '../components/SkeletonContents';
+import { Skeleton } from '../components/Skeleton';
 import { SynchronizationProvider } from '../components/SynchronizationContext';
 
 import type { NextPage } from 'next';
@@ -21,15 +21,15 @@ const Home: NextPage = () => {
             <SynchronizationProvider>
               <ManageTentativeIDProvider>
                 <DelayCompletedProvider>
+                  <MenuBar />
                   <Main />
+                  <BottomBar />
                 </DelayCompletedProvider>
               </ManageTentativeIDProvider>
             </SynchronizationProvider>
           </SettingInfoProvider>
-          <SkeletonContents />
         </Auth>
-        <MenuBar />
-        <BottomBar />
+        <Skeleton />
       </RecoilRoot>
     </>
   );

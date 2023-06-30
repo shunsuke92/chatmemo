@@ -58,12 +58,9 @@ export const MenuBar = () => {
             {title}
           </MyTypography>
           <OfflineChip />
-          {initialLoading >= 1 && (
-            <>
-              <Login />
-              <User />
-            </>
-          )}
+
+          <Login />
+          <User />
         </Toolbar>
       </AppBar>
     </>
