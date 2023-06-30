@@ -1,21 +1,18 @@
 import { useRecoilValue } from 'recoil';
 
 import Box from '@mui/material/Box';
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
+import CircularProgress from '@mui/material/CircularProgress';
+import MuiSkeleton from '@mui/material/Skeleton';
 
-import { ContentsWrapper } from './ContentsWrapper';
-import { TimelineWrapper } from './TimelineWrapper';
-import { authUserState } from '../states/authUserState';
 import { initialLoadingState } from '../states/initialLoadingState';
 import { isLogginginState } from '../states/isLogginginState';
 
-export const SkeletonContents = () => {
+export const Skeleton = () => {
   const initialLoading = useRecoilValue(initialLoadingState);
-  const user = useRecoilValue(authUserState);
   const isLoggingin = useRecoilValue(isLogginginState);
 
-  const ContentsSkeleton = () => {
+  // 使用中止：コンテンツサイズが可変のため、あまりいいスケルトンではない。
+  /* const ContentsSkeleton = () => {
     return (
       <Stack spacing={1.5} direction='column' alignItems='flex-end' sx={{ width: '100%' }}>
         <Skeleton
@@ -39,11 +36,33 @@ export const SkeletonContents = () => {
         </Stack>
       </Stack>
     );
+  }; */
+
+  const MenuBarSkeleton = () => {
+    return (
+      <MuiSkeleton
+        className='fouc-bar-color'
+        variant='rectangular'
+        width={'100%'}
+        sx={{ height: { xs: '56px', sm: '64px' } }}
+      />
+    );
+  };
+
+  const BottomBarSkeleton = () => {
+    return (
+      <MuiSkeleton
+        className='fouc-bar-color'
+        variant='rectangular'
+        width={'100%'}
+        sx={{ height: { xs: '72px', sm: '80px' } }}
+      />
+    );
   };
 
   return (
     <>
-      {user && initialLoading < 2 && !isLoggingin && (
+      {initialLoading < 2 && !isLoggingin && (
         <Box
           sx={{
             position: 'fixed',
@@ -52,11 +71,13 @@ export const SkeletonContents = () => {
             width: '100%',
             height: '100vh',
             display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'center',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}
         >
-          <ContentsWrapper>
+          <MenuBarSkeleton />
+          {/* <ContentsWrapper>
             <TimelineWrapper>
               <Stack spacing={4} direction='column' alignItems='flex-end' sx={{ width: '100%' }}>
                 <ContentsSkeleton />
@@ -71,7 +92,9 @@ export const SkeletonContents = () => {
                 <ContentsSkeleton />
               </Stack>
             </TimelineWrapper>
-          </ContentsWrapper>
+          </ContentsWrapper> */}
+          <CircularProgress size={30} />
+          <BottomBarSkeleton />
         </Box>
       )}
     </>

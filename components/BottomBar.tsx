@@ -31,7 +31,7 @@ export const BottomBar = () => {
           className='bottom-bar fouc-bar-color'
         >
           <Synchronizing progress={false} />
-          {initialLoading >= 1 && <InputText />}
+          <InputText />
         </Box>
       )}
     </>
