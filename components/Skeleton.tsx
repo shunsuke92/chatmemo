@@ -2,6 +2,7 @@ import { useRecoilValue } from 'recoil';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import Fade from '@mui/material/Fade';
 import MuiSkeleton from '@mui/material/Skeleton';
 
 import { initialLoadingState } from '../states/initialLoadingState';
@@ -93,7 +94,14 @@ export const Skeleton = () => {
               </Stack>
             </TimelineWrapper>
           </ContentsWrapper> */}
-          <CircularProgress size={30} />
+          <Fade
+            in={true}
+            style={{
+              transitionDelay: '200ms',
+            }}
+          >
+            <CircularProgress size={25} sx={{ color: 'grey.500' }} disableShrink />
+          </Fade>
           <BottomBarSkeleton />
         </Box>
       )}
