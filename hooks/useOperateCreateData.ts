@@ -15,24 +15,26 @@ export const useOperateCreateData = () => {
 
   const createData = (value: string) => {
     if (isAdding) {
-      createComment(
-        {
-          id: 0,
-          body: value,
-          createdAt: '',
-          updatedAt: '',
-          deleted: false,
-          deletedAt: '',
-          _text: value.split(/\r\n|\n|\r/gm),
-          _date: '',
-          _time: '',
-          _synchronized: false,
-          _type: 'comment',
-          _id: '',
-          _memoId: '',
-        },
-        addingContentID,
-      );
+      if (addingContentID !== undefined) {
+        createComment(
+          {
+            id: 0,
+            body: value,
+            createdAt: '',
+            updatedAt: '',
+            deleted: false,
+            deletedAt: '',
+            _text: value.split(/\r\n|\n|\r/gm),
+            _date: '',
+            _time: '',
+            _synchronized: false,
+            _type: 'comment',
+            _id: '',
+            _memoId: '',
+          },
+          addingContentID,
+        );
+      }
     } else {
       createMemo({
         id: 0,

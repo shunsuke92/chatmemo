@@ -1,7 +1,7 @@
 import { getDate } from './getDate';
 import { getNowDate } from './getNowDate';
 import { getTime } from './getTime';
-import { Memo } from '../states/memoState';
+import { Memo } from '../types/index';
 
 const nowDate = getNowDate();
 const date = getDate(nowDate);

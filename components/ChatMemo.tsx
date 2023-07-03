@@ -6,7 +6,7 @@ import { DateChip } from './DateChip';
 import { InternalData } from './Timeline';
 import { DelayCompleted } from '../components/DelayCompletedContext';
 import { AlertDialog } from '../states/displayAlertDialogState';
-import { Comment } from '../states/memoState';
+import { Comment } from '../types/index';
 import { convertInternalDataToComment } from '../utils/convertInternalDataToComment';
 
 export interface ChatMemoProps {
@@ -18,9 +18,7 @@ export interface ChatMemoProps {
   delayCompleted: DelayCompleted | undefined;
   memoBackground: string;
   commentBackground: string;
-  changeAddingContentID: (id: string) => void;
   changeDisplayAlertDialog: (value: AlertDialog, deleteID?: string | undefined) => void;
-  changeEditingContentID: (id: string) => void;
   deleteMemo: (id: string | undefined) => Promise<void>;
   revertMemo: (id: string | undefined) => Promise<void>;
   updateServerCompleted: (id: string, value: boolean, date?: string | undefined) => Promise<void>;

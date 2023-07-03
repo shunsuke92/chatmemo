@@ -1,17 +1,18 @@
 import { useRecoilValue } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
-import { useClearEditingContentID } from '../hooks/useClearEditingContentID';
-import { useClearEditingInfo } from '../hooks/useClearEditingInfo';
 import { useDarkMode } from '../hooks/useDarkMode';
 import { useOverwriteEditingInfo } from '../hooks/useOverwriteEditingInfo';
+import { editingContentIDState } from '../states/editingContentIDState';
 import { editingInfoIsChangedState } from '../states/editingInfoIsChangedState';
+import { editingInfoState } from '../states/editingInfoState';
 
 export const EditCompleteButton = () => {
-  const clearEditingContentID = useClearEditingContentID();
-  const clearEditingInfo = useClearEditingInfo();
+  const setEditingContentID = useSetRecoilState(editingContentIDState);
+  const setEditingInfo = useSetRecoilState(editingInfoState);
   const overwriteEditingInfo = useOverwriteEditingInfo();
 
   const isChanged = useRecoilValue(editingInfoIsChangedState);
@@ -19,14 +20,14 @@ export const EditCompleteButton = () => {
   const darkMode = useDarkMode();
 
   const handleClickCancel = () => {
-    clearEditingContentID();
-    clearEditingInfo();
+    setEditingContentID(undefined);
+    setEditingInfo(undefined);
   };
 
   const handleClickSave = () => {
     overwriteEditingInfo();
-    clearEditingContentID();
-    clearEditingInfo();
+    setEditingContentID(undefined);
+    setEditingInfo(undefined);
   };
 
   return (

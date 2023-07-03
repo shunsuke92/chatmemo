@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { useCreateDemoID } from './useCreateDemoID';
 import { authUserState } from '../states/authUserState';
-import { Memo } from '../states/memoState';
+import { Memo } from '../types/index';
 import { convertSendMemo } from '../utils/convertSendMemo';
 
 export const useServerCreateMemoTable = () => {

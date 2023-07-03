@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-import { EditingInfo } from '../types/common';
+import { EditingInfo } from '../types/index';
 
 export const editingInfoState = atom<EditingInfo | undefined>({
   key: 'editingInfoState',

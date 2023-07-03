@@ -1,4 +1,4 @@
-import { Memo, Comment } from '../states/memoState';
+import { Memo, Comment } from '../types/index';
 
 export const addDateForDisplay = (data: Memo[]): Memo[] => {
   let addDate: Memo[] = [];

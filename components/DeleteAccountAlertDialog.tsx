@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { useRecoilValue } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -10,7 +11,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
-import { useClearDisplayAlertDialog } from '../hooks/useClearDisplayAlertDialog';
 import { useServerDeleteAccount } from '../hooks/useServerDeleteAccount';
 import { authUserState } from '../states/authUserState';
 import { displayAlertDialogState } from '../states/displayAlertDialogState';
@@ -20,7 +20,7 @@ export const DeleteAccountAlertDialog = () => {
   const user = useRecoilValue(authUserState);
 
   const displayAlertDialog = useRecoilValue(displayAlertDialogState);
-  const clearDisplayAlertDialog = useClearDisplayAlertDialog();
+  const setDisplayAlertDialog = useSetRecoilState(displayAlertDialogState);
 
   const deleteAccount = useServerDeleteAccount();
 
@@ -33,7 +33,7 @@ export const DeleteAccountAlertDialog = () => {
     setValue('');
 
     // ダイアログを閉じる
-    clearDisplayAlertDialog();
+    setDisplayAlertDialog(undefined);
 
     // サーバーからアカウントを削除する
     const result = await deleteAccount();
@@ -51,7 +51,7 @@ export const DeleteAccountAlertDialog = () => {
     setValue('');
 
     // ダイアログを閉じる
-    clearDisplayAlertDialog();
+    setDisplayAlertDialog(undefined);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

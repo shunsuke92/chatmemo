@@ -20,13 +20,13 @@ import { editingContentIDState } from '../states/editingContentIDState';
 export const useGetIsAdding = () => {
   const addingContentID = useRecoilValue(addingContentIDState);
 
-  return addingContentID.length > 0;
+  return addingContentID !== undefined;
 };
 
 export const useGetIsEditing = () => {
   const editingContentID = useRecoilValue(editingContentIDState);
 
-  return editingContentID.length > 0;
+  return editingContentID !== undefined;
 };
 
 export const Main = () => {

@@ -1,4 +1,4 @@
-import { Memo } from '../states/memoState';
+import { Memo } from '../types/index';
 
 export const splitByDisplayStep = (data: Memo[]): Memo[][] => {
   let resData: Memo[][] = [];

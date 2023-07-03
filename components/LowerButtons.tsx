@@ -9,9 +9,7 @@ interface LowerButtonsProps {
   data: InternalData;
   isTrash: boolean;
   isAllMemo: boolean;
-  changeAddingContentID: (id: string) => void;
   changeDisplayAlertDialog: (value: AlertDialog, deleteID?: string | undefined) => void;
-  changeEditingContentID: (id: string) => void;
   deleteMemo: (id: string | undefined) => Promise<void>;
   revertMemo: (id: string | undefined) => Promise<void>;
   createEditingInfo: (data: InternalData) => void;
@@ -22,9 +20,7 @@ export const LowerButtons = (props: LowerButtonsProps) => {
     data,
     isTrash,
     isAllMemo,
-    changeAddingContentID,
     changeDisplayAlertDialog,
-    changeEditingContentID,
     deleteMemo,
     revertMemo,
     createEditingInfo,
@@ -32,13 +28,12 @@ export const LowerButtons = (props: LowerButtonsProps) => {
 
   return (
     <Stack spacing={1} direction='row' justifyContent='space-between' alignItems='center'>
-      {isAllMemo && <AddCommentButton data={data} changeAddingContentID={changeAddingContentID} />}
+      {isAllMemo && <AddCommentButton data={data} />}
       <MoreButton
         data={data}
         isTrash={isTrash}
         isAllMemo={isAllMemo}
         changeDisplayAlertDialog={changeDisplayAlertDialog}
-        changeEditingContentID={changeEditingContentID}
         deleteMemo={deleteMemo}
         revertMemo={revertMemo}
         createEditingInfo={createEditingInfo}

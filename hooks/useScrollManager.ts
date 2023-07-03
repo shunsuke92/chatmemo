@@ -6,10 +6,10 @@ import { useReachPageTopMonitor } from '../hooks/useReachPageTopMonitor';
 import { authUserState } from '../states/authUserState';
 import { changeDisplayStepState } from '../states/changeDisplayStepState';
 import { initialScrollingState } from '../states/initialScrollingState';
-import { Memo } from '../states/memoState';
 import { resetDisplayPositionState } from '../states/resetDisplayPositionState';
 import { scheduledScrollingState } from '../states/scheduledScrollingState';
 import { scrollingIDState } from '../states/scrollingIDState';
+import { Memo } from '../types/index';
 
 export const useScrollManager = (displayData: Memo[]) => {
   const user = useRecoilValue(authUserState);

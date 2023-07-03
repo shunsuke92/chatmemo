@@ -3,9 +3,9 @@ import { useManageTentativeIDContext } from '../components/ManageTentativeIDCont
 import { useSynchronizationContext } from '../components/SynchronizationContext';
 
 export const useSaveServerVerCreateMemo = () => {
-  const synchronization = useSynchronizationContext();
   const changeSynchronizedFlag = useOperateUpdateSynchronizedFlag();
   const manageID = useManageTentativeIDContext();
+  const synchronization = useSynchronizationContext();
 
   const saveServerVerCreateMemo = async (
     func: () => Promise<number>,

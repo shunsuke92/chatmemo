@@ -8,8 +8,8 @@ import { displayStepState } from '../states/displayStepState';
 import { displayingMemoState } from '../states/displayingMemoState';
 import { initialLoadingState } from '../states/initialLoadingState';
 import { isAllDisplayedState } from '../states/isAllDisplayedState';
-import { Memo } from '../states/memoState';
 import { resetDisplayPositionState } from '../states/resetDisplayPositionState';
+import { Memo } from '../types/index';
 import { splitByDisplayStep } from '../utils/splitByDisplayStep';
 
 export const DataController = ({ children }: { children: any }) => {

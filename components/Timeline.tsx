@@ -9,8 +9,7 @@ import { TimelineWrapper } from './TimelineWrapper';
 import { useCreateTimelineProps } from '../hooks/useCreateTimelineProps';
 import { useGetIsExitAnimation } from '../hooks/useGetIsExitAnimation';
 import { useScrollManager } from '../hooks/useScrollManager';
-import { Memo } from '../states/memoState';
-import { Comment } from '../states/memoState';
+import { Memo, Comment } from '../types/index';
 
 export interface InternalData {
   type: 'memo' | 'comment';

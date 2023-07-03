@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useRecoilValue, useRecoilState } from 'recoil';
 
-import { changeMemoState } from '../states/changeMemoState';
+import { initialServerAccessedState } from '../states/initialServerAccessedState';
 import { isLogginginState } from '../states/isLogginginState';
 import { isLoggingoutState } from '../states/isLoggingoutState';
 import { openMenuDelayState } from '../states/openMenuDelayState';
@@ -14,12 +14,12 @@ export const useGetIsExitAnimation = () => {
   const [isLoggingout, setIsLoggingout] = useRecoilState(isLoggingoutState);
   const [isLoggingin, setIsLoggingin] = useRecoilState(isLogginginState);
 
-  const changeMemo = useRecoilValue(changeMemoState);
+  const initialServerAccessed = useRecoilValue(initialServerAccessedState);
 
   useEffect(() => {
     setIsLoggingout(false);
     setIsLoggingin(false);
-  }, [changeMemo, setIsLoggingout, setIsLoggingin]);
+  }, [initialServerAccessed, setIsLoggingout, setIsLoggingin]);
 
   useEffect(() => {
     // openSideDrawerをfalseにするのをTimelineコンポーネントレンダリング後にするため

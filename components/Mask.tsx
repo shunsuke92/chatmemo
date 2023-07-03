@@ -1,10 +1,12 @@
+import { useSetRecoilState } from 'recoil';
+
 import { Box } from '@mui/system';
 
 import { useGetIsAdding } from '../components/Main';
 import { useGetIsEditing } from '../components/Main';
-import { useClearAddingContentID } from '../hooks/useClearAddingContentID';
-import { useClearEditingContentID } from '../hooks/useClearEditingContentID';
 import { useMaskBackground } from '../hooks/useColor';
+import { addingContentIDState } from '../states/addingContentIDState';
+import { editingContentIDState } from '../states/editingContentIDState';
 
 interface MaskProps {
   height: any;
@@ -15,8 +17,8 @@ export const Mask = (props: MaskProps) => {
   const { height, top } = props;
   const maskBackground = useMaskBackground();
 
-  const clearAddingContentID = useClearAddingContentID();
-  const clearEditingContentID = useClearEditingContentID();
+  const setAddingContentID = useSetRecoilState(addingContentIDState);
+  const setEditingContentID = useSetRecoilState(editingContentIDState);
 
   const isAdding = useGetIsAdding();
   const isEditing = useGetIsEditing();
@@ -24,8 +26,8 @@ export const Mask = (props: MaskProps) => {
   const isDisplay: boolean = isAdding || isEditing;
 
   const handleClick = () => {
-    clearAddingContentID();
-    clearEditingContentID();
+    setAddingContentID(undefined);
+    setEditingContentID(undefined);
   };
 
   return (

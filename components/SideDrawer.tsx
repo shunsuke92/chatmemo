@@ -1,4 +1,5 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -13,7 +14,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 
 import { MyTypography } from './MyTypography';
 import { useChangeOpenMenuDelay } from '../hooks/useChangeOpenMenuDelay';
-import { useChangeSelectedDisplayType } from '../hooks/useChangeSelectedDisplayType';
 import { useIconColor } from '../hooks/useColor';
 import { openSideDrawerState } from '../states/openSideDrawerState';
 import {
@@ -28,7 +28,7 @@ export const SideDrawer = () => {
   const list1 = DISPLAY_TYPE.slice(0, 2);
   const list2 = DISPLAY_TYPE.slice(2, 3);
 
-  const changeSelectedDisplayType = useChangeSelectedDisplayType();
+  const setSelectedDisplayType = useSetRecoilState(selectedDisplayTypeState);
 
   const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
 
@@ -51,7 +51,7 @@ export const SideDrawer = () => {
 
   const handleClick = (data: DisplayType) => () => {
     if (selectedDisplayType.id !== data.id) {
-      changeSelectedDisplayType(data);
+      setSelectedDisplayType(data);
     }
   };
 

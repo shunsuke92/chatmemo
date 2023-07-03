@@ -1,4 +1,4 @@
-import { Memo } from '../states/memoState';
+import { Memo } from '../types/index';
 
 export const deepCopyMemo = (memo: Memo) => {
   const copyMemo = { ...memo };

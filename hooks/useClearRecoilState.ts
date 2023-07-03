@@ -44,13 +44,13 @@ export const useClearRecoilState = () => {
   const setSynchronizingProgress = useSetRecoilState(synchronizingProgressState);
 
   const clearRecoilState = () => {
-    setAddingContentID('');
+    setAddingContentID(undefined);
+    setEditingContentID(undefined);
     /* setAuthUser(undefined); */
     setDeleteID('');
     setDemoID(1000);
-    setDisplayAlertDialog('');
+    setDisplayAlertDialog(undefined);
     setDisplayStep(1);
-    setEditingContentID('');
     setEditingInfo(undefined);
     setErrID(0);
     setIsAllDisplayed(true);

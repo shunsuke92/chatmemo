@@ -1,11 +1,14 @@
 import { createContext, useContext, useRef } from 'react';
 
+import { useRecoilState } from 'recoil';
+
 import {
   useLocalUpdateMemoMulti,
   ChangeableMemo,
   LocalUpdateMemoProps,
 } from '../hooks/useLocalUpdateData';
 import { useSetTimeout } from '../hooks/useSetTimeout';
+import { addingContentIDState } from '../states/addingContentIDState';
 
 export interface DelayCompleted {
   updateLocalCompleted: (id: string, value: boolean, date?: string) => void;
@@ -27,9 +30,22 @@ export const DelayCompletedProvider = ({ children }: { children: any }) => {
   const bookDelayCompletedIDRef = useRef<BookDelayCompletedID[]>([]);
   const localUpdateData = useLocalUpdateMemoMulti();
   const setTimer = useSetTimeout();
+  const [addingContentID, setAddingContentID] = useRecoilState(addingContentIDState);
+  const addingContentIDRef = useRef<string | undefined>(undefined);
+  addingContentIDRef.current = addingContentID;
 
   const updateLocalCompleted = (id: string, value: boolean, date?: string) => {
     bookDelayCompletedIDRef.current.push({ id: id, value: value, date: date });
+
+    let setData: LocalUpdateMemoProps[] = [];
+    let tmpData: ChangeableMemo = {};
+    tmpData.completed = value;
+    if (value) {
+      tmpData.completedAt = date;
+    }
+
+    setData.push({ memoId: id, data: tmpData });
+    localUpdateData(setData, 'original');
 
     // 時間差で更新
     setTimer(updateLocalCompletedCallback, 2000);
@@ -47,8 +63,13 @@ export const DelayCompletedProvider = ({ children }: { children: any }) => {
       }
 
       setData.push({ memoId: id, data: tmpData });
+
+      // コメント追加中のメモを完了したとき
+      if (id === addingContentIDRef.current) {
+        setAddingContentID(undefined);
+      }
     }
-    localUpdateData(setData);
+    localUpdateData(setData, 'display');
 
     bookDelayCompletedIDRef.current = [];
   };

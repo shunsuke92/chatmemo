@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import { useSettingInfoContext } from '../components/SettingInfoContext';
-import { changeMemoState } from '../states/changeMemoState';
+import { initialServerAccessedState } from '../states/initialServerAccessedState';
 import { memoFilterAllHideCompletedState } from '../states/memoFilterAllHideCompletedState';
 import { memoFilterAllState } from '../states/memoFilterAllState';
 import { memoFilterCompletedState } from '../states/memoFilterCompletedState';
@@ -15,7 +15,7 @@ export const useGetNowAllTabData = () => {
   const settingInfo = useSettingInfoContext();
   const setting = settingInfo?.setting;
 
-  const changeMemo = useRecoilValue(changeMemoState);
+  const initialServerAccessed = useRecoilValue(initialServerAccessedState);
 
   let state;
   if (selectedDisplayType.id === 1 && !setting?.hide_completed_memo) {
@@ -39,9 +39,10 @@ export const useGetNowAllTabData = () => {
 
   const nowAllTabData = useMemo(
     () => memo,
-    // オリジナルデータ（memo）は依存関係に含めない
+    // オリジナルデータの変更を表示中のデータに反映させないように、
+    // nowAllTabDataは依存関係にある３つの場合だけ更新したい
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [changeMemo, selectedDisplayType.id, setting?.hide_completed_memo],
+    [initialServerAccessed, selectedDisplayType.id, setting?.hide_completed_memo],
   );
 
   return nowAllTabData;
