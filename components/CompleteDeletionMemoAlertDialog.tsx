@@ -1,4 +1,5 @@
 import { useRecoilValue } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -7,7 +8,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import { useClearDisplayAlertDialog } from '../hooks/useClearDisplayAlertDialog';
 import { useOperateCompleteDeletionMemo } from '../hooks/useOperateCompleteDeletionMemo';
 import { deleteIDState } from '../states/deleteIDState';
 import { displayAlertDialogState } from '../states/displayAlertDialogState';
@@ -17,7 +17,7 @@ export const CompleteDeletionMemoAlertDialog = () => {
 
   const displayAlertDialog = useRecoilValue(displayAlertDialogState);
   const deleteID = useRecoilValue(deleteIDState);
-  const clearDisplayAlertDialog = useClearDisplayAlertDialog();
+  const setDisplayAlertDialog = useSetRecoilState(displayAlertDialogState);
 
   const isDisplay: boolean = displayAlertDialog === 'complete-deletion-memo';
 
@@ -25,12 +25,12 @@ export const CompleteDeletionMemoAlertDialog = () => {
     completeDeletionMemo(deleteID);
 
     // ダイアログを閉じる
-    clearDisplayAlertDialog();
+    setDisplayAlertDialog(undefined);
   };
 
   const handleClose = () => {
     // ダイアログを閉じる
-    clearDisplayAlertDialog();
+    setDisplayAlertDialog(undefined);
   };
 
   return (

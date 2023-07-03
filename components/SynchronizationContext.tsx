@@ -2,9 +2,9 @@ import { createContext, useState, useContext, useEffect, useCallback, useRef } f
 
 import { useSetRecoilState } from 'recoil';
 
-import { useChangeIsSynchronizing } from '../hooks/useChangeIsSynchronizing';
-import { useChangeSynchronizingProgress } from '../hooks/useChangeSynchronizingProgress';
 import { isOnlineState } from '../states/isOnlineState';
+import { isSynchronizingState } from '../states/isSynchronizingState';
+import { synchronizingProgressState } from '../states/synchronizingProgressState';
 
 export interface Synchronization {
   setUnsynchronizedFunction: (func: () => () => Promise<boolean> | Promise<number>) => void;
@@ -17,8 +17,8 @@ export const useSynchronizationContext = () => {
 };
 
 export const SynchronizationProvider = ({ children }: { children: any }) => {
-  const changeIsSynchronizing = useChangeIsSynchronizing();
-  const changeSynchronizingProgress = useChangeSynchronizingProgress();
+  const setIsSynchronizing = useSetRecoilState(isSynchronizingState);
+  const setSynchronizingProgress = useSetRecoilState(synchronizingProgressState);
 
   const unsynchronizedFunction = useRef<(() => () => Promise<boolean> | Promise<number>)[]>([]);
   const [standby, setStandby] = useState(false);
@@ -37,9 +37,9 @@ export const SynchronizationProvider = ({ children }: { children: any }) => {
     synchronizing.current = true;
 
     // 同期画面を表示
-    changeIsSynchronizing(true);
+    setIsSynchronizing(true);
     const total = unsynchronizedFunction.current.length;
-    changeSynchronizingProgress(0);
+    setSynchronizingProgress(0);
 
     for (let i = 0; unsynchronizedFunction.current.length > 0; i++) {
       const func = unsynchronizedFunction.current[0];
@@ -49,7 +49,7 @@ export const SynchronizationProvider = ({ children }: { children: any }) => {
 
       if (result === true || result !== -1) {
         unsynchronizedFunction.current.shift();
-        changeSynchronizingProgress(((i + 2) / total) * 100);
+        setSynchronizingProgress(((i + 2) / total) * 100);
       } else {
         break;
       }
@@ -60,10 +60,10 @@ export const SynchronizationProvider = ({ children }: { children: any }) => {
     }
 
     // 同期画面を非表示
-    changeIsSynchronizing(false);
+    setIsSynchronizing(false);
 
     synchronizing.current = false;
-  }, [changeIsSynchronizing, changeSynchronizingProgress]);
+  }, [setIsSynchronizing, setSynchronizingProgress]);
 
   useEffect(() => {
     window.addEventListener('online', checkOnline);

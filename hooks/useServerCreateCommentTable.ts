@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useCreateDemoID } from './useCreateDemoID';
 import { useManageTentativeIDContext } from '../components/ManageTentativeIDContext';
 import { authUserState } from '../states/authUserState';
-import { Comment } from '../states/memoState';
+import { Comment } from '../types/index';
 import { convertSendComment } from '../utils/convertSendComment';
 
 export const useServerCreateCommentTable = () => {

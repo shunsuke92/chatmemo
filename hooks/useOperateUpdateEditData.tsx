@@ -14,7 +14,7 @@ import { useServerUpdateMemoTable } from './useServerUpdateMemoTable';
 import { useChangeDisplayAlertDialog } from '../hooks/useChangeDisplayAlertDialog';
 import { editingContentIDState } from '../states/editingContentIDState';
 import { scrollingIDState } from '../states/scrollingIDState';
-import { EditingContent } from '../types/common';
+import { EditingContent } from '../types/index';
 import { getNowDate } from '../utils/getNowDate';
 
 export const useOperateUpdateEditData = () => {

@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 import { InternalData } from './Timeline';
 import { AlertDialog } from '../states/displayAlertDialogState';
+import { editingContentIDState } from '../states/editingContentIDState';
 import { scrollingIDState } from '../states/scrollingIDState';
 
 interface MoreButtonProps {
@@ -16,7 +17,6 @@ interface MoreButtonProps {
   isTrash: boolean;
   isAllMemo: boolean;
   changeDisplayAlertDialog: (value: AlertDialog, deleteID?: string | undefined) => void;
-  changeEditingContentID: (id: string) => void;
   deleteMemo: (id: string | undefined) => Promise<void>;
   revertMemo: (id: string | undefined) => Promise<void>;
   createEditingInfo: (data: InternalData) => void;
@@ -28,7 +28,6 @@ export const MoreButton = (props: MoreButtonProps) => {
     isTrash,
     isAllMemo,
     changeDisplayAlertDialog,
-    changeEditingContentID,
     deleteMemo,
     revertMemo,
     createEditingInfo,
@@ -37,6 +36,7 @@ export const MoreButton = (props: MoreButtonProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const setScrollingID = useSetRecoilState(scrollingIDState);
+  const setEditingContentID = useSetRecoilState(editingContentIDState);
 
   const open = Boolean(anchorEl);
 
@@ -55,7 +55,7 @@ export const MoreButton = (props: MoreButtonProps) => {
       // HACK: 特定条件で意図しないスクロールが発生する事象に対応するため
       //       MUIのMenuコンポーネントで、メニューを開いているときにスクロールを無効にしていることが影響？
       setTimeout(() => {
-        changeEditingContentID(id);
+        setEditingContentID(id);
         createEditingInfo(data);
 
         // スクロール予約

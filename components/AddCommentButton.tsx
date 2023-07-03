@@ -1,20 +1,24 @@
+import { useSetRecoilState } from 'recoil';
+
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
 import { InternalData } from './Timeline';
+import { addingContentIDState } from '../states/addingContentIDState';
 
 interface AddCommentButtonProps {
   data: InternalData;
-  changeAddingContentID: (id: string) => void;
 }
 
 export const AddCommentButton = (props: AddCommentButtonProps) => {
-  const { data, changeAddingContentID } = props;
+  const { data } = props;
+
+  const setAddingContentID = useSetRecoilState(addingContentIDState);
 
   const handleClick = (id: string) => {
     return () => {
-      changeAddingContentID(id);
+      setAddingContentID(id);
     };
   };
 

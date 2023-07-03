@@ -23,9 +23,7 @@ export const ChatPack = (props: ChatPackProps) => {
     delayCompleted,
     memoBackground,
     commentBackground,
-    changeAddingContentID,
     changeDisplayAlertDialog,
-    changeEditingContentID,
     deleteMemo,
     revertMemo,
     updateServerCompleted,
@@ -85,9 +83,7 @@ export const ChatPack = (props: ChatPackProps) => {
           data={data}
           isTrash={isTrash}
           isAllMemo={isAllMemo}
-          changeAddingContentID={changeAddingContentID}
           changeDisplayAlertDialog={changeDisplayAlertDialog}
-          changeEditingContentID={changeEditingContentID}
           deleteMemo={deleteMemo}
           revertMemo={revertMemo}
           createEditingInfo={createEditingInfo}

@@ -1,4 +1,4 @@
-import { Memo } from '../states/memoState';
+import { Memo } from '../types/index';
 
 export const processForCompleted = (memo: Memo[]) => {
   return (

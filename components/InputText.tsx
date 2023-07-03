@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { useRecoilValue } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
@@ -14,9 +15,9 @@ import { useGetIsAdding } from '../components/Main';
 import { useGetIsEditing } from '../components/Main';
 import { Mask } from '../components/Mask';
 import { useSettingInfoContext } from '../components/SettingInfoContext';
-import { useClearAddingContentID } from '../hooks/useClearAddingContentID';
 import { useMobileKeyboardOpen } from '../hooks/useMobileKeyboardOpen';
 import { useOperateCreateData } from '../hooks/useOperateCreateData';
+import { addingContentIDState } from '../states/addingContentIDState';
 import { isMobileState } from '../states/isMobileState';
 import { hasValidString } from '../utils/hasValidString';
 
@@ -35,7 +36,7 @@ export const InputText = () => {
   const isMobile = useRecoilValue(isMobileState);
   const mobileKeyboardOpen = useMobileKeyboardOpen();
 
-  const clearAddingContentID = useClearAddingContentID();
+  const setAddingContentID = useSetRecoilState(addingContentIDState);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -97,9 +98,9 @@ export const InputText = () => {
 
   useEffect(() => {
     if (!mobileKeyboardOpen) {
-      clearAddingContentID();
+      setAddingContentID(undefined);
     }
-    // clearAddingContentIDは依存関係に入れない
+    // setAddingContentIDは依存関係に入れない
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mobileKeyboardOpen]);
 

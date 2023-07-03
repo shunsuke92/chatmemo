@@ -1,5 +1,5 @@
 import { InternalData } from '../components/Timeline';
-import { Memo } from '../states/memoState';
+import { Memo } from '../types/index';
 
 export const convertInternalDataToMemo = (data: Memo): InternalData => {
   const res: InternalData = {

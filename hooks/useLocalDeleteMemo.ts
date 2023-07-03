@@ -7,7 +7,6 @@ export const useLocalDeleteMemo = () => {
   const setMemo = useSetRecoilState(memoState);
   const setFilteredMemo = useSetRecoilState(displayingMemoState);
 
-  // 重要：setMemoとsetFilteredMemoには同じ処理を適応すること
   const localDeleteMemo = (memoId: string) => {
     // オリジナルデータを更新
     setMemo((prevState) => prevState.filter((value) => value._id !== memoId));

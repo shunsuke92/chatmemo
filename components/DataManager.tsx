@@ -5,10 +5,10 @@ import { useSetRecoilState, useRecoilValue } from 'recoil';
 import axios from 'axios';
 
 import { authUserState } from '../states/authUserState';
-import { changeMemoState } from '../states/changeMemoState';
 import { initialScrollingState } from '../states/initialScrollingState';
+import { initialServerAccessedState } from '../states/initialServerAccessedState';
 import { memoState } from '../states/memoState';
-import { Memo } from '../states/memoState';
+import { Memo } from '../types/index';
 import { demoData } from '../utils/demoData';
 import { getDate } from '../utils/getDate';
 import { getTime } from '../utils/getTime';
@@ -17,7 +17,8 @@ export const DataManager = ({ children }: { children: any }) => {
   const [isGettingData, setIsGettingData] = useState(true);
   const setMemo = useSetRecoilState(memoState);
   const setInitialScrolling = useSetRecoilState(initialScrollingState);
-  const setChangeMemo = useSetRecoilState(changeMemoState);
+  const setInitialServerAccessed = useSetRecoilState(initialServerAccessedState);
+  // finishedInitialServerAccess
 
   const user = useRecoilValue(authUserState);
 
@@ -63,18 +64,18 @@ export const DataManager = ({ children }: { children: any }) => {
 
             setMemo(clientData);
             setInitialScrolling(true);
-            setChangeMemo((prevState) => prevState + 1);
+            setInitialServerAccessed((prevState) => prevState + 1);
             setIsGettingData(false);
           })
           .catch((err) => {});
       } else {
         setMemo(demoData);
         setInitialScrolling(true);
-        setChangeMemo((prevState) => prevState + 1);
+        setInitialServerAccessed((prevState) => prevState + 1);
         setIsGettingData(false);
       }
     })();
-  }, [user, setMemo, setInitialScrolling, setChangeMemo]);
+  }, [user, setMemo, setInitialScrolling, setInitialServerAccessed]);
 
   return <>{isGettingData ? <></> : <main>{children}</main>}</>;
 };

@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { useRecoilValue } from 'recoil';
 
 import { useSettingInfoContext } from '../components/SettingInfoContext';

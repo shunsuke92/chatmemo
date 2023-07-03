@@ -1,4 +1,4 @@
-import { Comment } from '../states/memoState';
+import { Comment } from '../types/index';
 
 interface SendComment {
   body: string;
