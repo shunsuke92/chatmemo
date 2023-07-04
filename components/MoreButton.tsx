@@ -125,8 +125,10 @@ export const MoreButton = (props: MoreButtonProps) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
+        {/* HACK: ダミー（PC版のSafariで先頭のコンテンツにフォーカスが当たってしまう事象への対応） */}
+        <MenuItem sx={{ p: 0 }}></MenuItem>
         {isAllMemo && (
-          <MenuItem onClick={handleClickAddComment(data.id)} sx={{ fontSize: '0.8rem' }}>
+          <MenuItem onClick={handleClickAddComment(data.id)}>
             <ListItemIcon>
               <AddIcon fontSize='small' />
             </ListItemIcon>
@@ -134,7 +136,7 @@ export const MoreButton = (props: MoreButtonProps) => {
           </MenuItem>
         )}
         {isAllMemo && (
-          <MenuItem onClick={handleClickEdit(data.id)} sx={{ fontSize: '0.8rem' }}>
+          <MenuItem onClick={handleClickEdit(data.id)}>
             <ListItemIcon>
               <EditIcon fontSize='small' />
             </ListItemIcon>
@@ -142,14 +144,14 @@ export const MoreButton = (props: MoreButtonProps) => {
           </MenuItem>
         )}
         {isTrash && (
-          <MenuItem onClick={handleClickRevert(data.id)} sx={{ fontSize: '0.8rem' }}>
+          <MenuItem onClick={handleClickRevert(data.id)}>
             <ListItemIcon>
               <KeyboardReturnIcon fontSize='small' />
             </ListItemIcon>
             <Typography variant='body2'>元に戻す</Typography>
           </MenuItem>
         )}
-        <MenuItem onClick={handleClickDelete(data.id)} sx={{ fontSize: '0.8rem' }}>
+        <MenuItem onClick={handleClickDelete(data.id)}>
           <ListItemIcon>
             <DeleteForeverIcon fontSize='small' />
           </ListItemIcon>
