@@ -2,10 +2,16 @@ import { useState } from 'react';
 
 import { useSetRecoilState } from 'recoil';
 
+import AddIcon from '@mui/icons-material/Add';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 
 import { InternalData } from './Timeline';
 import { addingContentIDState } from '../states/addingContentIDState';
@@ -121,21 +127,33 @@ export const MoreButton = (props: MoreButtonProps) => {
       >
         {isAllMemo && (
           <MenuItem onClick={handleClickAddComment(data.id)} sx={{ fontSize: '0.8rem' }}>
-            コメント
+            <ListItemIcon>
+              <AddIcon fontSize='small' />
+            </ListItemIcon>
+            <Typography variant='body2'>コメント</Typography>
           </MenuItem>
         )}
         {isAllMemo && (
           <MenuItem onClick={handleClickEdit(data.id)} sx={{ fontSize: '0.8rem' }}>
-            編集
+            <ListItemIcon>
+              <EditIcon fontSize='small' />
+            </ListItemIcon>
+            <Typography variant='body2'>編集</Typography>
           </MenuItem>
         )}
         {isTrash && (
           <MenuItem onClick={handleClickRevert(data.id)} sx={{ fontSize: '0.8rem' }}>
-            元に戻す
+            <ListItemIcon>
+              <KeyboardReturnIcon fontSize='small' />
+            </ListItemIcon>
+            <Typography variant='body2'>元に戻す</Typography>
           </MenuItem>
         )}
         <MenuItem onClick={handleClickDelete(data.id)} sx={{ fontSize: '0.8rem' }}>
-          削除
+          <ListItemIcon>
+            <DeleteForeverIcon fontSize='small' />
+          </ListItemIcon>
+          <Typography variant='body2'>削除</Typography>
         </MenuItem>
       </Menu>
     </>
