@@ -76,7 +76,7 @@ export const AddCommentTextField = (props: AddCommentTextFieldProps) => {
                       mb: 0.3,
                     }}
                   >
-                    {'コメントを入力…'}
+                    {'コメントを入力'}
                   </InputLabel>
                 )}
               </InputAdornment>

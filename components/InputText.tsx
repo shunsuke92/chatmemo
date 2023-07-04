@@ -106,13 +106,25 @@ export const InputText = () => {
           multiline
           maxRows={5}
           value={value}
-          /* placeholder='メモを入力…' */
           size='small'
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           sx={{
             width: 500,
             '& > div': { borderRadius: '20px', pl: 2.4 },
+            '& .MuiInputBase-input': {
+              zIndex: 10,
+            },
+            '& .MuiOutlinedInput-root': {
+              '&.Mui-focused fieldset': {
+                border: 'none',
+                backgroundColor: '#52525299',
+              },
+              '&:hover fieldset': {
+                border: 'none',
+                backgroundColor: '#52525299',
+              },
+            },
           }}
           disabled={isEditing}
           InputProps={{
@@ -122,9 +134,9 @@ export const InputText = () => {
                 {!Boolean(value) && (
                   <InputLabel
                     htmlFor='input'
-                    sx={{ position: 'fixed', color: 'text.disabled', mb: 0.3 }}
+                    sx={{ position: 'fixed', color: 'text.disabled', mb: 0.3, zIndex: 10 }}
                   >
-                    {'メモを入力…'}
+                    {'メモを入力'}
                   </InputLabel>
                 )}
               </InputAdornment>
@@ -136,6 +148,7 @@ export const InputText = () => {
                     aria-label='clear input character'
                     onClick={handleClickClearCharacter}
                     edge='end'
+                    sx={{ zIndex: 10 }}
                   >
                     <ClearIcon />
                   </IconButton>
