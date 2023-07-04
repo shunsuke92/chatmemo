@@ -11,10 +11,10 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
 import { AddButton } from '../components/AddButton';
-import { useGetIsAdding } from '../components/Main';
 import { useGetIsEditing } from '../components/Main';
 import { Mask } from '../components/Mask';
 import { useSettingInfoContext } from '../components/SettingInfoContext';
+import { useDarkMode } from '../hooks/useDarkMode';
 import { useMobileKeyboardOpen } from '../hooks/useMobileKeyboardOpen';
 import { useOperateCreateData } from '../hooks/useOperateCreateData';
 import { addingContentIDState } from '../states/addingContentIDState';
@@ -25,7 +25,6 @@ export const InputText = () => {
   const [value, setValue] = useState('');
   const [height, setHeight] = useState(0);
 
-  const isAdding = useGetIsAdding();
   const isEditing = useGetIsEditing();
 
   const createData = useOperateCreateData();
@@ -35,6 +34,8 @@ export const InputText = () => {
 
   const isMobile = useRecoilValue(isMobileState);
   const mobileKeyboardOpen = useMobileKeyboardOpen();
+
+  const darkMode = useDarkMode();
 
   const setAddingContentID = useSetRecoilState(addingContentIDState);
 
@@ -58,15 +59,6 @@ export const InputText = () => {
     createData(value);
     setValue('');
   };
-
-  useEffect(() => {
-    // コメント追加モードになったら入力欄にフォーカスする
-    if (isAdding) {
-      document.getElementById('input')?.focus();
-    } else {
-      document.getElementById('input')?.blur();
-    }
-  }, [isAdding]);
 
   const handleClickInputArea = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -117,15 +109,25 @@ export const InputText = () => {
           multiline
           maxRows={5}
           value={value}
-          /* placeholder='メモを入力…' */
           size='small'
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           sx={{
             width: 500,
-            zIndex: isAdding ? 2500 : null,
-            position: isAdding ? 'relative' : null,
             '& > div': { borderRadius: '20px', pl: 2.4 },
+            '& .MuiInputBase-input': {
+              zIndex: 10,
+            },
+            '& .MuiOutlinedInput-root': {
+              '&.Mui-focused fieldset': {
+                border: 'none',
+                backgroundColor: darkMode ? '#52525299' : '#cccccc99',
+              },
+              '&:hover fieldset': {
+                border: 'none',
+                backgroundColor: darkMode ? '#52525299' : '#cccccc99',
+              },
+            },
           }}
           disabled={isEditing}
           InputProps={{
@@ -135,9 +137,9 @@ export const InputText = () => {
                 {!Boolean(value) && (
                   <InputLabel
                     htmlFor='input'
-                    sx={{ position: 'fixed', color: 'text.disabled', mb: 0.3 }}
+                    sx={{ position: 'fixed', color: 'text.disabled', mb: 0.3, zIndex: 10 }}
                   >
-                    {!isAdding ? 'メモを入力…' : 'コメントを入力…'}
+                    {'メモを入力'}
                   </InputLabel>
                 )}
               </InputAdornment>
@@ -149,6 +151,7 @@ export const InputText = () => {
                     aria-label='clear input character'
                     onClick={handleClickClearCharacter}
                     edge='end'
+                    sx={{ zIndex: 10 }}
                   >
                     <ClearIcon />
                   </IconButton>

@@ -43,7 +43,7 @@ export const CompleteDeletionMemoAlertDialog = () => {
       <DialogTitle id='alert-dialog-title'>メモを完全に削除しますか？</DialogTitle>
       <DialogContent>
         <DialogContentText id='alert-dialog-description'>
-          このメモは完全に削除されます。この操作は取消できません。
+          メモは完全に削除され、元に戻すことはできません。
         </DialogContentText>
       </DialogContent>
       <DialogActions>

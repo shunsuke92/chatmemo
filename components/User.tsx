@@ -277,21 +277,23 @@ export const User = () => {
             <MenuItem onClick={handleClickSetting}>
               <Stack direction='row' spacing={1.5}>
                 <SettingsIcon sx={{ color: iconColor }} />
-                <MyTypography>設定</MyTypography>
+                <MyTypography type='button'>設定</MyTypography>
               </Stack>
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleClickLogout}>
               <Stack direction='row' spacing={1.5}>
                 <LogoutIcon sx={{ color: iconColor }} />
-                <MyTypography>ログアウト</MyTypography>
+                <MyTypography type='button'>ログアウト</MyTypography>
               </Stack>
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleClickDeleteAccount}>
               <Stack direction='row' spacing={1.5}>
                 <DangerousIcon color='error' />
-                <MyTypography color='error'>アカウント削除</MyTypography>
+                <MyTypography type='button' color='error'>
+                  アカウント削除
+                </MyTypography>
               </Stack>
             </MenuItem>
           </div>

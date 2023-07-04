@@ -2,12 +2,20 @@ import { useState } from 'react';
 
 import { useSetRecoilState } from 'recoil';
 
+import AddIcon from '@mui/icons-material/Add';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useMediaQuery } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 
 import { InternalData } from './Timeline';
+import { addingContentIDState } from '../states/addingContentIDState';
 import { AlertDialog } from '../states/displayAlertDialogState';
 import { editingContentIDState } from '../states/editingContentIDState';
 import { scrollingIDState } from '../states/scrollingIDState';
@@ -37,6 +45,9 @@ export const MoreButton = (props: MoreButtonProps) => {
 
   const setScrollingID = useSetRecoilState(scrollingIDState);
   const setEditingContentID = useSetRecoilState(editingContentIDState);
+  const setAddingContentID = useSetRecoilState(addingContentIDState);
+
+  const min880 = useMediaQuery('(min-width:880px)');
 
   const open = Boolean(anchorEl);
 
@@ -46,6 +57,20 @@ export const MoreButton = (props: MoreButtonProps) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleClickAddComment = (id: string) => {
+    return () => {
+      setAnchorEl(null);
+
+      // HACK: 特定条件で意図しないスクロールが発生する事象に対応するため
+      //       MUIのMenuコンポーネントで、メニューを開いているときにスクロールを無効にしていることが影響？
+      setTimeout(() => {
+        setAddingContentID(id);
+        // スクロール予約
+        setScrollingID(id);
+      }, 1);
+    };
   };
 
   const handleClickEdit = (id: string) => {
@@ -89,7 +114,10 @@ export const MoreButton = (props: MoreButtonProps) => {
     <>
       <IconButton
         aria-label='more button'
-        sx={{ color: 'text.secondary' }}
+        sx={{
+          color: 'grey.600',
+          p: '2px',
+        }}
         onClick={handleClickMore}
         size='small'
       >
@@ -99,22 +127,41 @@ export const MoreButton = (props: MoreButtonProps) => {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        sx={{ mt: 1 }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        sx={{ transform: min880 ? 'translateX(4px)' : 'translateX(-4px)' }}
+        transformOrigin={{ horizontal: min880 ? 'left' : 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: min880 ? 'right' : 'left', vertical: 'top' }}
       >
+        {/* HACK: ダミー（PC版のSafariで先頭のコンテンツにフォーカスが当たってしまう事象への対応） */}
+        <MenuItem sx={{ m: 0, p: 0, width: 0, height: 0, display: 'none' }}></MenuItem>
         {isAllMemo && (
-          <MenuItem onClick={handleClickEdit(data.id)} sx={{ fontSize: '0.8rem' }}>
-            編集
+          <MenuItem onClick={handleClickAddComment(data.id)}>
+            <ListItemIcon>
+              <AddIcon fontSize='small' />
+            </ListItemIcon>
+            <Typography variant='body2'>コメント</Typography>
+          </MenuItem>
+        )}
+        {isAllMemo && (
+          <MenuItem onClick={handleClickEdit(data.id)}>
+            <ListItemIcon>
+              <EditIcon fontSize='small' />
+            </ListItemIcon>
+            <Typography variant='body2'>編集</Typography>
           </MenuItem>
         )}
         {isTrash && (
-          <MenuItem onClick={handleClickRevert(data.id)} sx={{ fontSize: '0.8rem' }}>
-            元に戻す
+          <MenuItem onClick={handleClickRevert(data.id)}>
+            <ListItemIcon>
+              <KeyboardReturnIcon fontSize='small' />
+            </ListItemIcon>
+            <Typography variant='body2'>元に戻す</Typography>
           </MenuItem>
         )}
-        <MenuItem onClick={handleClickDelete(data.id)} sx={{ fontSize: '0.8rem' }}>
-          削除
+        <MenuItem onClick={handleClickDelete(data.id)}>
+          <ListItemIcon>
+            <DeleteForeverIcon fontSize='small' />
+          </ListItemIcon>
+          <Typography variant='body2'>削除</Typography>
         </MenuItem>
       </Menu>
     </>

@@ -82,7 +82,7 @@ export const SideDrawer = () => {
                       <CheckCircleIcon sx={{ color: iconColor }} />
                     )}
                   </ListItemIcon>
-                  <MyTypography mt={0.5} mb={0.5}>
+                  <MyTypography type='button' mt={0.5} mb={0.5}>
                     {list.name}
                   </MyTypography>
                 </ListItemButton>
@@ -97,7 +97,7 @@ export const SideDrawer = () => {
                   <ListItemIcon sx={{ minWidth: '42px' }}>
                     <DeleteIcon sx={{ color: iconColor }} />
                   </ListItemIcon>
-                  <MyTypography mt={0.5} mb={0.5}>
+                  <MyTypography type='button' mt={0.5} mb={0.5}>
                     {list.name}
                   </MyTypography>
                 </ListItemButton>

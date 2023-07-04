@@ -68,11 +68,11 @@ export const DeleteAccountAlertDialog = () => {
       <DialogTitle id='alert-dialog-title'>アカウントの削除</DialogTitle>
       <DialogContent>
         <DialogContentText id='alert-dialog-description'>
-          アカウントの削除を実行すると、これまでに保存したメモを含め、すべての情報が削除されます。この操作は取消できません。
+          アカウントを削除すると、これまでに保存したメモ等、すべての情報が削除されます。削除したアカウントを復旧することはできません。
         </DialogContentText>
         <DialogContentText id='alert-dialog-description' mt={3}>
           以下の入力フィールドに&quot;{user?.displayName}&quot;
-          を入力し、「削除」ボタンを押下してください。
+          を入力し、「削除」ボタンを押してください。
         </DialogContentText>
         <TextField
           autoFocus
@@ -84,10 +84,16 @@ export const DeleteAccountAlertDialog = () => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} variant='outlined' autoFocus>
+        <Button onClick={handleClose} variant='outlined' color='error' autoFocus>
           キャンセル
         </Button>
-        <Button onClick={handleClick} disabled={user?.displayName !== value} variant='contained'>
+        <Button
+          onClick={handleClick}
+          disabled={user?.displayName !== value}
+          variant='contained'
+          color='error'
+          sx={{ boxShadow: 'none' }}
+        >
           削除
         </Button>
       </DialogActions>
