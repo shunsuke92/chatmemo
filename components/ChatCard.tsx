@@ -1,5 +1,6 @@
 import Card from '@mui/material/Card';
 
+import { AddCommentTextField } from './AddCommentTextField';
 import { CommentText } from './CommentText';
 import { CommonTextField } from './CommonTextField';
 import { EditCompleteButton } from './EditCompleteButton';
@@ -29,13 +30,6 @@ export const ChatCard = (props: ChatCardProps) => {
 
   const isSelected: boolean = (isOutermost && isAddingContents) || isEditingContents;
 
-  const handleClick = () => {
-    // コメント追加中にチャット部分をクリックしても入力エリアからフォーカスが外れないようにする
-    if (isAddingContents) {
-      document.getElementById('input')?.focus();
-    }
-  };
-
   const Texts = () => {
     return isEditingContents ? (
       <CommonTextField data={data} />
@@ -48,8 +42,43 @@ export const ChatCard = (props: ChatCardProps) => {
 
   return (
     <>
-      {isEditingContents && !isOutermost ? (
-        <Texts />
+      {isEditingContents ? (
+        !isOutermost ? (
+          <Texts />
+        ) : (
+          <Card
+            sx={{
+              bgcolor: isOutermost ? memoBackground : commentBackground,
+              p: 1,
+              borderRadius: 2,
+              wordBreak: 'break-word',
+              textAlign: 'left',
+              borderColor: (theme) => theme.palette.primary.main,
+              zIndex: 2500,
+              width: '100%',
+            }}
+          >
+            <Texts />
+            {children}
+            {isOutermost && <EditCompleteButton />}
+          </Card>
+        )
+      ) : isAddingContents ? (
+        <Card
+          sx={{
+            bgcolor: isOutermost ? memoBackground : commentBackground,
+            p: 1,
+            borderRadius: 2,
+            wordBreak: 'break-word',
+            textAlign: 'left',
+            borderColor: (theme) => theme.palette.primary.main,
+            zIndex: 2500,
+          }}
+        >
+          <Texts />
+          {children}
+          {isOutermost && <AddCommentTextField data={data} />}
+        </Card>
       ) : (
         <Card
           sx={{
@@ -58,17 +87,11 @@ export const ChatCard = (props: ChatCardProps) => {
             borderRadius: 2,
             wordBreak: 'break-word',
             textAlign: 'left',
-            boxShadow: 'none',
-            border: isSelected ? '1px solid' : 'none',
             borderColor: (theme) => theme.palette.primary.main,
-            zIndex: isSelected ? 2500 : null,
-            width: isEditingContents ? '100%' : null,
           }}
-          onClick={handleClick}
         >
           <Texts />
           {children}
-          {isEditingContents && isOutermost && <EditCompleteButton />}
         </Card>
       )}
     </>

@@ -51,7 +51,7 @@ export const CommonTextField = (props: CommonTextFieldProps) => {
         multiline
         sx={{
           width: '479px',
-          maxWidth: '65vw',
+          maxWidth: '68vw',
           '& > div': { backgroundColor: darkMode ? null : 'grey.50' },
         }}
         onChange={handleChange}

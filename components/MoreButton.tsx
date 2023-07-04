@@ -8,6 +8,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 import { InternalData } from './Timeline';
+import { addingContentIDState } from '../states/addingContentIDState';
 import { AlertDialog } from '../states/displayAlertDialogState';
 import { editingContentIDState } from '../states/editingContentIDState';
 import { scrollingIDState } from '../states/scrollingIDState';
@@ -37,6 +38,7 @@ export const MoreButton = (props: MoreButtonProps) => {
 
   const setScrollingID = useSetRecoilState(scrollingIDState);
   const setEditingContentID = useSetRecoilState(editingContentIDState);
+  const setAddingContentID = useSetRecoilState(addingContentIDState);
 
   const open = Boolean(anchorEl);
 
@@ -46,6 +48,20 @@ export const MoreButton = (props: MoreButtonProps) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleClickAddComment = (id: string) => {
+    return () => {
+      setAnchorEl(null);
+
+      // HACK: 特定条件で意図しないスクロールが発生する事象に対応するため
+      //       MUIのMenuコンポーネントで、メニューを開いているときにスクロールを無効にしていることが影響？
+      setTimeout(() => {
+        setAddingContentID(id);
+        // スクロール予約
+        setScrollingID(id);
+      }, 1);
+    };
   };
 
   const handleClickEdit = (id: string) => {
@@ -103,6 +119,11 @@ export const MoreButton = (props: MoreButtonProps) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
+        {isAllMemo && (
+          <MenuItem onClick={handleClickAddComment(data.id)} sx={{ fontSize: '0.8rem' }}>
+            コメント
+          </MenuItem>
+        )}
         {isAllMemo && (
           <MenuItem onClick={handleClickEdit(data.id)} sx={{ fontSize: '0.8rem' }}>
             編集

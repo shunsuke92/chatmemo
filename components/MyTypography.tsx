@@ -77,7 +77,8 @@ export const MyTypography = (props: MyTypography) => {
       sx={{
         backgroundColor: 'transparent',
         border: 'none',
-        cursor: 'auto',
+        cursor: 'text',
+        userSelect: 'text',
         outline: 'none',
         pt: 0,
         pb: 0,

@@ -11,7 +11,6 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
 import { AddButton } from '../components/AddButton';
-import { useGetIsAdding } from '../components/Main';
 import { useGetIsEditing } from '../components/Main';
 import { Mask } from '../components/Mask';
 import { useSettingInfoContext } from '../components/SettingInfoContext';
@@ -25,7 +24,6 @@ export const InputText = () => {
   const [value, setValue] = useState('');
   const [height, setHeight] = useState(0);
 
-  const isAdding = useGetIsAdding();
   const isEditing = useGetIsEditing();
 
   const createData = useOperateCreateData();
@@ -58,15 +56,6 @@ export const InputText = () => {
     createData(value);
     setValue('');
   };
-
-  useEffect(() => {
-    // コメント追加モードになったら入力欄にフォーカスする
-    if (isAdding) {
-      document.getElementById('input')?.focus();
-    } else {
-      document.getElementById('input')?.blur();
-    }
-  }, [isAdding]);
 
   const handleClickInputArea = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -123,8 +112,6 @@ export const InputText = () => {
           onKeyDown={handleKeyDown}
           sx={{
             width: 500,
-            zIndex: isAdding ? 2500 : null,
-            position: isAdding ? 'relative' : null,
             '& > div': { borderRadius: '20px', pl: 2.4 },
           }}
           disabled={isEditing}
@@ -137,7 +124,7 @@ export const InputText = () => {
                     htmlFor='input'
                     sx={{ position: 'fixed', color: 'text.disabled', mb: 0.3 }}
                   >
-                    {!isAdding ? 'メモを入力…' : 'コメントを入力…'}
+                    {'メモを入力…'}
                   </InputLabel>
                 )}
               </InputAdornment>

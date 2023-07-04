@@ -1,6 +1,5 @@
 import Stack from '@mui/material/Stack';
 
-import { AddCommentButton } from './AddCommentButton';
 import { MoreButton } from './MoreButton';
 import { InternalData } from './Timeline';
 import { AlertDialog } from '../states/displayAlertDialogState';
@@ -28,7 +27,6 @@ export const LowerButtons = (props: LowerButtonsProps) => {
 
   return (
     <Stack spacing={1} direction='row' justifyContent='space-between' alignItems='center'>
-      {isAllMemo && <AddCommentButton data={data} />}
       <MoreButton
         data={data}
         isTrash={isTrash}
