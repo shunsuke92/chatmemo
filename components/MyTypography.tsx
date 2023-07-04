@@ -33,6 +33,7 @@ interface MyTypography {
   pr?: number;
   pl?: number;
   className?: string;
+  type?: 'text' | 'button';
   children: any;
 }
 
@@ -54,6 +55,7 @@ export const MyTypography = (props: MyTypography) => {
     pr,
     pl,
     className,
+    type = 'text',
   } = props;
 
   return (
@@ -77,8 +79,8 @@ export const MyTypography = (props: MyTypography) => {
       sx={{
         backgroundColor: 'transparent',
         border: 'none',
-        cursor: 'text',
-        userSelect: 'text',
+        cursor: type === 'text' ? 'text' : 'pointer',
+        userSelect: type === 'text' ? 'text' : 'auto',
         outline: 'none',
         pt: 0,
         pb: 0,

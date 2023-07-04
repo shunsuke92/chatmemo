@@ -40,13 +40,10 @@ export const DeleteMemoAlertDialog = () => {
       aria-labelledby='alert-dialog-title'
       aria-describedby='alert-dialog-description'
     >
-      <DialogTitle id='alert-dialog-title'>このメモを削除しますか？</DialogTitle>
+      <DialogTitle id='alert-dialog-title'>メモを削除しますか？</DialogTitle>
       <DialogContent>
         <DialogContentText id='alert-dialog-description'>
-          メモを削除すると、コメントもすべて削除されます。
-        </DialogContentText>
-        <DialogContentText id='alert-dialog-description'>
-          削除したメモはごみ箱に保存され、復元することもできます。
+          削除したメモはごみ箱から復元できます。
         </DialogContentText>
       </DialogContent>
       <DialogActions>
