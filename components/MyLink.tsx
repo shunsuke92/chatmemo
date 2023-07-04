@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { MyTypography } from './MyTypography';
+import Typography from '@mui/material/Typography';
 
 interface MyLinkProps {
   href: string;
@@ -12,8 +12,9 @@ export const MyLink = (props: MyLinkProps) => {
 
   return (
     <Link href={href}>
-      <MyTypography
+      <Typography
         variant='subtitle2'
+        component='span'
         color='text.secondary'
         sx={{
           textDecoration: 'underline',
@@ -22,7 +23,7 @@ export const MyLink = (props: MyLinkProps) => {
         }}
       >
         {children}
-      </MyTypography>
+      </Typography>
     </Link>
   );
 };

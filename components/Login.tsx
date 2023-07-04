@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
 
@@ -79,12 +80,10 @@ const LoginDialog = (props: LoginDialogProps) => {
         </IconButton>
         <Stack spacing={4} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Logo type={isDarkMode ? 'dark' : 'light'} />
-          <Stack sx={{ flexDirection: 'row' }}>
-            <MyTypography variant='subtitle2' color='text.secondary'>
-              ChatMemoはチャット形式のメモアプリです。
-            </MyTypography>
+          <Typography variant='subtitle2' color='text.secondary'>
+            ChatMemoはチャット形式のメモアプリです。
             <MyLink href='/about'>ChatMemoについて</MyLink>
-          </Stack>
+          </Typography>
           <Button
             sx={{
               p: 0,
@@ -114,13 +113,11 @@ const LoginDialog = (props: LoginDialogProps) => {
               }
             />
           </Button>
-          <Stack sx={{ flexDirection: 'row' }}>
+          <MyTypography variant='subtitle2' color='text.secondary'>
             <MyLink href='/about#terms'>利用規約</MyLink>、
             <MyLink href='/about#policy'>プライバシーポリシー</MyLink>
-            <MyTypography variant='subtitle2' color='text.secondary'>
-              に同意の上、ご使用ください。
-            </MyTypography>
-          </Stack>
+            に同意の上、ご使用ください。
+          </MyTypography>
         </Stack>
       </Box>
     </Dialog>
