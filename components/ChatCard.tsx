@@ -28,8 +28,6 @@ export const ChatCard = (props: ChatCardProps) => {
     isOutermost,
   } = props;
 
-  const isSelected: boolean = (isOutermost && isAddingContents) || isEditingContents;
-
   const Texts = () => {
     return isEditingContents ? (
       <CommonTextField data={data} />
@@ -53,6 +51,7 @@ export const ChatCard = (props: ChatCardProps) => {
               borderRadius: 2,
               wordBreak: 'break-word',
               textAlign: 'left',
+              boxShadow: 'none',
               borderColor: (theme) => theme.palette.primary.main,
               zIndex: 2500,
               width: '100%',
@@ -71,6 +70,7 @@ export const ChatCard = (props: ChatCardProps) => {
             borderRadius: 2,
             wordBreak: 'break-word',
             textAlign: 'left',
+            boxShadow: 'none',
             borderColor: (theme) => theme.palette.primary.main,
             zIndex: 2500,
           }}
@@ -87,6 +87,7 @@ export const ChatCard = (props: ChatCardProps) => {
             borderRadius: 2,
             wordBreak: 'break-word',
             textAlign: 'left',
+            boxShadow: 'none',
             borderColor: (theme) => theme.palette.primary.main,
           }}
         >
