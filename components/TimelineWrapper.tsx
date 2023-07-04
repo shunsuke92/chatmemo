@@ -22,12 +22,12 @@ export const TimelineWrapper = (props: TimelineWrapperProps) => {
       <Box
         sx={{
           width: '100%',
-          maxWidth: 600,
+          maxWidth: 630,
           height: '100%',
           pt: 2,
           pb: 2,
-          pr: 3,
-          pl: 3,
+          pr: 1,
+          pl: 2,
         }}
       >
         <Stack

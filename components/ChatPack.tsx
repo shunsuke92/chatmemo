@@ -2,9 +2,8 @@ import Stack from '@mui/material/Stack';
 
 import { ChatCard } from './ChatCard';
 import { CompletedButton } from './CompletedButton';
-import { EditedMark } from './EditedMark';
 import { HoursChip } from './HoursChip';
-import { LowerButtons } from './LowerButtons';
+import { MoreButton } from './MoreButton';
 import { SynchronizedMark } from './SynchronizedMark';
 import { ChatMemoProps } from '../components/ChatMemo';
 
@@ -35,13 +34,18 @@ export const ChatPack = (props: ChatPackProps) => {
   return (
     <Stack
       mt={isOutermost ? 2 : 0}
-      spacing={1}
-      sx={{ width: '100%', display: 'flex', alignItems: 'flex-end' }}
+      spacing={0.75}
+      direction='row'
+      alignItems='flex-start'
+      justifyContent='flex-end'
+      sx={{
+        width: '100%',
+      }}
       className={isOutermost ? `content${data.id}` : ''}
     >
       <Stack direction='row' spacing={1}>
         {isOutermost && (
-          <Stack sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Stack justifyContent='center'>
             <CompletedButton
               data={data}
               isTrash={isTrash}
@@ -53,17 +57,19 @@ export const ChatPack = (props: ChatPackProps) => {
         <Stack
           direction='row'
           spacing={1}
-          sx={{ width: isEditingContents ? '100%' : null, display: 'flex', alignItems: 'flex-end' }}
+          alignItems='flex-end'
+          sx={{ width: isEditingContents ? '100%' : null }}
         >
-          <Stack spacing={0.2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
-            <EditedMark data={data} isEditingContents={isEditingContents} />
+          <Stack spacing={0.2} alignItems='flex-end'>
+            {/* 編集済みマークはいらない？ */}
+            {/* <EditedMark data={data} isEditingContents={isEditingContents} /> */}
             <Stack direction='row' spacing={0.5}>
               <SynchronizedMark data={data} />
               <HoursChip data={data} />
             </Stack>
           </Stack>
           <Stack spacing={1} sx={{ width: isEditingContents ? '100%' : null }}>
-            <Stack sx={{ display: 'flex', alignItems: 'flex-end' }}>
+            <Stack alignItems='flex-end'>
               <ChatCard
                 data={data}
                 isAddingContents={isAddingContents}
@@ -79,7 +85,7 @@ export const ChatPack = (props: ChatPackProps) => {
         </Stack>
       </Stack>
       {isOutermost && (
-        <LowerButtons
+        <MoreButton
           data={data}
           isTrash={isTrash}
           isAllMemo={isAllMemo}

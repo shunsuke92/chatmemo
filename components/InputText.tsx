@@ -14,6 +14,7 @@ import { AddButton } from '../components/AddButton';
 import { useGetIsEditing } from '../components/Main';
 import { Mask } from '../components/Mask';
 import { useSettingInfoContext } from '../components/SettingInfoContext';
+import { useDarkMode } from '../hooks/useDarkMode';
 import { useMobileKeyboardOpen } from '../hooks/useMobileKeyboardOpen';
 import { useOperateCreateData } from '../hooks/useOperateCreateData';
 import { addingContentIDState } from '../states/addingContentIDState';
@@ -33,6 +34,8 @@ export const InputText = () => {
 
   const isMobile = useRecoilValue(isMobileState);
   const mobileKeyboardOpen = useMobileKeyboardOpen();
+
+  const darkMode = useDarkMode();
 
   const setAddingContentID = useSetRecoilState(addingContentIDState);
 
@@ -118,11 +121,11 @@ export const InputText = () => {
             '& .MuiOutlinedInput-root': {
               '&.Mui-focused fieldset': {
                 border: 'none',
-                backgroundColor: '#52525299',
+                backgroundColor: darkMode ? '#52525299' : '#cccccc99',
               },
               '&:hover fieldset': {
                 border: 'none',
-                backgroundColor: '#52525299',
+                backgroundColor: darkMode ? '#52525299' : '#cccccc99',
               },
             },
           }}

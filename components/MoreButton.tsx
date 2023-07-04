@@ -7,6 +7,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useMediaQuery } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
@@ -45,6 +46,8 @@ export const MoreButton = (props: MoreButtonProps) => {
   const setScrollingID = useSetRecoilState(scrollingIDState);
   const setEditingContentID = useSetRecoilState(editingContentIDState);
   const setAddingContentID = useSetRecoilState(addingContentIDState);
+
+  const min880 = useMediaQuery('(min-width:880px)');
 
   const open = Boolean(anchorEl);
 
@@ -111,7 +114,10 @@ export const MoreButton = (props: MoreButtonProps) => {
     <>
       <IconButton
         aria-label='more button'
-        sx={{ color: 'text.secondary' }}
+        sx={{
+          color: 'grey.600',
+          p: '2px',
+        }}
         onClick={handleClickMore}
         size='small'
       >
@@ -121,12 +127,12 @@ export const MoreButton = (props: MoreButtonProps) => {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        sx={{ mt: 1 }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        sx={{ transform: min880 ? 'translateX(4px)' : 'translateX(-4px)' }}
+        transformOrigin={{ horizontal: min880 ? 'left' : 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: min880 ? 'right' : 'left', vertical: 'top' }}
       >
         {/* HACK: ダミー（PC版のSafariで先頭のコンテンツにフォーカスが当たってしまう事象への対応） */}
-        <MenuItem sx={{ p: 0 }}></MenuItem>
+        <MenuItem sx={{ m: 0, p: 0, width: 0, height: 0, display: 'none' }}></MenuItem>
         {isAllMemo && (
           <MenuItem onClick={handleClickAddComment(data.id)}>
             <ListItemIcon>

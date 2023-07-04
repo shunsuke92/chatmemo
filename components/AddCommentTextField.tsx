@@ -56,7 +56,7 @@ export const AddCommentTextField = (props: AddCommentTextFieldProps) => {
           multiline
           autoFocus
           sx={{
-            width: '460px',
+            width: '485px',
             maxWidth: '80vw',
             '& > div': { backgroundColor: darkMode ? 'grey.900' : 'grey.200' },
           }}

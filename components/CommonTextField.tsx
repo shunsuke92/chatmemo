@@ -50,8 +50,8 @@ export const CommonTextField = (props: CommonTextFieldProps) => {
         fullWidth
         multiline
         sx={{
-          width: '479px',
-          maxWidth: '68vw',
+          width: '447px',
+          maxWidth: '64vw',
           '& > div': { backgroundColor: darkMode ? null : 'grey.50' },
         }}
         onChange={handleChange}
