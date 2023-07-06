@@ -1,9 +1,10 @@
 import { useState } from 'react';
 
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
@@ -18,17 +19,17 @@ import { MyLink } from './MyLink';
 import { MyTypography } from './MyTypography';
 import { useClearRecoilState } from '../hooks/useClearRecoilState';
 import { authUserState } from '../states/authUserState';
-import { isLogginginState } from '../states/isLogginginState';
 import { app, provider } from '../utils/firebase';
 
 interface LoginDialogProps {
   open: boolean;
+  isLogging: boolean;
   onClick: () => void;
   onClose: () => void;
 }
 
 const LoginDialog = (props: LoginDialogProps) => {
-  const { open, onClose, onClick } = props;
+  const { open, isLogging, onClose, onClick } = props;
   const [focus, setFocus] = useState(false);
 
   const handleClose = () => {
@@ -95,6 +96,7 @@ const LoginDialog = (props: LoginDialogProps) => {
             onClick={handleClick}
             onMouseOver={handleMouseOver}
             onMouseLeave={handleMouseLeave}
+            disabled={isLogging}
           >
             <Box
               component='img'
@@ -112,6 +114,26 @@ const LoginDialog = (props: LoginDialogProps) => {
                   : '/google_signin_buttons/btn_google_signin_light_normal_web@2x.png'
               }
             />
+            {isLogging && (
+              <Stack
+                width={210}
+                height={45}
+                borderRadius={1}
+                sx={{
+                  position: 'absolute',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: isDarkMode ? '#346FC9cc' : '#ffffffcc',
+                }}
+              >
+                <CircularProgress
+                  size={25}
+                  sx={{ color: isDarkMode ? 'grey.50' : 'grey.800' }}
+                  disableShrink
+                />
+              </Stack>
+            )}
           </Button>
           <MyTypography variant='subtitle2' color='text.secondary'>
             <MyLink href='/about#terms'>利用規約</MyLink>、
@@ -126,8 +148,8 @@ const LoginDialog = (props: LoginDialogProps) => {
 
 export const Login = () => {
   const [open, setOpen] = useState(false);
+  const [isLogging, setIsLogging] = useState(false);
   const user = useRecoilValue(authUserState);
-  const setIsLoggingin = useSetRecoilState(isLogginginState);
   const clearRecoilState = useClearRecoilState();
 
   const handleClickOpen = () => {
@@ -138,10 +160,12 @@ export const Login = () => {
     setOpen(false);
   };
 
-  const handleSignInWithGoogle = () => {
+  const handleSignInWithGoogle = async () => {
     const auth = getAuth(app);
+    setIsLogging(true);
 
-    signInWithPopup(auth, provider)
+    let isLoggedIn = false;
+    await signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -150,10 +174,9 @@ export const Login = () => {
         const user = result.user;
         // IdP data available using getAdditionalUserInfo(result)
         // ...
-        setOpen(false);
-        setIsLoggingin(true);
-        clearRecoilState();
+
         location.reload();
+        isLoggedIn = true;
       })
       .catch((error) => {
         // Handle Errors here.
@@ -165,6 +188,10 @@ export const Login = () => {
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
       });
+
+    if (!isLoggedIn) {
+      setIsLogging(false);
+    }
   };
 
   return (
@@ -174,7 +201,12 @@ export const Login = () => {
           ログイン
         </Button>
       )}
-      <LoginDialog open={open} onClick={handleSignInWithGoogle} onClose={handleClose} />
+      <LoginDialog
+        open={open}
+        isLogging={isLogging}
+        onClick={handleSignInWithGoogle}
+        onClose={handleClose}
+      />
     </div>
   );
 };
