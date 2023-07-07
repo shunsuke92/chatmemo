@@ -6,9 +6,11 @@ import Fade from '@mui/material/Fade';
 import MuiSkeleton from '@mui/material/Skeleton';
 
 import { initialLoadingState } from '../states/initialLoadingState';
+import { isLoggingoutState } from '../states/isLoggingoutState';
 
 export const Skeleton = () => {
   const initialLoading = useRecoilValue(initialLoadingState);
+  const isLoggingout = useRecoilValue(isLoggingoutState);
 
   // 使用中止：コンテンツサイズが可変のため、あまりいいスケルトンではない。
   /* const ContentsSkeleton = () => {
@@ -61,7 +63,7 @@ export const Skeleton = () => {
 
   return (
     <>
-      {initialLoading < 2 && (
+      {initialLoading < 2 && !isLoggingout && (
         <Box
           sx={{
             position: 'fixed',

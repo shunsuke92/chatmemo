@@ -75,7 +75,10 @@ export const DataManager = ({ children }: { children: any }) => {
         setIsGettingData(false);
       }
     })();
-  }, [user, setMemo, setInitialScrolling, setInitialServerAccessed]);
+    // userは依存関係に入れない
+    // データを取得するのは初回読み込みのときだけ、ログイン、ログアウト時はリロードする
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setMemo, setInitialScrolling, setInitialServerAccessed]);
 
   return <>{isGettingData ? <></> : <main>{children}</main>}</>;
 };

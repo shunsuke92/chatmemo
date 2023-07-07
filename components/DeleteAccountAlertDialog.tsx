@@ -11,9 +11,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
+import { useClearRecoilState } from '../hooks/useClearRecoilState';
 import { useServerDeleteAccount } from '../hooks/useServerDeleteAccount';
 import { authUserState } from '../states/authUserState';
 import { displayAlertDialogState } from '../states/displayAlertDialogState';
+import { isLoggingoutState } from '../states/isLoggingoutState';
 import { signout } from '../utils/signout';
 
 export const DeleteAccountAlertDialog = () => {
@@ -21,8 +23,10 @@ export const DeleteAccountAlertDialog = () => {
 
   const displayAlertDialog = useRecoilValue(displayAlertDialogState);
   const setDisplayAlertDialog = useSetRecoilState(displayAlertDialogState);
+  const setIsLoggingout = useSetRecoilState(isLoggingoutState);
 
   const deleteAccount = useServerDeleteAccount();
+  const clearRecoilState = useClearRecoilState();
 
   const [value, setValue] = useState('');
 
@@ -41,6 +45,8 @@ export const DeleteAccountAlertDialog = () => {
     if (result) {
       // サインアウトする
       signout();
+      setIsLoggingout(true);
+      clearRecoilState();
     } else {
       alert('アカウント削除が失敗しました。');
     }
@@ -80,6 +86,7 @@ export const DeleteAccountAlertDialog = () => {
           margin='dense'
           fullWidth
           variant='outlined'
+          color='error'
           onChange={handleChange}
         />
       </DialogContent>
