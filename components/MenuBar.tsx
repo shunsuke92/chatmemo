@@ -12,7 +12,6 @@ import { User } from './User';
 import { Mask } from '../components/Mask';
 import { Synchronizing } from '../components/Synchronizing';
 import { useChangeOpenMenuDelay } from '../hooks/useChangeOpenMenuDelay';
-import { initialLoadingState } from '../states/initialLoadingState';
 import { openSideDrawerState } from '../states/openSideDrawerState';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
 
@@ -23,8 +22,6 @@ export const MenuBar = () => {
   const title = selectedDisplayType.name;
 
   const changeOpenMenuDelay = useChangeOpenMenuDelay();
-
-  const initialLoading = useRecoilValue(initialLoadingState);
 
   const handleClickOpenMenu = () => {
     setOpenSideDrawer(true);

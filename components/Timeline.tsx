@@ -2,7 +2,7 @@ import Collapse from '@mui/material/Collapse';
 
 import { TransitionGroup } from 'react-transition-group';
 
-import { ChatMemo } from './ChatMemo';
+import { Chat } from './Chat';
 import { DateChip } from './DateChip';
 import { Loading } from './Loading';
 import { TimelineWrapper } from './TimelineWrapper';
@@ -53,7 +53,7 @@ export const Timeline = (props: TimelineProps) => {
               enter={false}
               exit={isExitAnimation}
             >
-              {memo._type === 'memo' && <ChatMemo {...createProps(memo)} />}
+              {memo._type === 'memo' && <Chat {...createProps(memo)} />}
               {memo._type === 'date' && <DateChip date={memo._date} />}
             </Collapse>
           ))}

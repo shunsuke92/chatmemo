@@ -18,7 +18,6 @@ export const DataManager = ({ children }: { children: any }) => {
   const setMemo = useSetRecoilState(memoState);
   const setInitialScrolling = useSetRecoilState(initialScrollingState);
   const setInitialServerAccessed = useSetRecoilState(initialServerAccessedState);
-  // finishedInitialServerAccess
 
   const user = useRecoilValue(authUserState);
 

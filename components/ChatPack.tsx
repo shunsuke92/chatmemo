@@ -1,13 +1,13 @@
 import Stack from '@mui/material/Stack';
 
+import { ChatProps } from './Chat';
 import { ChatCard } from './ChatCard';
 import { CompletedButton } from './CompletedButton';
 import { HoursChip } from './HoursChip';
 import { MoreButton } from './MoreButton';
 import { SynchronizedMark } from './SynchronizedMark';
-import { ChatMemoProps } from '../components/ChatMemo';
 
-interface ChatPackProps extends ChatMemoProps {
+interface ChatPackProps extends ChatProps {
   children?: any;
   isOutermost: boolean;
 }
@@ -61,8 +61,6 @@ export const ChatPack = (props: ChatPackProps) => {
           sx={{ width: isEditingContents ? '100%' : null }}
         >
           <Stack spacing={0.2} alignItems='flex-end'>
-            {/* 編集済みマークはいらない？ */}
-            {/* <EditedMark data={data} isEditingContents={isEditingContents} /> */}
             <Stack direction='row' spacing={0.5}>
               <SynchronizedMark data={data} />
               <HoursChip data={data} />

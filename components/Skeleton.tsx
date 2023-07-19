@@ -12,33 +12,6 @@ export const Skeleton = () => {
   const initialLoading = useRecoilValue(initialLoadingState);
   const isLoggingout = useRecoilValue(isLoggingoutState);
 
-  // 使用中止：コンテンツサイズが可変のため、あまりいいスケルトンではない。
-  /* const ContentsSkeleton = () => {
-    return (
-      <Stack spacing={1.5} direction='column' alignItems='flex-end' sx={{ width: '100%' }}>
-        <Skeleton
-          className='fouc-bar-color'
-          variant='rounded'
-          width={300}
-          height={100}
-          sx={{ borderRadius: 2 }}
-        />
-        <Stack
-          spacing={2}
-          direction='row'
-          justifyContent='flex-end'
-          alignItems='center'
-          sx={{
-            width: '100%',
-          }}
-        >
-          <Skeleton className='fouc-bar-color' variant='circular' width={24} height={24} />
-          <Skeleton className='fouc-bar-color' variant='circular' width={24} height={24} />
-        </Stack>
-      </Stack>
-    );
-  }; */
-
   const MenuBarSkeleton = () => {
     return (
       <MuiSkeleton
@@ -78,22 +51,6 @@ export const Skeleton = () => {
           }}
         >
           <MenuBarSkeleton />
-          {/* <ContentsWrapper>
-            <TimelineWrapper>
-              <Stack spacing={4} direction='column' alignItems='flex-end' sx={{ width: '100%' }}>
-                <ContentsSkeleton />
-                <ContentsSkeleton />
-                <ContentsSkeleton />
-                <ContentsSkeleton />
-                <ContentsSkeleton />
-                <ContentsSkeleton />
-                <ContentsSkeleton />
-                <ContentsSkeleton />
-                <ContentsSkeleton />
-                <ContentsSkeleton />
-              </Stack>
-            </TimelineWrapper>
-          </ContentsWrapper> */}
           <Fade
             in={true}
             style={{

@@ -1,15 +1,16 @@
 import { memo } from 'react';
 
-import { ChatComment } from './ChatComment';
+import Stack from '@mui/material/Stack';
+
 import { ChatPack } from './ChatPack';
 import { DateChip } from './DateChip';
+import { DelayCompleted } from './DelayCompletedContext';
 import { InternalData } from './Timeline';
-import { DelayCompleted } from '../components/DelayCompletedContext';
 import { AlertDialog } from '../states/displayAlertDialogState';
 import { Comment } from '../types/index';
 import { convertInternalDataToComment } from '../utils/convertInternalDataToComment';
 
-export interface ChatMemoProps {
+export interface ChatProps {
   data: InternalData;
   isAddingContents: boolean;
   isEditingContents: boolean;
@@ -28,10 +29,7 @@ export interface ChatMemoProps {
 /**
  * @return 再レンダリングの有無を返す（true:レンダリングしない、false:レンダリングする）
  */
-const isEqual = (
-  prevProps: Readonly<ChatMemoProps>,
-  nextProps: Readonly<ChatMemoProps>,
-): boolean => {
+const isEqual = (prevProps: Readonly<ChatProps>, nextProps: Readonly<ChatProps>): boolean => {
   // 表示する値に変更がないときは、再レンダリングしない
 
   const arrayCompare = (array1: string[], array2: string[]) => {
@@ -85,7 +83,7 @@ const isEqual = (
   );
 };
 
-export const ChatMemo = memo(function ChatMemo(props: ChatMemoProps) {
+export const Chat = memo(function Chat(props: ChatProps) {
   const { data } = props;
 
   return (
@@ -94,7 +92,12 @@ export const ChatMemo = memo(function ChatMemo(props: ChatMemoProps) {
         data.comments.map((c, index) => (
           <div key={index}>
             {c._type === 'comment' && (
-              <ChatComment {...props} data={convertInternalDataToComment(c)} />
+              <Stack
+                spacing={1}
+                sx={{ pt: 1, display: 'flex', alignItems: 'flex-end', maxWidth: '100%' }}
+              >
+                <ChatPack {...props} data={convertInternalDataToComment(c)} isOutermost={false} />
+              </Stack>
             )}
             {c._type === 'date' && <DateChip date={c._date} />}
           </div>

@@ -4,14 +4,11 @@ import { Box } from '@mui/system';
 
 import { InputText } from '../components/InputText';
 import { Synchronizing } from '../components/Synchronizing';
-import { initialLoadingState } from '../states/initialLoadingState';
 import { selectedDisplayTypeState } from '../states/selectedDisplayTypeState';
 
 export const BottomBar = () => {
   const selectedDisplayType = useRecoilValue(selectedDisplayTypeState);
   const idDisplay = selectedDisplayType.id === 1;
-
-  const initialLoading = useRecoilValue(initialLoadingState);
 
   return (
     <>
