@@ -30,7 +30,8 @@ export const Synchronizing = (props: SynchronizingProps) => {
             position: 'fixed',
             top: 0,
             zIndex: 2000,
-            backgroundColor: darkMode ? '#00000022' : '#ffffff22',
+            backgroundColor: darkMode ? 'grey.800' : 'grey.300',
+            opacity: 0.3,
           }}
         >
           {progress && (

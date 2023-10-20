@@ -253,9 +253,7 @@ export const User = () => {
                 variant='caption'
                 sx={{ color: isMobile ? 'text.disabled' : 'text.secondary' }}
               >
-                {isMobile
-                  ? 'モバイル端末では利用できません。'
-                  : '改行は Shift + Enter になります。'}
+                {isMobile && 'モバイル端末では利用できません。'}
               </MyTypography>
             </MyMenuItemSub>
             {/* <MyMenuItem>
@@ -265,8 +263,12 @@ export const User = () => {
           </div>
         ) : (
           <div>
-            <MenuItem sx={{ pointerEvents: 'none' }}>
-              <Stack direction='row' spacing={2} sx={{ alignItems: 'center' }}>
+            <MenuItem sx={{ pointerEvents: 'none', maxWidth: 400 }}>
+              <Stack
+                direction='row'
+                spacing={2}
+                sx={{ alignItems: 'center', width: '100%', overflow: 'hidden' }}
+              >
                 <Avatar alt='user' src={userPhotoURL} sx={{ width: 40, height: 40 }} />
                 <MyTypography fontWeight={600} fontSize={'1.1rem'}>
                   {user?.displayName ?? ''}

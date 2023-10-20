@@ -41,6 +41,7 @@ export const Mask = (props: MaskProps) => {
             top: top,
             zIndex: 2000,
             ...maskBackground,
+            opacity: 0.7,
           }}
           onClick={handleClick}
         ></Box>

@@ -116,15 +116,16 @@ const LoginDialog = (props: LoginDialogProps) => {
             />
             {isLogging && (
               <Stack
-                width={210}
-                height={45}
+                width={215}
+                height={52}
                 borderRadius={1}
                 sx={{
                   position: 'absolute',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  backgroundColor: isDarkMode ? '#346FC9cc' : '#ffffffcc',
+                  backgroundColor: isDarkMode ? 'grey.800' : 'grey.200',
+                  opacity: 0.8,
                 }}
               >
                 <CircularProgress
@@ -197,7 +198,11 @@ export const Login = () => {
   return (
     <div>
       {!user && (
-        <Button variant='contained' onClick={handleClickOpen} sx={{ boxShadow: 'none' }}>
+        <Button
+          variant='contained'
+          onClick={handleClickOpen}
+          sx={{ boxShadow: 'none', '&:hover': { boxShadow: 'none' } }}
+        >
           ログイン
         </Button>
       )}

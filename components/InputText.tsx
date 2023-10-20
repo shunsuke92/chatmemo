@@ -121,11 +121,15 @@ export const InputText = () => {
             '& .MuiOutlinedInput-root': {
               '&.Mui-focused fieldset': {
                 border: 'none',
-                backgroundColor: darkMode ? '#52525299' : '#cccccc99',
+                backgroundColor: darkMode
+                  ? (theme) => theme.palette.grey[700]
+                  : (theme) => theme.palette.grey[200],
               },
               '&:hover fieldset': {
                 border: 'none',
-                backgroundColor: darkMode ? '#52525299' : '#cccccc99',
+                backgroundColor: darkMode
+                  ? (theme) => theme.palette.grey[700]
+                  : (theme) => theme.palette.grey[200],
               },
             },
           }}

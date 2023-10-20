@@ -3,7 +3,7 @@ import { useDarkMode } from './useDarkMode';
 export const useMaskBackground = () => {
   const darkMode = useDarkMode();
 
-  return { backgroundColor: darkMode ? '#000000aa' : '#ffffffbb' };
+  return { backgroundColor: darkMode ? 'grey.900' : 'grey.100' };
 };
 
 export const useMemoBackground = () => {

@@ -24,6 +24,7 @@ export const BottomBar = () => {
             minHeight: { xs: 72, sm: 80 },
             pt: { xs: 2, sm: 2.5 },
             pb: { xs: 2, sm: 2.5 },
+            opacity: 0.8,
           }}
           className='bottom-bar fouc-bar-color'
         >

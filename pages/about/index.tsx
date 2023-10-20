@@ -62,12 +62,12 @@ const About: NextPage = () => {
         id={id !== undefined ? id : undefined}
         variant='body1'
         component='h2'
-        sx={{ backgroundColor: !isDarkmode ? '#E8F0FF' : '#262626' }}
+        sx={{ backgroundColor: !isDarkmode ? 'grey.300' : 'grey.800' }}
         pt={0.7}
         pb={0.5}
         pr={0.5}
         pl={1}
-        color={!isDarkmode ? '#454F64' : '#f6f6f6'}
+        color={!isDarkmode ? 'grey.600' : 'grey.200'}
         fontWeight={500}
       >
         {children}
@@ -99,7 +99,7 @@ const About: NextPage = () => {
   const List = (props: ListProps) => {
     const { children } = props;
     return (
-      <ol style={{ paddingInlineStart: 20, color: !isDarkmode ? '#666666' : '#dddddd' }}>
+      <ol style={{ paddingInlineStart: 20 }}>
         <ContentStack>{children}</ContentStack>
       </ol>
     );

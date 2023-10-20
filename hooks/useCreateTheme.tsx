@@ -9,11 +9,24 @@ export const useCreateTheme = () => {
       palette: {
         mode: mode,
         text: {
-          primary: mode === 'light' ? '#444444' : '#ffffff',
-          secondary: mode === 'light' ? '#666666' : '#dddddd',
+          primary: mode === 'light' ? '#334155' : '#f1f5f9',
+          secondary: mode === 'light' ? '#475569' : '#e2e8f0',
         },
         background: {
-          default: mode === 'light' ? '#f9f9f9' : '#161616',
+          paper: mode === 'light' ? '#f1f5f9' : '#0f172a',
+          default: mode === 'light' ? '#f1f5f9' : '#0f172a',
+        },
+        grey: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
         },
       },
       typography: {
