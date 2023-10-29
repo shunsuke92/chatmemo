@@ -42,11 +42,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           ></div>
           <style jsx>{`
             #blockFOUC {
-              background-color: #cbd5e1;
+              background-color: #e2e8f0;
             }
             @media (prefers-color-scheme: dark) {
               #blockFOUC {
-                background-color: #1e293b;
+                background-color: #0f172a;
               }
             }
           `}</style>
