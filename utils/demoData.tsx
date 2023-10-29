@@ -10,8 +10,8 @@ const time = getTime(nowDate);
 export const demoData: Memo[] = [
   {
     id: 1,
-    body: 'ようこそ、チャットメモへ ^ ^',
-    _text: ['ようこそ、チャットメモへ ^ ^'],
+    body: 'ようこそ、ゲストさん 🥳🥳🎉',
+    _text: ['ようこそ、ゲストさん 🥳🥳🎉'],
     completed: false,
     deleted: false,
     createdAt: nowDate,
@@ -29,8 +29,8 @@ export const demoData: Memo[] = [
   },
   {
     id: 2,
-    body: '※ ログインすると、メモが保存できます。',
-    _text: ['※ ログインすると、メモが保存できます。'],
+    body: 'これはチャットのようなメモアプリ',
+    _text: ['これはチャットのようなメモアプリ'],
     completed: false,
     deleted: false,
     createdAt: nowDate,
@@ -44,6 +44,22 @@ export const demoData: Memo[] = [
     _tmpCompletedAt: nowDate,
     _type: 'memo',
     _id: '2',
-    comments: [],
+    comments: [
+      {
+        id: 1,
+        body: 'ログインすると、メモが保存できるようになります',
+        _text: ['ログインすると、メモが保存できるようになります'],
+        deleted: false,
+        createdAt: nowDate,
+        updatedAt: nowDate,
+        deletedAt: nowDate,
+        _date: date,
+        _time: time,
+        _synchronized: true,
+        _type: 'comment',
+        _id: '1',
+        _memoId: '2',
+      },
+    ],
   },
 ];
