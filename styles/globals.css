@@ -1,14 +1,14 @@
 body {
   color: #334155 !important; /* grey700 */
-  background-color: #e2e8f0 !important; /* grey200 */
+  background-color: #f1f5f9 !important; /* grey100 */
 }
 
 .fouc-bar-color {
-  background-color: #cbd5e1 !important; /* grey300 */
+  background-color: #e2e8f0 !important; /* grey200 */
 }
 
 .fouc-text-color {
-  color: #334155 !important; /* grey700 */
+  color: #0f172a !important; /* grey900 */
 }
 
 @media (prefers-color-scheme: dark) {

@@ -123,13 +123,13 @@ export const InputText = () => {
                 border: 'none',
                 backgroundColor: darkMode
                   ? (theme) => theme.palette.grey[700]
-                  : (theme) => theme.palette.grey[200],
+                  : (theme) => theme.palette.grey[300],
               },
               '&:hover fieldset': {
                 border: 'none',
                 backgroundColor: darkMode
                   ? (theme) => theme.palette.grey[700]
-                  : (theme) => theme.palette.grey[200],
+                  : (theme) => theme.palette.grey[300],
               },
             },
           }}
