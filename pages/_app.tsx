@@ -31,15 +31,22 @@ function MyApp({ Component, pageProps }: AppProps) {
         <>
           <div
             id='blockFOUC'
-            style={{ width: '100vw', height: '100vh', position: 'fixed', top: '0', left: '0' }}
+            style={{
+              width: '100vw',
+              height: '100vh',
+              position: 'fixed',
+              top: '0',
+              left: '0',
+              opacity: 0.8,
+            }}
           ></div>
           <style jsx>{`
             #blockFOUC {
-              background-color: #f1f5f9;
+              background-color: #cbd5e1;
             }
             @media (prefers-color-scheme: dark) {
               #blockFOUC {
-                background-color: #0f172a;
+                background-color: #1e293b;
               }
             }
           `}</style>
